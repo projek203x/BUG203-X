@@ -89,15 +89,6 @@
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 80px rgba(255, 110, 0, 0.3);
         }
-        .header h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            letter-spacing: 6px;
-            font-size: 1.8rem;
-            background: linear-gradient(to bottom, #FFFFFF, #DBAEB2, #FF8C00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
 
         .form-group { margin-bottom: 16px; }
         .form-group label {
@@ -148,6 +139,53 @@
             box-shadow: 0 0 60px rgba(255, 110, 0, 0.1);
         }
         .btn-action:active { transform: scale(0.97); }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(90deg, #FF6E00, #FF9E3D);
+            color: #0A0C12;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 900;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 30px rgba(255, 110, 0, 0.2);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 60px rgba(255, 110, 0, 0.3);
+        }
+        .btn-primary:active { transform: scale(0.97); }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-danger {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid rgba(255, 68, 0, 0.3);
+            border-radius: 20px;
+            background: transparent;
+            color: #FF4400;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-danger:hover {
+            background: rgba(255, 68, 0, 0.1);
+            border-color: #FF4400;
+        }
 
         .greeting {
             font-size: 1.4rem;
@@ -235,7 +273,6 @@
             margin-top: 2px;
         }
 
-        /* ===== VIDEO TANPA KONTROL ===== */
         .video-wrapper {
             border-radius: 16px;
             overflow: hidden;
@@ -517,7 +554,6 @@
         }
         .section-title svg { width: 20px; height: 20px; stroke: var(--accent-orange); fill: none; stroke-width: 2; }
 
-        /* ===== PLATFORM BTN (DOWNLOADER) ===== */
         .platform-btn {
             flex: 1;
             min-width: auto;
@@ -545,7 +581,6 @@
         }
         .platform-btn.active .sub { color: rgba(255, 140, 0, 0.4); }
 
-        /* ===== PREVIEW ===== */
         .dl-preview {
             display: none;
             margin-top: 18px;
@@ -592,7 +627,6 @@
         .dl-status.error { color: #ff4466; }
         .dl-status.loading { color: #ff8c00; animation: blink 0.8s step-end infinite; }
 
-        /* ===== TRACKER ===== */
         .track-input-wrap {
             display: flex;
             align-items: center;
@@ -633,40 +667,6 @@
             font-family: 'Orbitron', sans-serif;
             font-size: 1.2rem;
             letter-spacing: 2px;
-        }
-
-        .btn-track {
-            width: 100%;
-            padding: 18px;
-            border: none;
-            border-radius: 18px;
-            background: linear-gradient(90deg, #FF6E00 0%, #FF9E3D 50%, #FF6E00 100%);
-            background-size: 200% auto;
-            color: #0A0C12;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 1.3rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            box-shadow: 0 0 30px rgba(255, 110, 0, 0.2);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-        }
-        .btn-track:hover {
-            background-position: right center;
-            box-shadow: 0 0 60px var(--accent-orange-glow);
-            transform: translateY(-2px) scale(1.01);
-        }
-        .btn-track:active { transform: scale(0.96); }
-        .btn-track:disabled {
-            opacity: 0.5; transform: none; box-shadow: none; cursor: not-allowed;
-        }
-        .btn-track svg {
-            width: 24px; height: 24px; fill: #0A0C12;
         }
 
         .track-status {
@@ -728,9 +728,133 @@
         }
         @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.2; } }
 
+        .sender-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            border-radius: 16px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            margin-bottom: 16px;
+        }
+        .sender-status .dot {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            background: #ff4466;
+        }
+        .sender-status .dot.online {
+            background: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+        .sender-status .info { flex: 1; }
+        .sender-status .info .phone {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+        .sender-status .info .status-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .sender-status .info .status-text .highlight { color: var(--accent-orange); }
+
+        .pairing-input-wrap {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(255, 110, 0, 0.15);
+            border-radius: 16px;
+            transition: all 0.4s ease;
+            margin-bottom: 16px;
+        }
+        .pairing-input-wrap:focus-within {
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 45px var(--accent-orange-glow);
+        }
+        .pairing-input-wrap input {
+            width: 100%;
+            padding: 16px 18px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+        .pairing-input-wrap .prefix {
+            padding: 16px 0 16px 18px;
+            color: var(--accent-orange);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 1rem;
+            border-right: 2px solid rgba(255, 110, 0, 0.1);
+        }
+
+        .code-display {
+            text-align: center;
+            padding: 20px;
+            border-radius: 16px;
+            background: rgba(255, 110, 0, 0.05);
+            border: 2px dashed rgba(255, 110, 0, 0.2);
+            margin: 12px 0;
+        }
+        .code-display .code {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--accent-orange);
+            letter-spacing: 8px;
+            text-shadow: 0 0 40px rgba(255, 110, 0, 0.3);
+        }
+        .code-display .label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            margin-top: 4px;
+        }
+
+        /* ===== SWITCH TOGGLE ===== */
+        .switch { position: relative; display: inline-block; width: 48px; height: 26px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .switch .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #2a2a2a;
+            transition: .3s;
+            border-radius: 26px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .switch .slider::before {
+            content: '';
+            position: absolute;
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background: #666;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        .switch input:checked + .slider {
+            background: rgba(255, 110, 0, 0.3);
+            border-color: var(--accent-orange);
+        }
+        .switch input:checked + .slider::before {
+            transform: translateX(22px);
+            background: var(--accent-orange);
+            box-shadow: 0 0 20px var(--accent-orange-glow);
+        }
+
         @media (max-width: 480px) {
             .header h2 { font-size: 2.4rem; letter-spacing: 6px; }
-            .header h3 { font-size: 1.4rem; }
             .sholat-grid { grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 4px; }
             .sholat-item { padding: 8px 2px; }
             .sholat-item .time { font-size: 0.8rem; }
@@ -743,8 +867,8 @@
             .platform-btn { font-size: 0.85rem; padding: 12px 6px; }
             .track-prefix { padding: 14px 0 14px 14px; font-size: 1rem; }
             .track-input-wrap input { padding: 14px 12px; font-size: 1rem; }
-            .btn-track { font-size: 1rem; padding: 14px; }
             .map-wrapper { height: 220px; }
+            .code-display .code { font-size: 1.8rem; letter-spacing: 4px; }
         }
         @media (max-width: 380px) {
             .header h2 { font-size: 1.8rem; letter-spacing: 4px; }
@@ -757,6 +881,7 @@
             .target-wrapper input { padding: 12px 10px; font-size: 0.9rem; }
             .greeting { font-size: 0.95rem; }
             .map-wrapper { height: 180px; }
+            .code-display .code { font-size: 1.4rem; letter-spacing: 3px; }
         }
     </style>
 </head>
@@ -857,10 +982,10 @@
                             <div class="mname">Tracker</div>
                             <div class="mdesc">Lacak lokasi target</div>
                         </div>
-                        <div class="menu-item" onclick="showToast('Coming soon!',false)">
-                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                            <div class="mname">Settings</div>
-                            <div class="mdesc">Pengaturan akun</div>
+                        <div class="menu-item" onclick="goToSender()">
+                            <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
+                            <div class="mname">Sender</div>
+                            <div class="mdesc">Hubungkan WhatsApp</div>
                         </div>
                     </div>
                 </div>
@@ -884,6 +1009,36 @@
             </div>
 
             <div class="card">
+                <!-- Status koneksi WA -->
+                <div style="margin-bottom:16px;padding:10px 14px;border-radius:12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:10px;font-size:0.85rem;">
+                    <span id="bugWaStatus" style="color:var(--text-muted);">📱 WhatsApp: <span style="color:#ff4466;">Belum terhubung</span></span>
+                </div>
+
+                <!-- ===== SENDER MODE TOGGLE ===== -->
+                <div style="margin-bottom:18px;padding:14px 16px;border-radius:16px;background:rgba(255,110,0,0.03);border:1px solid rgba(255,110,0,0.08);">
+                    <div style="display:flex;align-items:center;justify-content:space-between;">
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" stroke="var(--accent-orange)" fill="none" stroke-width="2">
+                                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                            </svg>
+                            <div>
+                                <div style="font-weight:700;font-size:0.9rem;color:var(--text-main);">Mode Sender</div>
+                                <div style="font-size:0.7rem;color:var(--text-muted);" id="senderModeLabel">Global (Bot sistem)</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <span style="font-size:0.65rem;color:var(--text-muted);letter-spacing:1px;" id="senderModeBadge">GLOBAL</span>
+                            <label class="switch">
+                                <input type="checkbox" id="senderModeToggle" onchange="toggleSenderMode()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div style="margin-top:8px;font-size:0.7rem;color:var(--text-muted);padding:6px 10px;border-radius:8px;background:rgba(0,0,0,0.3);">
+                        <span id="senderModeDesc">📡 Menggunakan bot WhatsApp sistem (global)</span>
+                    </div>
+                </div>
+
                 <div class="section-title">
                     <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                     NOMOR TARGET
@@ -936,17 +1091,20 @@
                         <svg viewBox="0 0 24 24"><path d="M12 2v4M12 6l-4 4M12 6l4 4M4 16l8 8M20 16l-8 8M4 20h16"/></svg>
                         SENDER
                     </div>
-                    <div style="background:rgba(255,110,0,0.1);color:var(--accent-orange);padding:4px 12px;border-radius:30px;font-size:0.7rem;font-weight:700;border:1px solid rgba(255,110,0,0.1);letter-spacing:1px;">● 7 online</div>
+                    <div style="background:rgba(255,110,0,0.1);color:var(--accent-orange);padding:4px 12px;border-radius:30px;font-size:0.7rem;font-weight:700;border:1px solid rgba(255,110,0,0.1);letter-spacing:1px;" id="senderOnlineCount">● 0 online</div>
                 </div>
-                <div class="sender-single">
+                <div class="sender-single" id="senderInfo">
                     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                    <span class="stitle">Global</span>
-                    <span class="sstatus">7 sender</span>
+                    <span class="stitle" id="senderTitle">Belum Terhubung</span>
+                    <span class="sstatus" id="senderStatus">Koneksi WA diperlukan</span>
+                </div>
+                <div style="margin-top:10px;padding:8px 12px;border-radius:10px;background:rgba(255,110,0,0.05);border:1px solid rgba(255,110,0,0.08);text-align:center;font-size:0.75rem;color:var(--text-muted);">
+                    <span id="senderActiveMode">🔹 Mode: <strong style="color:var(--accent-orange);">GLOBAL</strong></span>
                 </div>
             </div>
 
             <div class="btn-wrapper">
-                <button class="btn-send" onclick="validateAndSend()">
+                <button class="btn-send" onclick="sendBug()">
                     <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                     KIRIM BUG
                 </button>
@@ -1030,8 +1188,8 @@
                     <input type="tel" id="trackNumberInput" placeholder="81234567890" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                 </div>
 
-                <button class="btn-track" id="trackBtn" onclick="startTracking()">
-                    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <button class="btn-primary" id="trackBtn" onclick="startTracking()">
+                    <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:#0A0C12;display:inline-block;vertical-align:middle;margin-right:8px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                     INITIATE TRACK
                 </button>
 
@@ -1051,12 +1209,79 @@
             </div>
         </div>
 
+        <!-- ============================================================ -->
+        <!-- PAGE SENDER -->
+        <!-- ============================================================ -->
+        <div class="page" id="pageSender">
+            <div class="header" style="padding-bottom:12px;margin-bottom:0;">
+                <h2 style="font-size:2rem;">203'X SENDER</h2>
+            </div>
+
+            <div class="card">
+                <div class="section-title">
+                    <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
+                    WHATSAPP CONNECTION
+                </div>
+
+                <div class="sender-status" id="senderDashboard">
+                    <div class="dot" id="senderDot"></div>
+                    <div class="info">
+                        <div class="phone" id="senderPhone">Belum terhubung</div>
+                        <div class="status-text" id="senderStatusText">Status: <span class="highlight">Offline</span></div>
+                    </div>
+                </div>
+
+                <div class="pairing-input-wrap">
+                    <span class="prefix">📱</span>
+                    <input type="tel" id="pairingPhoneInput" placeholder="Masukkan nomor WhatsApp" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                </div>
+
+                <button class="btn-primary" id="pairBtn" onclick="requestPairing()">
+                    🔗 HUBUNGKAN WHATSAPP
+                </button>
+
+                <div id="codeDisplay" class="code-display" style="display:none;">
+                    <div class="code" id="pairingCodeDisplay">------</div>
+                    <div class="label">MASUKKAN KODE INI DI WHATSAPP</div>
+                </div>
+
+                <div style="margin-top:12px;text-align:center;font-size:0.8rem;color:var(--text-muted);">
+                    <span id="pairingStatus">Masukkan nomor HP untuk memulai pairing</span>
+                </div>
+
+                <button class="btn-danger" onclick="logoutWhatsApp()" style="margin-top:16px;">
+                    🚫 PUTUSKAN KONEKSI
+                </button>
+            </div>
+
+            <div class="card">
+                <div class="section-title">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    SERVER INFO
+                </div>
+                <div style="font-size:0.9rem;color:var(--text-sub);">
+                    <div>🔗 Server: <span id="serverUrl" style="color:var(--text-main);">http://localhost:3000</span></div>
+                    <div style="margin-top:4px;">📡 Status: <span id="serverStatus" style="color:#ff4466;">● Offline</span></div>
+                </div>
+            </div>
+
+            <button class="btn-back" onclick="goHome()">KEMBALI KE HOME</button>
+
+            <div class="footer">
+                <strong>203'X TEAM</strong><br>
+                © 2026 203'X Sender System
+                <div class="footer-credit">@create apk by samil</div>
+            </div>
+        </div>
+
     </div>
 
     <script>
         // ============================================================
         // 203'X FULL SYSTEM
         // ============================================================
+
+        const API_BASE = localStorage.getItem('203x_api') || 'http://localhost:3000';
 
         // ===== DEVICE FINGERPRINT =====
         function getDeviceId() {
@@ -1077,10 +1302,12 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('pageHome').classList.add('active');
             renderHome();
+            updateSenderStatus();
         }
         function showBug() {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('pageBug').classList.add('active');
+            updateSenderStatus();
         }
         function showDownloader() {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1090,10 +1317,16 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('pageTracker').classList.add('active');
         }
+        function showSender() {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('pageSender').classList.add('active');
+            updateSenderDashboard();
+        }
         function goHome() { showHome(); }
         function goToBug() { showBug(); }
         function goToDownloader() { showDownloader(); }
         function goToTracker() { showTracker(); }
+        function goToSender() { showSender(); }
 
         // ===== TOAST =====
         function showToast(message, isError = false, isSpinner = false) {
@@ -1217,6 +1450,7 @@
         // BUG PAGE
         // ============================================================
         let isProcessing = false;
+        let senderMode = 'global'; // 'global' or 'private'
 
         function selectBug(el) {
             if(isProcessing) return;
@@ -1226,48 +1460,278 @@
 
         function getActiveBugName() {
             const active = document.querySelector('.bug-item.active');
-            return active ? active.querySelector('.bug-title').textContent : 'Tidak diketahui';
+            return active ? active.querySelector('.bug-title').textContent : '203\'X BUG';
         }
 
-        function isSequential(numStr) {
-            let asc = true, desc = true;
-            for (let i = 0; i < numStr.length - 1; i++) {
-                if (parseInt(numStr[i]) + 1 !== parseInt(numStr[i+1])) asc = false;
-                if (parseInt(numStr[i]) - 1 !== parseInt(numStr[i+1])) desc = false;
+        function toggleSenderMode() {
+            const toggle = document.getElementById('senderModeToggle');
+            const modeLabel = document.getElementById('senderModeLabel');
+            const modeBadge = document.getElementById('senderModeBadge');
+            const modeDesc = document.getElementById('senderModeDesc');
+            const activeMode = document.getElementById('senderActiveMode');
+            
+            if (toggle.checked) {
+                senderMode = 'private';
+                modeLabel.textContent = 'Pribadi (WA pribadi)';
+                modeBadge.textContent = 'PRIBADI';
+                modeBadge.style.color = '#00ff88';
+                modeDesc.innerHTML = '📱 Mengirim menggunakan WhatsApp pribadi yang sudah ditautkan';
+                if (activeMode) activeMode.innerHTML = '🔹 Mode: <strong style="color:#00ff88;">PRIBADI</strong>';
+                showToast('✅ Mode Sender Pribadi aktif', false);
+            } else {
+                senderMode = 'global';
+                modeLabel.textContent = 'Global (Bot sistem)';
+                modeBadge.textContent = 'GLOBAL';
+                modeBadge.style.color = 'var(--accent-orange)';
+                modeDesc.innerHTML = '📡 Menggunakan bot WhatsApp sistem (global)';
+                if (activeMode) activeMode.innerHTML = '🔹 Mode: <strong style="color:var(--accent-orange);">GLOBAL</strong>';
+                showToast('🌐 Mode Sender Global aktif', false);
             }
-            return asc || desc;
         }
 
-        function validateAndSend() {
+        // ============================================================
+        // SEND BUG VIA WA BOT
+        // ============================================================
+        async function sendBug() {
             if(isProcessing) return;
+            
             const input = document.getElementById('targetInput');
             const wrapper = document.getElementById('inputWrapper');
             let rawVal = input.value.replace(/\D/g, '');
+            const bugName = getActiveBugName();
+            
+            if (!rawVal) {
+                showToast('Masukkan nomor target!', true);
+                return;
+            }
+            
+            let number = rawVal;
+            if (!number.startsWith('62')) {
+                number = '62' + number;
+            }
+            
+            if (number.length < 10 || number.length > 15) {
+                showToast('Nomor tidak valid!', true);
+                return;
+            }
+            
+            const status = await getWhatsAppStatus();
+            if (senderMode === 'private' && !status.connected) {
+                showToast('❌ WhatsApp pribadi belum terhubung! Buka menu Sender dulu.', true);
+                return;
+            }
             
             isProcessing = true;
             document.querySelector('.btn-send').style.opacity = '0.7';
-            showToast('Proses...', false, true);
-
-            setTimeout(() => {
-                let isValid = false, errorMsg = '';
-                if (rawVal.startsWith('62') && rawVal.length >= 10 && rawVal.length <= 15) {
-                    let numberPart = rawVal.substring(2);
-                    if (!isSequential(numberPart)) { isValid = true; }
-                    else { errorMsg = 'Nomor tidak boleh berurutan!'; }
-                } else {
-                    errorMsg = 'Gunakan awalan 62 dan nomor valid.';
-                }
-
-                if (isValid) {
+            const modeText = senderMode === 'private' ? 'Pribadi' : 'Global';
+            showToast(`📤 Mengirim bug (${modeText})...`, false, true);
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/send`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        target: number,
+                        message: `🔥 ${bugName} dikirim dari 203'X System`,
+                        bugType: bugName,
+                        mode: senderMode
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
                     wrapper.className = 'target-wrapper success';
-                    showToast(`Sukses terkirim (${getActiveBugName()})`, false);
+                    showToast(`✅ ${data.message}`, false);
                 } else {
                     wrapper.className = 'target-wrapper error';
-                    showToast(`Gagal terkirim, ${errorMsg}`, true);
+                    showToast(`❌ ${data.message}`, true);
                 }
+            } catch (err) {
+                wrapper.className = 'target-wrapper error';
+                showToast(`❌ Gagal konek ke server: ${err.message}`, true);
+            } finally {
                 isProcessing = false;
                 document.querySelector('.btn-send').style.opacity = '1';
-            }, 5000);
+            }
+        }
+
+        // ============================================================
+        // SENDER — WHATSAPP PAIRING
+        // ============================================================
+        let senderCheckInterval = null;
+
+        async function getWhatsAppStatus() {
+            try {
+                const resp = await fetch(`${API_BASE}/api/status`);
+                const data = await resp.json();
+                return data;
+            } catch (err) {
+                return { connected: false, phone: 'Error', pairingCode: null };
+            }
+        }
+
+        async function updateSenderStatus() {
+            const status = await getWhatsAppStatus();
+            
+            const waStatus = document.getElementById('bugWaStatus');
+            if (waStatus) {
+                const modeText = senderMode === 'private' ? '🔒 Pribadi' : '🌐 Global';
+                if (status.connected) {
+                    waStatus.innerHTML = `📱 WhatsApp: <span style="color:#00ff88;">✅ Terhubung (${status.phone})</span> <span style="font-size:0.7rem;color:var(--text-muted);margin-left:6px;">${modeText}</span>`;
+                } else if (status.isPairing) {
+                    waStatus.innerHTML = `📱 WhatsApp: <span style="color:#ff8c00;">⏳ Menunggu pairing...</span>`;
+                } else {
+                    waStatus.innerHTML = `📱 WhatsApp: <span style="color:#ff4466;">❌ Belum terhubung</span> <span style="font-size:0.7rem;color:var(--text-muted);margin-left:6px;">${modeText}</span>`;
+                }
+            }
+            
+            const senderTitle = document.getElementById('senderTitle');
+            const senderStatus = document.getElementById('senderStatus');
+            const senderOnline = document.getElementById('senderOnlineCount');
+            const activeMode = document.getElementById('senderActiveMode');
+            
+            if (senderTitle) {
+                if (status.connected) {
+                    senderTitle.textContent = `📱 ${status.phone}`;
+                    const modeText = senderMode === 'private' ? '🔒 Pribadi' : '🌐 Global';
+                    senderStatus.textContent = `✅ Online — Siap kirim bug (${modeText})`;
+                    senderStatus.style.color = '#00ff88';
+                    if (senderOnline) senderOnline.textContent = '● 1 online';
+                    if (activeMode) {
+                        const modeLabel = senderMode === 'private' ? 'PRIBADI' : 'GLOBAL';
+                        const modeColor = senderMode === 'private' ? '#00ff88' : 'var(--accent-orange)';
+                        activeMode.innerHTML = `🔹 Mode: <strong style="color:${modeColor};">${modeLabel}</strong>`;
+                    }
+                } else if (status.isPairing) {
+                    senderTitle.textContent = '⏳ Pairing...';
+                    senderStatus.textContent = 'Masukkan kode di WhatsApp';
+                    senderStatus.style.color = '#ff8c00';
+                    if (senderOnline) senderOnline.textContent = '● 0 online';
+                } else {
+                    senderTitle.textContent = 'Belum Terhubung';
+                    senderStatus.textContent = 'Koneksi WA diperlukan';
+                    senderStatus.style.color = '#ff4466';
+                    if (senderOnline) senderOnline.textContent = '● 0 online';
+                }
+            }
+        }
+
+        async function updateSenderDashboard() {
+            const status = await getWhatsAppStatus();
+            
+            const dot = document.getElementById('senderDot');
+            const phone = document.getElementById('senderPhone');
+            const statusText = document.getElementById('senderStatusText');
+            
+            if (status.connected) {
+                dot.className = 'dot online';
+                phone.textContent = `📱 ${status.phone}`;
+                statusText.innerHTML = 'Status: <span style="color:#00ff88;">✅ Online — Siap kirim pesan</span>';
+                document.getElementById('pairingStatus').textContent = '✅ WhatsApp terhubung!';
+                document.getElementById('codeDisplay').style.display = 'none';
+            } else if (status.isPairing) {
+                dot.className = 'dot';
+                phone.textContent = '⏳ Menunggu pairing...';
+                statusText.innerHTML = 'Status: <span style="color:#ff8c00;">⏳ Pairing code dikirim</span>';
+                document.getElementById('pairingStatus').textContent = '⏳ Masukkan kode di WhatsApp';
+            } else {
+                dot.className = 'dot';
+                phone.textContent = 'Belum terhubung';
+                statusText.innerHTML = 'Status: <span style="color:#ff4466;">❌ Offline</span>';
+                document.getElementById('pairingStatus').textContent = 'Masukkan nomor HP untuk memulai pairing';
+            }
+            
+            try {
+                const resp = await fetch(`${API_BASE}/api/status`);
+                if (resp.ok) {
+                    document.getElementById('serverStatus').style.color = '#00ff88';
+                    document.getElementById('serverStatus').textContent = '● Online';
+                }
+            } catch (err) {
+                document.getElementById('serverStatus').style.color = '#ff4466';
+                document.getElementById('serverStatus').textContent = '● Offline';
+            }
+        }
+
+        async function requestPairing() {
+            const input = document.getElementById('pairingPhoneInput');
+            let number = input.value.replace(/\D/g, '');
+            
+            if (!number) {
+                showToast('Masukkan nomor WhatsApp!', true);
+                return;
+            }
+            
+            if (!number.startsWith('62')) {
+                number = '62' + number;
+            }
+            
+            if (number.length < 10) {
+                showToast('Nomor tidak valid!', true);
+                return;
+            }
+            
+            const btn = document.getElementById('pairBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Meminta kode...';
+            document.getElementById('pairingStatus').textContent = '⏳ Menghubungi server...';
+            
+            try {
+                const resp = await fetch(`${API_BASE}/api/pair`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone: number })
+                });
+                
+                const data = await resp.json();
+                
+                if (data.success && data.code) {
+                    document.getElementById('codeDisplay').style.display = 'block';
+                    document.getElementById('pairingCodeDisplay').textContent = data.code;
+                    document.getElementById('pairingStatus').textContent = `✅ Kode dikirim! Masukkan ${data.code} di WhatsApp`;
+                    showToast(`✅ Kode pairing: ${data.code}`, false);
+                    
+                    let checkCount = 0;
+                    const checkInterval = setInterval(async () => {
+                        const status = await getWhatsAppStatus();
+                        if (status.connected) {
+                            clearInterval(checkInterval);
+                            updateSenderDashboard();
+                            showToast('✅ WhatsApp berhasil terhubung!', false);
+                            btn.disabled = false;
+                            btn.textContent = '🔗 HUBUNGKAN WHATSAPP';
+                        }
+                        checkCount++;
+                        if (checkCount > 30) {
+                            clearInterval(checkInterval);
+                            btn.disabled = false;
+                            btn.textContent = '🔗 HUBUNGKAN WHATSAPP';
+                        }
+                    }, 3000);
+                } else {
+                    showToast(`❌ ${data.message || 'Gagal pairing'}`, true);
+                    btn.disabled = false;
+                    btn.textContent = '🔗 HUBUNGKAN WHATSAPP';
+                }
+            } catch (err) {
+                showToast(`❌ Gagal konek ke server: ${err.message}`, true);
+                btn.disabled = false;
+                btn.textContent = '🔗 HUBUNGKAN WHATSAPP';
+            }
+        }
+
+        async function logoutWhatsApp() {
+            try {
+                const resp = await fetch(`${API_BASE}/api/logout`, {
+                    method: 'POST'
+                });
+                const data = await resp.json();
+                showToast(data.message || 'Logout berhasil', false);
+                updateSenderDashboard();
+            } catch (err) {
+                showToast(`❌ Gagal logout: ${err.message}`, true);
+            }
         }
 
         // ============================================================
@@ -1384,7 +1848,6 @@
             const mapWrapper = document.getElementById('trackMapWrapper');
             const mapIframe = document.getElementById('trackMapIframe');
             
-            // Reset state
             mapWrapper.classList.remove('active');
             mapWrapper.style.display = 'none';
             mapIframe.src = '';
@@ -1398,14 +1861,11 @@
                 if (after62.length >= 8 && after62.length <= 13) {
                     let prefix = after62.substring(0, 3);
                     if (validPrefixes.includes(prefix)) {
-                        // LOCK UI
                         msgBox.textContent = "CONNECTING TO SATELLITE...";
                         msgBox.className = 'track-status loading';
                         btn.disabled = true;
 
-                        // SIMULASI 4 DETIK
                         setTimeout(() => {
-                            // Acak di sekitar Bandung
                             const center = { lat: -6.9175, lng: 107.6191 }; 
                             const randomLoc = generateRandomCoordinate(center.lat, center.lng, 40);
 
@@ -1426,7 +1886,6 @@
                 }
             }
 
-            // ERROR HANDLER
             msgBox.textContent = "✗ TARGET INVALID. MUST USE 62 + 812/813/822/852...";
             msgBox.className = 'track-status error';
             wrapper.className = 'track-input-wrap error';
@@ -1448,6 +1907,21 @@
         });
 
         // ============================================================
+        // AUTO UPDATE SENDER STATUS
+        // ============================================================
+        setInterval(() => {
+            const activePage = document.querySelector('.page.active');
+            if (activePage) {
+                if (activePage.id === 'pageBug' || activePage.id === 'pageHome') {
+                    updateSenderStatus();
+                }
+                if (activePage.id === 'pageSender') {
+                    updateSenderDashboard();
+                }
+            }
+        }, 10000);
+
+        // ============================================================
         // INIT — CHECK SESSION + VIDEO
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
@@ -1455,6 +1929,8 @@
             if (video) {
                 video.play().catch(() => {});
             }
+
+            document.getElementById('serverUrl').textContent = API_BASE;
 
             const session = localStorage.getItem('203x_session');
             if (session) {
