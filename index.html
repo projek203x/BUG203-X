@@ -18,15 +18,10 @@
             --glass-border: rgba(255, 110, 0, 0.1);
             --shadow-glow: 0 0 30px rgba(255, 110, 0, 0.05);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             background-color: var(--bg-primary);
-            background-image: 
-                radial-gradient(circle at 50% 0%, rgba(255, 110, 0, 0.03) 0%, transparent 60%),
-                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-image: radial-gradient(circle at 50% 0%, rgba(255, 110, 0, 0.03) 0%, transparent 60%), linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
             background-size: 100% 100%, 30px 30px, 30px 30px;
             color: var(--text-main);
             font-family: 'Rajdhani', sans-serif;
@@ -37,11 +32,9 @@
             padding: 20px 15px 40px;
             overflow-y: auto;
         }
-
         .container { width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: 24px; }
         .page { display: none; flex-direction: column; gap: 24px; width: 100%; }
         .page.active { display: flex; }
-
         .card {
             background: var(--bg-card);
             backdrop-filter: blur(14px);
@@ -61,7 +54,6 @@
             opacity: 0.6;
             filter: blur(2px);
         }
-
         .header {
             display: flex;
             justify-content: center;
@@ -89,7 +81,6 @@
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 80px rgba(255, 110, 0, 0.3);
         }
-
         .form-group { margin-bottom: 16px; }
         .form-group label {
             display: block;
@@ -116,7 +107,6 @@
             box-shadow: 0 0 40px var(--accent-orange-glow), inset 0 0 20px rgba(255, 110, 0, 0.05);
         }
         .form-group input::placeholder { color: var(--text-muted); font-size: 0.9rem; }
-
         .btn-action {
             width: 100%;
             padding: 16px;
@@ -139,7 +129,6 @@
             box-shadow: 0 0 60px rgba(255, 110, 0, 0.1);
         }
         .btn-action:active { transform: scale(0.97); }
-
         .btn-primary {
             width: 100%;
             padding: 16px;
@@ -161,12 +150,7 @@
             box-shadow: 0 0 60px rgba(255, 110, 0, 0.3);
         }
         .btn-primary:active { transform: scale(0.97); }
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         .btn-danger {
             width: 100%;
             padding: 14px;
@@ -182,11 +166,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        .btn-danger:hover {
-            background: rgba(255, 68, 0, 0.1);
-            border-color: #FF4400;
-        }
-
+        .btn-danger:hover { background: rgba(255, 68, 0, 0.1); border-color: #FF4400; }
         .greeting {
             font-size: 1.4rem;
             font-weight: 700;
@@ -205,7 +185,6 @@
             margin-left: 8px;
             letter-spacing: 1px;
         }
-
         .sholat-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
@@ -233,7 +212,6 @@
             margin-top: 2px;
         }
         .sholat-item .time.orange { color: var(--accent-orange); }
-
         .menu-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -272,7 +250,6 @@
             color: var(--text-muted);
             margin-top: 2px;
         }
-
         .video-wrapper {
             border-radius: 16px;
             overflow: hidden;
@@ -288,22 +265,11 @@
             max-height: 220px;
             object-fit: cover;
         }
-        .video-wrapper video::-webkit-media-controls {
-            display: none !important;
-        }
-        .video-wrapper video::-webkit-media-controls-enclosure {
-            display: none !important;
-        }
-        .video-wrapper video::-webkit-media-controls-panel {
-            display: none !important;
-        }
-        .video-wrapper video::-webkit-media-controls-play-button {
-            display: none !important;
-        }
-        .video-wrapper video::-webkit-media-controls-start-playback-button {
-            display: none !important;
-        }
-
+        .video-wrapper video::-webkit-media-controls { display: none !important; }
+        .video-wrapper video::-webkit-media-controls-enclosure { display: none !important; }
+        .video-wrapper video::-webkit-media-controls-panel { display: none !important; }
+        .video-wrapper video::-webkit-media-controls-play-button { display: none !important; }
+        .video-wrapper video::-webkit-media-controls-start-playback-button { display: none !important; }
         .target-wrapper {
             background: var(--bg-input);
             border: 2px solid rgba(255, 110, 0, 0.2);
@@ -337,7 +303,6 @@
             font-size: 1.3rem;
             letter-spacing: 2px;
         }
-
         .bug-scroll {
             display: flex;
             flex-wrap: nowrap;
@@ -351,7 +316,6 @@
         .bug-scroll::-webkit-scrollbar { height: 4px; }
         .bug-scroll::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.03); border-radius: 4px; }
         .bug-scroll::-webkit-scrollbar-thumb { background: var(--accent-orange); border-radius: 4px; box-shadow: 0 0 15px var(--accent-orange-glow); }
-
         .bug-item {
             flex: 0 0 150px;
             scroll-snap-align: start;
@@ -396,11 +360,9 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
         .bug-item.active .bug-tag { color: var(--accent-orange); border-color: rgba(255, 110, 0, 0.2); background: rgba(255, 110, 0, 0.1); }
-
         .dots { display: flex; justify-content: center; gap: 8px; margin-top: -5px; }
         .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.05); transition: 0.3s; }
         .dot.active { background: var(--accent-orange); width: 24px; border-radius: 6px; box-shadow: 0 0 15px var(--accent-orange-glow); }
-
         .sender-single {
             width: 100%;
             padding: 16px;
@@ -424,7 +386,6 @@
             letter-spacing: 2px;
         }
         .sender-single .sstatus { font-size: 0.8rem; color: var(--accent-orange); font-weight: 600; }
-
         .btn-wrapper { position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 0 50px rgba(255, 110, 0, 0.1); }
         .btn-send {
             width: 100%;
@@ -450,7 +411,6 @@
         .btn-send:active { transform: scale(0.97); }
         .btn-send svg { width: 24px; height: 24px; fill: #FFFFFF; transition: 0.3s; }
         .btn-send:hover svg { fill: var(--accent-orange); }
-
         .btn-back {
             background: transparent;
             border: 2px solid rgba(255, 255, 255, 0.05);
@@ -467,7 +427,6 @@
             margin-top: 8px;
         }
         .btn-back:hover { border-color: rgba(255, 110, 0, 0.3); color: var(--accent-orange); }
-
         .logout-btn {
             background: transparent;
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -484,7 +443,6 @@
             margin-top: 8px;
         }
         .logout-btn:hover { border-color: rgba(255, 110, 0, 0.3); color: var(--accent-orange); }
-
         .footer {
             text-align: center;
             margin-top: 10px;
@@ -500,7 +458,6 @@
             color: var(--text-muted);
             letter-spacing: 1px;
         }
-
         #toastContainer {
             position: fixed; top: 30px; left: 50%;
             transform: translateX(-50%);
@@ -526,7 +483,6 @@
         .toast.error { border-left-color: #CC4400; border-color: rgba(204, 68, 0, 0.2); }
         .toast .toast-icon { width: 24px; height: 24px; flex-shrink: 0; stroke: var(--accent-orange); fill: none; stroke-width: 2.5; }
         .toast.error .toast-icon { stroke: #CC4400; }
-
         .spinner {
             width: 24px; height: 24px;
             border: 3px solid rgba(255, 110, 0, 0.1);
@@ -540,7 +496,6 @@
             0% { opacity: 0; transform: translateY(-30px) scale(0.9); }
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
-
         .section-title {
             display: flex;
             align-items: center;
@@ -553,7 +508,6 @@
             color: var(--text-sub);
         }
         .section-title svg { width: 20px; height: 20px; stroke: var(--accent-orange); fill: none; stroke-width: 2; }
-
         .platform-btn {
             flex: 1;
             min-width: auto;
@@ -580,7 +534,6 @@
             color: rgba(255,255,255,0.2);
         }
         .platform-btn.active .sub { color: rgba(255, 140, 0, 0.4); }
-
         .dl-preview {
             display: none;
             margin-top: 18px;
@@ -626,7 +579,6 @@
         .dl-status.success { color: #00ff88; }
         .dl-status.error { color: #ff4466; }
         .dl-status.loading { color: #ff8c00; animation: blink 0.8s step-end infinite; }
-
         .track-input-wrap {
             display: flex;
             align-items: center;
@@ -668,7 +620,6 @@
             font-size: 1.2rem;
             letter-spacing: 2px;
         }
-
         .track-status {
             margin-top: 18px;
             text-align: center;
@@ -699,7 +650,6 @@
             background: rgba(255, 68, 0, 0.1);
             border-color: rgba(255, 68, 0, 0.3);
         }
-
         .map-wrapper {
             margin-top: 20px;
             border-radius: 20px;
@@ -718,16 +668,12 @@
             0% { opacity: 0; transform: translateY(30px) scale(0.95); }
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
-        .map-wrapper iframe {
-            width: 100%; height: 100%; border: 0;
-        }
-
+        .map-wrapper iframe { width: 100%; height: 100%; border: 0; }
         @keyframes pulseNeon {
             0% { opacity: 0.6; box-shadow: 0 0 10px rgba(255, 110, 0, 0.1); }
             100% { opacity: 1; box-shadow: 0 0 30px rgba(255, 110, 0, 0.3); }
         }
         @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.2; } }
-
         .sender-status {
             display: flex;
             align-items: center;
@@ -760,7 +706,6 @@
             color: var(--text-muted);
         }
         .sender-status .info .status-text .highlight { color: var(--accent-orange); }
-
         .pairing-input-wrap {
             display: flex;
             align-items: center;
@@ -793,7 +738,6 @@
             font-size: 1rem;
             border-right: 2px solid rgba(255, 110, 0, 0.1);
         }
-
         .code-display {
             text-align: center;
             padding: 20px;
@@ -816,7 +760,6 @@
             letter-spacing: 2px;
             margin-top: 4px;
         }
-
         .switch { position: relative; display: inline-block; width: 48px; height: 26px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .switch .slider {
@@ -851,6 +794,22 @@
             background: var(--accent-orange);
             box-shadow: 0 0 20px var(--accent-orange-glow);
         }
+        .api-status {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.03);
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+        .api-status .label { color: var(--text-muted); }
+        .api-status .value { font-weight: 700; }
+        .api-status .value.online { color: #00ff88; }
+        .api-status .value.offline { color: #ff4466; }
+        .api-status .value.checking { color: #ff8c00; }
 
         @media (max-width: 480px) {
             .header h2 { font-size: 2.4rem; letter-spacing: 6px; }
@@ -888,18 +847,12 @@
 
     <div class="container">
 
-        <!-- ===== TOAST ===== -->
         <div id="toastContainer"></div>
 
-        <!-- ============================================================ -->
-        <!-- PAGE LOGIN -->
-        <!-- ============================================================ -->
+        <!-- ===== PAGE LOGIN ===== -->
         <div class="page active" id="pageLogin">
             <div class="card">
-                <div class="header">
-                    <h2>203X</h2>
-                </div>
-
+                <div class="header"><h2>203X</h2></div>
                 <form id="loginForm" onsubmit="return false;">
                     <div class="form-group">
                         <label>USERNAME</label>
@@ -911,11 +864,9 @@
                     </div>
                     <button type="button" class="btn-action" onclick="handleLogin()">LOGIN</button>
                 </form>
-
                 <div style="text-align:center;margin-top:14px;color:var(--text-muted);font-size:0.85rem;">
                     Belum punya akun? <a href="#" style="color:var(--accent-orange);cursor:pointer;font-weight:700;text-decoration:none;" onclick="showToast('Hubungi admin untuk daftar', false)">Buat Akun</a>
                 </div>
-
                 <div class="footer">
                     <strong>203X TEAM</strong> &copy; 2026
                     <div class="footer-credit">@create apk by samil</div>
@@ -923,29 +874,23 @@
             </div>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- PAGE HOME -->
-        <!-- ============================================================ -->
+        <!-- ===== PAGE HOME ===== -->
         <div class="page" id="pageHome">
             <div class="header" style="padding-bottom:12px;margin-bottom:0;">
                 <h2 style="font-size:2.2rem;">203X</h2>
             </div>
-
             <div class="card" style="padding:12px;">
                 <div class="video-wrapper">
                     <video id="homeVideo" autoplay muted loop playsinline>
                         <source src="https://videotourl.com/videos/1787974878037-c050571e-573c-4a25-9563-df1d196c0b68.mp4" type="video/mp4">
-                        Browser tidak support video.
                     </video>
                 </div>
             </div>
-
             <div class="card">
                 <div class="greeting">
                     Hello, <span class="username" id="homeUsername">User</span>
                     <span class="role" id="homeRole">Reseller</span>
                 </div>
-
                 <div style="margin-top:16px;">
                     <div style="display:flex;align-items:center;gap:8px;color:var(--text-sub);font-size:0.8rem;letter-spacing:1px;margin-bottom:8px;">
                         <svg width="18" height="18" viewBox="0 0 24 24" stroke="var(--accent-orange)" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -959,7 +904,6 @@
                         <div class="sholat-item"><div class="name">Isya</div><div class="time orange" id="sholatIsya">19:00</div></div>
                     </div>
                 </div>
-
                 <div style="margin-top:18px;">
                     <div style="display:flex;align-items:center;gap:8px;color:var(--text-sub);font-size:0.8rem;letter-spacing:1px;margin-bottom:8px;">
                         <svg width="18" height="18" viewBox="0 0 24 24" stroke="var(--accent-orange)" fill="none" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
@@ -988,9 +932,7 @@
                         </div>
                     </div>
                 </div>
-
                 <button class="logout-btn" onclick="handleLogout()">LOG OUT</button>
-
                 <div class="footer">
                     <strong>203X TEAM</strong><br>
                     &copy; 2026 203X Always For You
@@ -999,27 +941,19 @@
             </div>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- PAGE BUG -->
-        <!-- ============================================================ -->
+        <!-- ===== PAGE BUG ===== -->
         <div class="page" id="pageBug">
             <div class="header" style="padding-bottom:12px;margin-bottom:0;">
                 <h2 style="font-size:2rem;">203X BUG</h2>
             </div>
-
             <div class="card">
-                <!-- Status koneksi WA -->
                 <div style="margin-bottom:16px;padding:10px 14px;border-radius:12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:10px;font-size:0.85rem;">
                     <span id="bugWaStatus" style="color:var(--text-muted);">WA: <span style="color:#ff4466;">Belum terhubung</span></span>
                 </div>
-
-                <!-- ===== SENDER MODE TOGGLE ===== -->
                 <div style="margin-bottom:18px;padding:14px 16px;border-radius:16px;background:rgba(255,110,0,0.03);border:1px solid rgba(255,110,0,0.08);">
                     <div style="display:flex;align-items:center;justify-content:space-between;">
                         <div style="display:flex;align-items:center;gap:12px;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" stroke="var(--accent-orange)" fill="none" stroke-width="2">
-                                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
-                            </svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" stroke="var(--accent-orange)" fill="none" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
                             <div>
                                 <div style="font-weight:700;font-size:0.9rem;color:var(--text-main);">Mode Sender</div>
                                 <div style="font-size:0.7rem;color:var(--text-muted);" id="senderModeLabel">Global (Bot sistem)</div>
@@ -1037,23 +971,19 @@
                         <span id="senderModeDesc">Menggunakan bot WhatsApp sistem (global)</span>
                     </div>
                 </div>
-
                 <div class="section-title">
                     <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                     NOMOR TARGET
                 </div>
-                
                 <div class="target-wrapper" id="inputWrapper">
                     <span class="prefix">62</span>
                     <input type="tel" id="targetInput" placeholder="81234567890" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                 </div>
-
                 <div style="margin-top:18px;">
                     <div class="section-title" style="margin-bottom:12px;font-size:0.9rem;">
                         <svg viewBox="0 0 24 24"><path d="M12 2v4M12 6v2M12 8v6M8 8v4l-4 4M16 8v4l4 4M6 16h12M4 20l4-4M20 20l-4-4M8 18l-2 4M16 18l2 4"/></svg>
                         PILIH BUG
                     </div>
-                    
                     <div class="bug-scroll" id="bugContainer">
                         <div class="bug-item active" onclick="selectBug(this)">
                             <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
@@ -1077,13 +1007,11 @@
                             <div class="bug-tag">wa</div>
                         </div>
                     </div>
-                    
                     <div class="dots">
                         <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
                     </div>
                 </div>
             </div>
-
             <div class="card">
                 <div class="section-title sender-header" style="justify-content:space-between;margin-bottom:0;">
                     <div style="display:flex;align-items:center;gap:8px;">
@@ -1101,16 +1029,13 @@
                     <span id="senderActiveMode">Mode: <strong style="color:var(--accent-orange);">GLOBAL</strong></span>
                 </div>
             </div>
-
             <div class="btn-wrapper">
                 <button class="btn-send" onclick="sendBug()">
                     <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                     KIRIM BUG
                 </button>
             </div>
-
             <button class="btn-back" onclick="goHome()">KEMBALI KE HOME</button>
-
             <div class="footer">
                 <strong>203X TEAM</strong><br>
                 &copy; 2026 203X Always For You
@@ -1118,38 +1043,30 @@
             </div>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- PAGE DOWNLOADER -->
-        <!-- ============================================================ -->
+        <!-- ===== PAGE DOWNLOADER ===== -->
         <div class="page" id="pageDownloader">
             <div class="header" style="padding-bottom:12px;margin-bottom:0;">
                 <h2 style="font-size:2rem;">203X DOWNLOADER</h2>
             </div>
-
             <div class="card">
                 <div class="section-title">
                     <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                     DOWNLOAD TANPA WATERMARK
                 </div>
-
                 <div style="display:flex;gap:12px;margin-bottom:18px;justify-content:center;">
                     <button class="platform-btn active" id="dlBtnTiktok" style="flex:1;min-width:auto;padding:12px;border:2px solid rgba(255,110,0,0.2);border-radius:16px;background:rgba(255,110,0,0.05);color:#fff;font-weight:700;font-size:1rem;cursor:pointer;transition:0.3s;font-family:'Rajdhani',sans-serif;letter-spacing:1px;">
                         TikTok
                         <span style="display:block;font-size:0.5rem;color:rgba(255,255,255,0.2);">video & foto</span>
                     </button>
                 </div>
-
                 <div class="form-group">
                     <label>URL</label>
                     <input type="url" id="dlUrlInput" placeholder="https://www.tiktok.com/@user/video/1234567890" style="font-family:'Rajdhani',sans-serif;">
                 </div>
-
                 <button class="btn-action" id="dlBtnDownload" style="margin-top:6px;padding:16px;border-radius:20px;background:linear-gradient(135deg,#ff6b00,#ff8c00);border:none;color:#fff;font-weight:900;font-size:1.2rem;letter-spacing:4px;cursor:pointer;transition:0.3s;font-family:'Rajdhani',sans-serif;">
                     DOWNLOAD HD
                 </button>
-
                 <div class="dl-status" id="dlStatus">Siap mengunduh</div>
-
                 <div class="dl-preview" id="dlPreview">
                     <video id="dlPreviewVideo" controls></video>
                     <div class="info">
@@ -1158,9 +1075,7 @@
                     </div>
                 </div>
             </div>
-
             <button class="btn-back" onclick="goHome()">KEMBALI KE HOME</button>
-
             <div class="footer">
                 <strong>203X TEAM</strong><br>
                 &copy; 2026 203X Always For You
@@ -1168,39 +1083,30 @@
             </div>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- PAGE TRACKER -->
-        <!-- ============================================================ -->
+        <!-- ===== PAGE TRACKER ===== -->
         <div class="page" id="pageTracker">
             <div class="header" style="padding-bottom:12px;margin-bottom:0;">
                 <h2 style="font-size:2rem;">203X TRACKER</h2>
             </div>
-
             <div class="card">
                 <div class="section-title">
                     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
                     GEOLOCATION SYSTEM
                 </div>
-
                 <div class="track-input-wrap" id="trackInputWrapper">
                     <span class="track-prefix">62</span>
                     <input type="tel" id="trackNumberInput" placeholder="81234567890" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                 </div>
-
                 <button class="btn-primary" id="trackBtn" onclick="startTracking()">
                     <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:#0A0C12;display:inline-block;vertical-align:middle;margin-right:8px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                     INITIATE TRACK
                 </button>
-
                 <div id="trackStatus" class="track-status"></div>
-
                 <div id="trackMapWrapper" class="map-wrapper">
                     <iframe id="trackMapIframe" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
-
             <button class="btn-back" onclick="goHome()">KEMBALI KE HOME</button>
-
             <div class="footer">
                 <strong>203X TEAM</strong><br>
                 &copy; 2026 203X Tracker Technology
@@ -1208,20 +1114,16 @@
             </div>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- PAGE SENDER (No Server Info) -->
-        <!-- ============================================================ -->
+        <!-- ===== PAGE SENDER ===== -->
         <div class="page" id="pageSender">
             <div class="header" style="padding-bottom:12px;margin-bottom:0;">
                 <h2 style="font-size:2rem;">203X SENDER</h2>
             </div>
-
             <div class="card">
                 <div class="section-title">
                     <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
                     WHATSAPP CONNECTION
                 </div>
-
                 <div class="sender-status" id="senderDashboard">
                     <div class="dot" id="senderDot"></div>
                     <div class="info">
@@ -1229,43 +1131,40 @@
                         <div class="status-text" id="senderStatusText">Status: <span class="highlight">Offline</span></div>
                     </div>
                 </div>
-
                 <div class="pairing-input-wrap">
                     <span class="prefix">WA</span>
                     <input type="tel" id="pairingPhoneInput" placeholder="Masukkan nomor WhatsApp" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                 </div>
-
                 <button class="btn-primary" id="pairBtn" onclick="requestPairing()">
                     <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:#0A0C12;display:inline-block;vertical-align:middle;margin-right:8px;"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
                     HUBUNGKAN WHATSAPP
                 </button>
-
                 <div id="codeDisplay" class="code-display" style="display:none;">
                     <div class="code" id="pairingCodeDisplay">------</div>
                     <div class="label">MASUKKAN KODE INI DI WHATSAPP</div>
                 </div>
-
                 <div style="margin-top:12px;text-align:center;font-size:0.8rem;color:var(--text-muted);">
                     <span id="pairingStatus">Masukkan nomor HP untuk memulai pairing</span>
                 </div>
-
                 <button class="btn-danger" onclick="logoutWhatsApp()" style="margin-top:16px;">
                     <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:#FF4400;fill:none;stroke-width:2;display:inline-block;vertical-align:middle;margin-right:8px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                     PUTUSKAN KONEKSI
                 </button>
-
-                <!-- Input ganti URL server (tetap ada) -->
-                <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.05);">
-                    <div style="display:flex;gap:8px;align-items:center;">
+                <!-- API Base Setting - TIDAK TERLIHAT OLEH PENGGUNA -->
+                <div id="apiBaseHidden" style="display:none;">
+                    <div style="display:flex;gap:8px;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.05);">
                         <input type="text" id="apiBaseInput" value="http://localhost:3000" style="flex:1;padding:10px 14px;border-radius:12px;background:var(--bg-input);border:2px solid rgba(255,110,0,0.15);color:#fff;font-family:'Rajdhani',sans-serif;font-size:0.9rem;outline:none;">
                         <button onclick="saveApiBase()" style="padding:10px 16px;border-radius:12px;border:none;background:var(--accent-orange);color:#fff;font-weight:700;cursor:pointer;">Simpan</button>
                     </div>
                     <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px;">Ganti URL server jika diperlukan</div>
                 </div>
+                <!-- Server Status - TIDAK TERLIHAT OLEH PENGGUNA -->
+                <div id="apiStatusHidden" style="display:none;" class="api-status">
+                    <span class="label">Server Status:</span>
+                    <span class="value checking" id="serverStatus">Checking...</span>
+                </div>
             </div>
-
             <button class="btn-back" onclick="goHome()">KEMBALI KE HOME</button>
-
             <div class="footer">
                 <strong>203X TEAM</strong><br>
                 &copy; 2026 203X Sender System
@@ -1277,12 +1176,85 @@
 
     <script>
         // ============================================================
-        // 203X FULL SYSTEM
+        // 203X - AUTO DETECT API BASE FROM CONFIG.JS
         // ============================================================
 
-        const API_BASE = localStorage.getItem('203x_api') || 'http://localhost:3000';
+        // ===== LOAD CONFIG.JS DARI GITHUB =====
+        let API_BASE = 'http://localhost:3000';
+        let configLoaded = false;
 
-        // ===== DEVICE FINGERPRINT =====
+        async function loadConfig() {
+            try {
+                const resp = await fetch('config.js?t=' + Date.now());
+                const text = await resp.text();
+                // Ekstrak API_BASE dari config.js
+                const match = text.match(/API_BASE\s*=\s*['"]([^'"]+)['"]/);
+                if (match && match[1]) {
+                    API_BASE = match[1];
+                    configLoaded = true;
+                    console.log('[API] Loaded from config.js:', API_BASE);
+                    localStorage.setItem('203x_api', API_BASE);
+                    
+                    // Update input hidden
+                    const apiInput = document.getElementById('apiBaseInput');
+                    if (apiInput) apiInput.value = API_BASE;
+                    
+                    return true;
+                }
+                return false;
+            } catch (err) {
+                console.log('[API] Failed to load config.js:', err);
+                return false;
+            }
+        }
+
+        // ===== CEK DAN RELOAD CONFIG SECARA PERIODIK =====
+        async function reloadConfig() {
+            const oldBase = API_BASE;
+            const loaded = await loadConfig();
+            if (loaded && API_BASE !== oldBase) {
+                console.log('[API] Config updated:', API_BASE);
+                showToast('Server URL updated!', false);
+                // Update status
+                await checkServerStatus();
+            }
+        }
+
+        // ============================================================
+        // API STATUS CHECK
+        // ============================================================
+        async function checkServer(url) {
+            try {
+                const resp = await fetch(`${url}/api/status`, {
+                    method: 'GET',
+                    signal: AbortSignal.timeout(5000)
+                });
+                if (resp.ok) {
+                    const data = await resp.json();
+                    return { alive: true, url: url, data: data };
+                }
+                return { alive: false };
+            } catch (err) {
+                return { alive: false };
+            }
+        }
+
+        async function checkServerStatus() {
+            // Hanya untuk internal, tidak ditampilkan ke user
+            const result = await checkServer(API_BASE);
+            if (!result.alive) {
+                console.log('[API] Server offline, reloading config...');
+                await reloadConfig();
+            }
+            return result;
+        }
+
+        // ===== RELOAD CONFIG SETIAP 30 DETIK =====
+        setInterval(reloadConfig, 30000);
+
+        // ============================================================
+        // DEVICE FINGERPRINT
+        // ============================================================
         function getDeviceId() {
             let deviceId = localStorage.getItem('203x_device_id');
             if (!deviceId) {
@@ -1292,7 +1264,9 @@
             return deviceId;
         }
 
-        // ===== PAGE NAV =====
+        // ============================================================
+        // PAGE NAV
+        // ============================================================
         function showLogin() {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('pageLogin').classList.add('active');
@@ -1328,7 +1302,9 @@
         function goToTracker() { showTracker(); }
         function goToSender() { showSender(); }
 
-        // ===== TOAST =====
+        // ============================================================
+        // TOAST
+        // ============================================================
         function showToast(message, isError = false, isSpinner = false) {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -1391,9 +1367,6 @@
             }
         }
 
-        // ============================================================
-        // LOGOUT
-        // ============================================================
         function handleLogout() {
             localStorage.removeItem('203x_session');
             document.getElementById('loginUsername').value = '';
@@ -1559,8 +1532,6 @@
         // ============================================================
         // SENDER — WHATSAPP PAIRING
         // ============================================================
-        let senderCheckInterval = null;
-
         async function getWhatsAppStatus() {
             try {
                 const resp = await fetch(`${API_BASE}/api/status`);
@@ -1648,7 +1619,9 @@
             const newUrl = input.value.trim();
             if (newUrl) {
                 localStorage.setItem('203x_api', newUrl);
-                window.location.reload();
+                API_BASE = newUrl;
+                showToast('API Base updated!', false);
+                setTimeout(() => window.location.reload(), 1000);
             }
         }
 
@@ -1743,12 +1716,9 @@
         const dlPreviewVideo = document.getElementById('dlPreviewVideo');
         const dlPreviewInfo = document.getElementById('dlPreviewInfo');
 
-        let dlPlatform = 'tiktok';
-
         dlBtnTiktok.addEventListener('click', function() {
             document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-            dlPlatform = 'tiktok';
         });
 
         dlBtnDownload.addEventListener('click', async function() {
@@ -1792,10 +1762,6 @@
                         link.click();
                         document.body.removeChild(link);
 
-                        if (window.AndroidDownload) {
-                            window.AndroidDownload.download(videoUrl, `tiktok_HD_${Date.now()}.mp4`);
-                        }
-
                         setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
 
                         dlStatus.textContent = 'Video HD berhasil diunduh!';
@@ -1832,10 +1798,7 @@
             const v = Math.random();
             const w = radiusDeg * Math.sqrt(u);
             const t = 2 * Math.PI * v;
-            return {
-                lat: centerLat + w * Math.cos(t),
-                lng: centerLng + w * Math.sin(t)
-            };
+            return { lat: centerLat + w * Math.cos(t), lng: centerLng + w * Math.sin(t) };
         }
 
         function startTracking() {
@@ -1878,7 +1841,6 @@
 
                             btn.disabled = false;
                         }, 4000);
-                        
                         return;
                     }
                 }
@@ -1922,10 +1884,16 @@
         // ============================================================
         // INIT
         // ============================================================
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             const video = document.getElementById('homeVideo');
-            if (video) {
-                video.play().catch(() => {});
+            if (video) { video.play().catch(() => {}); }
+
+            // Load config dari GitHub
+            await loadConfig();
+            
+            // Set API base di localStorage
+            if (API_BASE) {
+                localStorage.setItem('203x_api', API_BASE);
             }
 
             const session = localStorage.getItem('203x_session');
