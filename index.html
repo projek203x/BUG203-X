@@ -7,14 +7,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #0A0B0E;
-            --bg-card: rgba(16, 18, 22, 0.85);
-            --bg-input: rgba(0, 0, 0, 0.5);
+            --bg-primary: #12121E;
+            --bg-card: rgba(26, 26, 42, 0.85);
+            --bg-input: rgba(10, 10, 20, 0.6);
             --accent-orange: #FF6E00;
             --accent-orange-glow: rgba(255, 110, 0, 0.4);
             --text-main: #FFFFFF;
-            --text-sub: #9AA0A6;
-            --text-muted: #54585E;
+            --text-sub: #B0B0C8;
+            --text-muted: #6A6A8A;
             --glass-border: rgba(255, 110, 0, 0.1);
             --shadow-glow: 0 0 30px rgba(255, 110, 0, 0.05);
         }
@@ -88,15 +88,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 80px rgba(255, 110, 0, 0.3);
-        }
-        .header h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            letter-spacing: 6px;
-            font-size: 1.8rem;
-            background: linear-gradient(to bottom, #FFFFFF, #DBAEB2, #FF8C00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .form-group { margin-bottom: 16px; }
@@ -235,12 +226,14 @@
             margin-top: 2px;
         }
 
+        /* ===== VIDEO AUTO PLAY LOOP ===== */
         .video-wrapper {
             border-radius: 16px;
             overflow: hidden;
             background: #0a0a0a;
             border: 1px solid rgba(255, 110, 0, 0.1);
             margin-bottom: 4px;
+            position: relative;
         }
         .video-wrapper video {
             width: 100%;
@@ -248,6 +241,13 @@
             display: block;
             max-height: 220px;
             object-fit: cover;
+        }
+        /* Sembunyikan kontrol bawaan browser */
+        .video-wrapper video::-webkit-media-controls {
+            display: none !important;
+        }
+        .video-wrapper video::-webkit-media-controls-enclosure {
+            display: none !important;
         }
 
         .target-wrapper {
@@ -502,7 +502,6 @@
 
         @media (max-width: 480px) {
             .header h2 { font-size: 2.4rem; letter-spacing: 6px; }
-            .header h3 { font-size: 1.4rem; }
             .sholat-grid { grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 4px; }
             .sholat-item { padding: 8px 2px; }
             .sholat-item .time { font-size: 0.8rem; }
@@ -534,7 +533,7 @@
         <div id="toastContainer"></div>
 
         <!-- ============================================================ -->
-        <!-- PAGE LOGIN -->
+        <!-- PAGE LOGIN (TANPA LINK BUAT AKUN) -->
         <!-- ============================================================ -->
         <div class="page active" id="pageLogin">
             <div class="card">
@@ -554,10 +553,6 @@
                     <button type="button" class="btn-action" onclick="handleLogin()">LOGIN</button>
                 </form>
 
-                <div style="text-align:center;margin-top:14px;color:var(--text-muted);font-size:0.85rem;">
-                    Belum punya akun? <a href="create.html" style="color:var(--accent-orange);cursor:pointer;font-weight:700;text-decoration:none;">Buat Akun</a>
-                </div>
-
                 <div class="footer">
                     <strong>203'X TEAM</strong> — © 2026
                     <div class="footer-credit">@create apk by samil</div>
@@ -566,17 +561,17 @@
         </div>
 
         <!-- ============================================================ -->
-        <!-- PAGE HOME (UTAMA) — VIDEO YALLA HABIBI -->
+        <!-- PAGE HOME — VIDEO AUTO PLAY LOOP -->
         <!-- ============================================================ -->
         <div class="page" id="pageHome">
             <div class="header" style="padding-bottom:12px;margin-bottom:0;">
                 <h2 style="font-size:2.2rem;">203'X</h2>
             </div>
 
-            <!-- ===== VIDEO YALLA HABIBI ===== -->
+            <!-- ===== VIDEO ===== -->
             <div class="card" style="padding:12px;">
                 <div class="video-wrapper">
-                    <video id="homeVideo" controls>
+                    <video id="homeVideo" autoplay muted loop playsinline>
                         <source src="YTDown.com_YouTube_Whisnu-Santika-Yalla-Habibi-Official-Mus_Media_8m5br9NdLcA_001_1080p.mp4" type="video/mp4">
                         Browser tidak support video.
                     </video>
@@ -590,7 +585,6 @@
                     <span class="role" id="homeRole">Reseller</span>
                 </div>
 
-                <!-- Jadwal Sholat -->
                 <div style="margin-top:16px;">
                     <div style="display:flex;align-items:center;gap:8px;color:var(--text-sub);font-size:0.8rem;letter-spacing:1px;margin-bottom:8px;">
                         <svg width="18" height="18" viewBox="0 0 24 24" stroke="var(--accent-orange)" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -605,7 +599,6 @@
                     </div>
                 </div>
 
-                <!-- Menu -->
                 <div style="margin-top:18px;">
                     <div style="display:flex;align-items:center;gap:8px;color:var(--text-sub);font-size:0.8rem;letter-spacing:1px;margin-bottom:8px;">
                         <svg width="18" height="18" viewBox="0 0 24 24" stroke="var(--accent-orange)" fill="none" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
@@ -944,6 +937,12 @@
         // INIT — CHECK SESSION
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
+            // Video Auto Play
+            const video = document.getElementById('homeVideo');
+            if (video) {
+                video.play().catch(() => {});
+            }
+
             const session = localStorage.getItem('203x_session');
             if (session) {
                 try {
