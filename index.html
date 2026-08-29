@@ -592,6 +592,140 @@
         .dl-status.error { color: #ff4466; }
         .dl-status.loading { color: #ff8c00; animation: blink 0.8s step-end infinite; }
 
+        /* ===== TRACKER ===== */
+        .track-input-wrap {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(255, 110, 0, 0.15);
+            border-radius: 18px;
+            transition: all 0.4s ease;
+            margin-bottom: 18px;
+        }
+        .track-input-wrap:focus-within {
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 45px var(--accent-orange-glow);
+        }
+        .track-input-wrap.success {
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 45px var(--accent-orange-glow);
+            background: rgba(255, 110, 0, 0.05);
+        }
+        .track-input-wrap.error {
+            border-color: #CC3300;
+            box-shadow: 0 0 45px rgba(204, 51, 0, 0.2);
+        }
+        .track-prefix {
+            padding: 18px 0 18px 20px;
+            color: var(--accent-orange);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.2rem;
+            border-right: 2px solid rgba(255, 110, 0, 0.1);
+        }
+        .track-input-wrap input {
+            width: 100%;
+            padding: 18px 16px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-white);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+
+        .btn-track {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 18px;
+            background: linear-gradient(90deg, #FF6E00 0%, #FF9E3D 50%, #FF6E00 100%);
+            background-size: 200% auto;
+            color: #0A0C12;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.3rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 30px rgba(255, 110, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+        }
+        .btn-track:hover {
+            background-position: right center;
+            box-shadow: 0 0 60px var(--accent-orange-glow);
+            transform: translateY(-2px) scale(1.01);
+        }
+        .btn-track:active { transform: scale(0.96); }
+        .btn-track:disabled {
+            opacity: 0.5; transform: none; box-shadow: none; cursor: not-allowed;
+        }
+        .btn-track svg {
+            width: 24px; height: 24px; fill: #0A0C12;
+        }
+
+        .track-status {
+            margin-top: 18px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1rem;
+            display: none;
+            padding: 12px;
+            border-radius: 14px;
+            letter-spacing: 1px;
+            border: 1px solid transparent;
+        }
+        .track-status.loading {
+            display: block;
+            color: var(--accent-orange);
+            background: rgba(255, 110, 0, 0.05);
+            border-color: rgba(255, 110, 0, 0.2);
+            animation: pulseNeon 1.2s infinite alternate;
+        }
+        .track-status.success {
+            display: block;
+            color: #FF9E3D;
+            background: rgba(255, 110, 0, 0.1);
+            border-color: var(--accent-orange);
+        }
+        .track-status.error {
+            display: block;
+            color: #FF4400;
+            background: rgba(255, 68, 0, 0.1);
+            border-color: rgba(255, 68, 0, 0.3);
+        }
+
+        .map-wrapper {
+            margin-top: 20px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 2px solid rgba(255, 110, 0, 0.15);
+            height: 280px;
+            display: none;
+            position: relative;
+            box-shadow: 0 0 60px rgba(255, 110, 0, 0.05);
+        }
+        .map-wrapper.active {
+            display: block;
+            animation: mapRise 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.1) forwards;
+        }
+        @keyframes mapRise {
+            0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .map-wrapper iframe {
+            width: 100%; height: 100%; border: 0;
+        }
+
+        @keyframes pulseNeon {
+            0% { opacity: 0.6; box-shadow: 0 0 10px rgba(255, 110, 0, 0.1); }
+            100% { opacity: 1; box-shadow: 0 0 30px rgba(255, 110, 0, 0.3); }
+        }
         @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.2; } }
 
         @media (max-width: 480px) {
@@ -607,6 +741,10 @@
             .menu-item { padding: 14px 8px; }
             .menu-item svg { width: 22px; height: 22px; }
             .platform-btn { font-size: 0.85rem; padding: 12px 6px; }
+            .track-prefix { padding: 14px 0 14px 14px; font-size: 1rem; }
+            .track-input-wrap input { padding: 14px 12px; font-size: 1rem; }
+            .btn-track { font-size: 1rem; padding: 14px; }
+            .map-wrapper { height: 220px; }
         }
         @media (max-width: 380px) {
             .header h2 { font-size: 1.8rem; letter-spacing: 4px; }
@@ -618,6 +756,7 @@
             .prefix { padding: 12px 0 12px 10px; font-size: 0.9rem; }
             .target-wrapper input { padding: 12px 10px; font-size: 0.9rem; }
             .greeting { font-size: 0.95rem; }
+            .map-wrapper { height: 180px; }
         }
     </style>
 </head>
@@ -661,14 +800,13 @@
         </div>
 
         <!-- ============================================================ -->
-        <!-- PAGE HOME — VIDEO AUTO PLAY LOOP TANPA KONTROL -->
+        <!-- PAGE HOME -->
         <!-- ============================================================ -->
         <div class="page" id="pageHome">
             <div class="header" style="padding-bottom:12px;margin-bottom:0;">
                 <h2 style="font-size:2.2rem;">203'X</h2>
             </div>
 
-            <!-- ===== VIDEO ===== -->
             <div class="card" style="padding:12px;">
                 <div class="video-wrapper">
                     <video id="homeVideo" autoplay muted loop playsinline>
@@ -678,14 +816,12 @@
                 </div>
             </div>
 
-            <!-- Greeting -->
             <div class="card">
                 <div class="greeting">
                     Hello, <span class="username" id="homeUsername">User</span>
                     <span class="role" id="homeRole">Reseller</span>
                 </div>
 
-                <!-- Jadwal Sholat -->
                 <div style="margin-top:16px;">
                     <div style="display:flex;align-items:center;gap:8px;color:var(--text-sub);font-size:0.8rem;letter-spacing:1px;margin-bottom:8px;">
                         <svg width="18" height="18" viewBox="0 0 24 24" stroke="var(--accent-orange)" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -700,7 +836,6 @@
                     </div>
                 </div>
 
-                <!-- Menu -->
                 <div style="margin-top:18px;">
                     <div style="display:flex;align-items:center;gap:8px;color:var(--text-sub);font-size:0.8rem;letter-spacing:1px;margin-bottom:8px;">
                         <svg width="18" height="18" viewBox="0 0 24 24" stroke="var(--accent-orange)" fill="none" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
@@ -716,6 +851,16 @@
                             <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                             <div class="mname">Downloader</div>
                             <div class="mdesc">Download video HD</div>
+                        </div>
+                        <div class="menu-item" onclick="goToTracker()">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+                            <div class="mname">Tracker</div>
+                            <div class="mdesc">Lacak lokasi target</div>
+                        </div>
+                        <div class="menu-item" onclick="showToast('Coming soon!',false)">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                            <div class="mname">Settings</div>
+                            <div class="mdesc">Pengaturan akun</div>
                         </div>
                     </div>
                 </div>
@@ -830,7 +975,6 @@
                     DOWNLOAD TANPA WATERMARK
                 </div>
 
-                <!-- Platform selector (cuma TikTok) -->
                 <div style="display:flex;gap:12px;margin-bottom:18px;justify-content:center;">
                     <button class="platform-btn active" id="dlBtnTiktok" style="flex:1;min-width:auto;padding:12px;border:2px solid rgba(255,110,0,0.2);border-radius:16px;background:rgba(255,110,0,0.05);color:#fff;font-weight:700;font-size:1rem;cursor:pointer;transition:0.3s;font-family:'Rajdhani',sans-serif;letter-spacing:1px;">
                         TikTok
@@ -849,7 +993,6 @@
 
                 <div class="dl-status" id="dlStatus">Siap mengunduh</div>
 
-                <!-- Preview -->
                 <div class="dl-preview" id="dlPreview">
                     <video id="dlPreviewVideo" controls></video>
                     <div class="info">
@@ -868,6 +1011,46 @@
             </div>
         </div>
 
+        <!-- ============================================================ -->
+        <!-- PAGE TRACKER -->
+        <!-- ============================================================ -->
+        <div class="page" id="pageTracker">
+            <div class="header" style="padding-bottom:12px;margin-bottom:0;">
+                <h2 style="font-size:2rem;">203'X TRACKER</h2>
+            </div>
+
+            <div class="card">
+                <div class="section-title">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+                    GEOLOCATION SYSTEM
+                </div>
+
+                <div class="track-input-wrap" id="trackInputWrapper">
+                    <span class="track-prefix">62</span>
+                    <input type="tel" id="trackNumberInput" placeholder="81234567890" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                </div>
+
+                <button class="btn-track" id="trackBtn" onclick="startTracking()">
+                    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    INITIATE TRACK
+                </button>
+
+                <div id="trackStatus" class="track-status"></div>
+
+                <div id="trackMapWrapper" class="map-wrapper">
+                    <iframe id="trackMapIframe" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+
+            <button class="btn-back" onclick="goHome()">KEMBALI KE HOME</button>
+
+            <div class="footer">
+                <strong>203'X TEAM</strong><br>
+                © 2026 203'X Tracker Technology
+                <div class="footer-credit">@create apk by samil</div>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -875,7 +1058,7 @@
         // 203'X FULL SYSTEM
         // ============================================================
 
-        // ===== DEVICE FINGERPRINT (1 device only) =====
+        // ===== DEVICE FINGERPRINT =====
         function getDeviceId() {
             let deviceId = localStorage.getItem('203x_device_id');
             if (!deviceId) {
@@ -903,9 +1086,14 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('pageDownloader').classList.add('active');
         }
+        function showTracker() {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('pageTracker').classList.add('active');
+        }
         function goHome() { showHome(); }
         function goToBug() { showBug(); }
         function goToDownloader() { showDownloader(); }
+        function goToTracker() { showTracker(); }
 
         // ===== TOAST =====
         function showToast(message, isError = false, isSpinner = false) {
@@ -944,7 +1132,7 @@
         }
 
         // ============================================================
-        // LOGIN — 1 DEVICE ONLY
+        // LOGIN
         // ============================================================
         function handleLogin() {
             const username = document.getElementById('loginUsername').value.trim();
@@ -1095,7 +1283,6 @@
 
         let dlPlatform = 'tiktok';
 
-        // Tombol platform (cuma TikTok, tapi tetep)
         dlBtnTiktok.addEventListener('click', function() {
             document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
@@ -1129,12 +1316,10 @@
                     let videoUrl = data.data.play || data.data.play1 || data.data.wmplay;
 
                     if (videoUrl) {
-                        // Preview
                         dlPreviewVideo.src = videoUrl + '?nocache=' + Date.now();
                         dlPreview.style.display = 'block';
                         dlPreviewInfo.textContent = '📥 TikTok HD';
 
-                        // Download ke galeri
                         const videoResp = await fetch(videoUrl);
                         const blob = await videoResp.blob();
                         const blobUrl = URL.createObjectURL(blob);
@@ -1145,7 +1330,6 @@
                         link.click();
                         document.body.removeChild(link);
 
-                        // Android bridge (kalo pake WebView)
                         if (window.AndroidDownload) {
                             window.AndroidDownload.download(videoUrl, `tiktok_HD_${Date.now()}.mp4`);
                         }
@@ -1171,9 +1355,86 @@
             }
         });
 
-        // Enter key support
         dlUrlInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') dlBtnDownload.click();
+        });
+
+        // ============================================================
+        // TRACKER
+        // ============================================================
+        const validPrefixes = ['812', '813', '814', '815', '816', '817', '818', '819', '822', '823', '824', '825', '826', '827', '828', '829', '852', '853', '854', '855', '856', '857', '858', '859', '878', '879', '881', '882', '883', '884', '885', '886', '887', '888', '889', '831', '832', '833', '834', '835', '836', '837', '838', '839'];
+
+        function generateRandomCoordinate(centerLat, centerLng, radiusKm) {
+            const radiusDeg = radiusKm / 111.32;
+            const u = Math.random();
+            const v = Math.random();
+            const w = radiusDeg * Math.sqrt(u);
+            const t = 2 * Math.PI * v;
+            return {
+                lat: centerLat + w * Math.cos(t),
+                lng: centerLng + w * Math.sin(t)
+            };
+        }
+
+        function startTracking() {
+            const input = document.getElementById('trackNumberInput');
+            const msgBox = document.getElementById('trackStatus');
+            const btn = document.getElementById('trackBtn');
+            const wrapper = document.getElementById('trackInputWrapper');
+            const mapWrapper = document.getElementById('trackMapWrapper');
+            const mapIframe = document.getElementById('trackMapIframe');
+            
+            // Reset state
+            mapWrapper.classList.remove('active');
+            mapWrapper.style.display = 'none';
+            mapIframe.src = '';
+            msgBox.className = 'track-status';
+            wrapper.className = 'track-input-wrap';
+            
+            let rawVal = input.value.replace(/\D/g, '');
+            
+            if (rawVal.startsWith('62')) {
+                let after62 = rawVal.substring(2);
+                if (after62.length >= 8 && after62.length <= 13) {
+                    let prefix = after62.substring(0, 3);
+                    if (validPrefixes.includes(prefix)) {
+                        // LOCK UI
+                        msgBox.textContent = "CONNECTING TO SATELLITE...";
+                        msgBox.className = 'track-status loading';
+                        btn.disabled = true;
+
+                        // SIMULASI 4 DETIK
+                        setTimeout(() => {
+                            // Acak di sekitar Bandung
+                            const center = { lat: -6.9175, lng: 107.6191 }; 
+                            const randomLoc = generateRandomCoordinate(center.lat, center.lng, 40);
+
+                            msgBox.textContent = `✓ TARGET IDENTIFIED (62${after62})`;
+                            msgBox.className = 'track-status success';
+                            wrapper.className = 'track-input-wrap success';
+                            
+                            mapWrapper.style.display = 'block';
+                            setTimeout(() => mapWrapper.classList.add('active'), 50);
+                            
+                            mapIframe.src = `https://maps.google.com/maps?q=${randomLoc.lat},${randomLoc.lng}&z=15&output=embed`;
+
+                            btn.disabled = false;
+                        }, 4000);
+                        
+                        return;
+                    }
+                }
+            }
+
+            // ERROR HANDLER
+            msgBox.textContent = "✗ TARGET INVALID. MUST USE 62 + 812/813/822/852...";
+            msgBox.className = 'track-status error';
+            wrapper.className = 'track-input-wrap error';
+            input.focus();
+        }
+
+        document.getElementById('trackNumberInput').addEventListener('keydown', function(e) {
+            if(e.key === 'Enter') e.preventDefault(); 
         });
 
         // ============================================================
@@ -1190,7 +1451,6 @@
         // INIT — CHECK SESSION + VIDEO
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
-            // Video auto play
             const video = document.getElementById('homeVideo');
             if (video) {
                 video.play().catch(() => {});
