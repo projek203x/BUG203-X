@@ -10,7 +10,6 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
 
 let sock = null;
 let isConnected = false;
@@ -23,7 +22,6 @@ if (!fs.existsSync(AUTH_DIR)) {
     fs.mkdirSync(AUTH_DIR, { recursive: true });
 }
 
-// Silent logger - gak nampilin apa-apa
 const silentLogger = pino({ level: 'fatal' });
 
 async function startSock(pairingPhone = null) {
@@ -76,8 +74,10 @@ async function startSock(pairingPhone = null) {
                 pairingCode = code;
                 isPairing = true;
                 console.log(`[PAIR] Code: ${code}`);
+                return code;
             } catch (err) {
                 console.log(`[PAIR] Failed: ${err.message}`);
+                throw err;
             }
         }
 
@@ -130,6 +130,7 @@ app.post('/api/pair', async (req, res) => {
             res.json({ success: false, message: 'Gagal mendapatkan kode pairing. Coba lagi.' });
         }
     } catch (err) {
+        console.log(`[ERR] pair: ${err.message}`);
         res.status(500).json({ success: false, message: err.message });
     }
 });
