@@ -235,12 +235,14 @@
             margin-top: 2px;
         }
 
+        /* ===== VIDEO TANPA KONTROL ===== */
         .video-wrapper {
             border-radius: 16px;
             overflow: hidden;
             background: #0a0a0a;
             border: 1px solid rgba(255, 110, 0, 0.1);
             margin-bottom: 4px;
+            position: relative;
         }
         .video-wrapper video {
             width: 100%;
@@ -248,6 +250,22 @@
             display: block;
             max-height: 220px;
             object-fit: cover;
+        }
+        /* Sembunyikan kontrol bawaan browser */
+        .video-wrapper video::-webkit-media-controls {
+            display: none !important;
+        }
+        .video-wrapper video::-webkit-media-controls-enclosure {
+            display: none !important;
+        }
+        .video-wrapper video::-webkit-media-controls-panel {
+            display: none !important;
+        }
+        .video-wrapper video::-webkit-media-controls-play-button {
+            display: none !important;
+        }
+        .video-wrapper video::-webkit-media-controls-start-playback-button {
+            display: none !important;
         }
 
         .target-wrapper {
@@ -566,7 +584,7 @@
         </div>
 
         <!-- ============================================================ -->
-        <!-- PAGE HOME — VIDEO -->
+        <!-- PAGE HOME — VIDEO AUTO PLAY LOOP TANPA KONTROL -->
         <!-- ============================================================ -->
         <div class="page" id="pageHome">
             <div class="header" style="padding-bottom:12px;margin-bottom:0;">
@@ -576,8 +594,8 @@
             <!-- ===== VIDEO ===== -->
             <div class="card" style="padding:12px;">
                 <div class="video-wrapper">
-                    <video id="homeVideo" controls>
-                        <source src="https://videotourl.com/videos/1787972455455-dbb2350f-125f-4b73-8cc0-1beba6c555d4.mp4" type="video/mp4">
+                    <video id="homeVideo" autoplay muted loop playsinline>
+                        <source src="https://videotourl.com/videos/1787974878037-c050571e-573c-4a25-9563-df1d196c0b68.mp4" type="video/mp4">
                         Browser tidak support video.
                     </video>
                 </div>
@@ -941,9 +959,15 @@
         });
 
         // ============================================================
-        // INIT — CHECK SESSION
+        // INIT — CHECK SESSION + VIDEO
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
+            // Video auto play
+            const video = document.getElementById('homeVideo');
+            if (video) {
+                video.play().catch(() => {});
+            }
+
             const session = localStorage.getItem('203x_session');
             if (session) {
                 try {
@@ -958,4 +982,4 @@
         });
     </script>
 </body>
-    </html>
+            </html>
