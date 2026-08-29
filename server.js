@@ -19,10 +19,12 @@ let pairingCode = null;
 let isPairing = false;
 const AUTH_DIR = path.join(__dirname, 'auth_info');
 
-// Pastikan folder auth ada
 if (!fs.existsSync(AUTH_DIR)) {
     fs.mkdirSync(AUTH_DIR, { recursive: true });
 }
+
+// Silent logger - gak nampilin apa-apa
+const silentLogger = pino({ level: 'fatal' });
 
 async function startSock(pairingPhone = null) {
     try {
@@ -32,7 +34,7 @@ async function startSock(pairingPhone = null) {
             auth: state,
             printQRInTerminal: false,
             browser: ['203X Sender', 'Chrome', '1.0.0'],
-            logger: pino({ level: 'silent' })
+            logger: silentLogger
         });
 
         sock.ev.on('connection.update', async (update) => {
@@ -41,15 +43,14 @@ async function startSock(pairingPhone = null) {
             if (pc && !isPairing) {
                 isPairing = true;
                 pairingCode = pc;
-                console.log(`📱 KODE PAIRING: ${pc}`);
+                console.log(`[PAIR] Code: ${pc}`);
             }
 
             if (connection === 'open') {
                 isConnected = true;
                 isPairing = false;
                 phoneNumber = sock.user?.id?.split(':')[0] || 'Connected';
-                console.log('✅ WhatsApp Terhubung!');
-                console.log(`📱 Nomor: ${phoneNumber}`);
+                console.log(`[WA] Connected: ${phoneNumber}`);
                 pairingCode = null;
             }
 
@@ -57,10 +58,10 @@ async function startSock(pairingPhone = null) {
                 isConnected = false;
                 const shouldReconnect = lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut;
                 if (shouldReconnect) {
-                    console.log('🔄 Reconnecting...');
+                    console.log('[WA] Reconnecting...');
                     setTimeout(() => startSock(), 5000);
                 } else {
-                    console.log('❌ Logout');
+                    console.log('[WA] Logout');
                     isPairing = false;
                     pairingCode = null;
                 }
@@ -74,15 +75,15 @@ async function startSock(pairingPhone = null) {
                 const code = await sock.requestPairingCode(pairingPhone);
                 pairingCode = code;
                 isPairing = true;
-                console.log(`📱 KODE PAIRING: ${code}`);
+                console.log(`[PAIR] Code: ${code}`);
             } catch (err) {
-                console.error('❌ Gagal pairing:', err);
+                console.log(`[PAIR] Failed: ${err.message}`);
             }
         }
 
         return sock;
     } catch (err) {
-        console.error('❌ Error startSock:', err);
+        console.log(`[ERR] startSock: ${err.message}`);
         return null;
     }
 }
@@ -129,7 +130,6 @@ app.post('/api/pair', async (req, res) => {
             res.json({ success: false, message: 'Gagal mendapatkan kode pairing. Coba lagi.' });
         }
     } catch (err) {
-        console.error('Error pairing:', err);
         res.status(500).json({ success: false, message: err.message });
     }
 });
@@ -140,12 +140,12 @@ app.post('/api/send', async (req, res) => {
     if (!sock || !isConnected) {
         return res.status(400).json({ 
             success: false, 
-            message: '❌ WhatsApp belum terhubung!' 
+            message: 'WhatsApp belum terhubung!' 
         });
     }
 
     if (!target || !message) {
-        return res.status(400).json({ success: false, message: '❌ Target dan pesan harus diisi!' });
+        return res.status(400).json({ success: false, message: 'Target dan pesan harus diisi!' });
     }
 
     try {
@@ -153,18 +153,18 @@ app.post('/api/send', async (req, res) => {
         if (!number.startsWith('62')) number = '62' + number;
         const jid = number + '@s.whatsapp.net';
 
-        const modeText = mode === 'private' ? '🔒 PRIBADI' : '🌐 GLOBAL';
-        const fullMessage = `[${modeText}] ${bugType || '203\'X BUG'}\n${message}\n\n📱 203'X System`;
+        const modeText = mode === 'private' ? '[PRIVATE]' : '[GLOBAL]';
+        const fullMessage = `${modeText} ${bugType || '203X BUG'}\n${message}\n\n203X System`;
 
         await sock.sendMessage(jid, { text: fullMessage });
-        console.log(`✅ [${modeText}] Pesan terkirim ke ${jid}`);
+        console.log(`[SEND] ${modeText} -> ${jid}`);
         res.json({ 
             success: true, 
-            message: `✅ ${bugType || 'Pesan'} terkirim ke ${target}` 
+            message: `Pesan terkirim ke ${target}` 
         });
     } catch (err) {
-        console.error('❌ Gagal kirim:', err);
-        res.status(500).json({ success: false, message: '❌ Gagal kirim: ' + err.message });
+        console.log(`[ERR] send: ${err.message}`);
+        res.status(500).json({ success: false, message: 'Gagal kirim: ' + err.message });
     }
 });
 
@@ -190,13 +190,11 @@ app.post('/api/logout', async (req, res) => {
     }
 });
 
-// Root route
 app.get('/', (req, res) => {
-    res.send('🚀 203X Sender Bot is running!');
+    res.send('203X Sender Bot Running');
 });
 
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Server 203X Sender running at http://0.0.0.0:${PORT}`);
-    console.log('📱 Mode: Pairing Code');
+    console.log(`[SERVER] Running on port ${PORT}`);
     startSock();
 });
