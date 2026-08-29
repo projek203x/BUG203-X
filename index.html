@@ -865,7 +865,7 @@
                     <button type="button" class="btn-action" onclick="handleLogin()">LOGIN</button>
                 </form>
                 <div style="text-align:center;margin-top:14px;color:var(--text-muted);font-size:0.85rem;">
-                    Belum punya akun? <a href="#" style="color:var(--accent-orange);cursor:pointer;font-weight:700;text-decoration:none;" onclick="showToast('Hubungi admin untuk daftar', false)">Buat Akun</a>
+                    Belum punya akun? <a href="create.html" style="color:var(--accent-orange);cursor:pointer;font-weight:700;text-decoration:none;">Buat Akun</a>
                 </div>
                 <div class="footer">
                     <strong>203X TEAM</strong> &copy; 2026
@@ -1150,19 +1150,6 @@
                     <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:#FF4400;fill:none;stroke-width:2;display:inline-block;vertical-align:middle;margin-right:8px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                     PUTUSKAN KONEKSI
                 </button>
-                <!-- API Base Setting - TIDAK TERLIHAT OLEH PENGGUNA -->
-                <div id="apiBaseHidden" style="display:none;">
-                    <div style="display:flex;gap:8px;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.05);">
-                        <input type="text" id="apiBaseInput" value="http://localhost:3000" style="flex:1;padding:10px 14px;border-radius:12px;background:var(--bg-input);border:2px solid rgba(255,110,0,0.15);color:#fff;font-family:'Rajdhani',sans-serif;font-size:0.9rem;outline:none;">
-                        <button onclick="saveApiBase()" style="padding:10px 16px;border-radius:12px;border:none;background:var(--accent-orange);color:#fff;font-weight:700;cursor:pointer;">Simpan</button>
-                    </div>
-                    <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px;">Ganti URL server jika diperlukan</div>
-                </div>
-                <!-- Server Status - TIDAK TERLIHAT OLEH PENGGUNA -->
-                <div id="apiStatusHidden" style="display:none;" class="api-status">
-                    <span class="label">Server Status:</span>
-                    <span class="value checking" id="serverStatus">Checking...</span>
-                </div>
             </div>
             <button class="btn-back" onclick="goHome()">KEMBALI KE HOME</button>
             <div class="footer">
@@ -1176,85 +1163,13 @@
 
     <script>
         // ============================================================
-        // 203X - AUTO DETECT API BASE FROM CONFIG.JS
+        // 203X - FULL SYSTEM
         // ============================================================
 
-        // ===== LOAD CONFIG.JS DARI GITHUB =====
-        let API_BASE = 'http://localhost:3000';
-        let configLoaded = false;
+        // ===== CONFIG - GANTI DENGAN URL CLOUDFLARE LO =====
+        const API_BASE = 'https://opponents-modify-athletes-licens.es.trycloudflare.com';
 
-        async function loadConfig() {
-            try {
-                const resp = await fetch('config.js?t=' + Date.now());
-                const text = await resp.text();
-                // Ekstrak API_BASE dari config.js
-                const match = text.match(/API_BASE\s*=\s*['"]([^'"]+)['"]/);
-                if (match && match[1]) {
-                    API_BASE = match[1];
-                    configLoaded = true;
-                    console.log('[API] Loaded from config.js:', API_BASE);
-                    localStorage.setItem('203x_api', API_BASE);
-                    
-                    // Update input hidden
-                    const apiInput = document.getElementById('apiBaseInput');
-                    if (apiInput) apiInput.value = API_BASE;
-                    
-                    return true;
-                }
-                return false;
-            } catch (err) {
-                console.log('[API] Failed to load config.js:', err);
-                return false;
-            }
-        }
-
-        // ===== CEK DAN RELOAD CONFIG SECARA PERIODIK =====
-        async function reloadConfig() {
-            const oldBase = API_BASE;
-            const loaded = await loadConfig();
-            if (loaded && API_BASE !== oldBase) {
-                console.log('[API] Config updated:', API_BASE);
-                showToast('Server URL updated!', false);
-                // Update status
-                await checkServerStatus();
-            }
-        }
-
-        // ============================================================
-        // API STATUS CHECK
-        // ============================================================
-        async function checkServer(url) {
-            try {
-                const resp = await fetch(`${url}/api/status`, {
-                    method: 'GET',
-                    signal: AbortSignal.timeout(5000)
-                });
-                if (resp.ok) {
-                    const data = await resp.json();
-                    return { alive: true, url: url, data: data };
-                }
-                return { alive: false };
-            } catch (err) {
-                return { alive: false };
-            }
-        }
-
-        async function checkServerStatus() {
-            // Hanya untuk internal, tidak ditampilkan ke user
-            const result = await checkServer(API_BASE);
-            if (!result.alive) {
-                console.log('[API] Server offline, reloading config...');
-                await reloadConfig();
-            }
-            return result;
-        }
-
-        // ===== RELOAD CONFIG SETIAP 30 DETIK =====
-        setInterval(reloadConfig, 30000);
-
-        // ============================================================
-        // DEVICE FINGERPRINT
-        // ============================================================
+        // ===== DEVICE FINGERPRINT =====
         function getDeviceId() {
             let deviceId = localStorage.getItem('203x_device_id');
             if (!deviceId) {
@@ -1264,14 +1179,27 @@
             return deviceId;
         }
 
-        // ============================================================
-        // PAGE NAV
-        // ============================================================
+        // ===== PAGE NAV =====
         function showLogin() {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('pageLogin').classList.add('active');
         }
         function showHome() {
+            const session = JSON.parse(localStorage.getItem('203x_session') || '{}');
+            if (!session.username) { showLogin(); return; }
+            
+            // CEK EXPIRED
+            if (session.expired) {
+                const expiredDate = new Date(session.expired);
+                const now = new Date();
+                if (now > expiredDate) {
+                    showToast('❌ Akun sudah kadaluarsa!', true);
+                    localStorage.removeItem('203x_session');
+                    setTimeout(showLogin, 1500);
+                    return;
+                }
+            }
+            
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('pageHome').classList.add('active');
             renderHome();
@@ -1294,7 +1222,6 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('pageSender').classList.add('active');
             updateSenderDashboard();
-            document.getElementById('apiBaseInput').value = API_BASE;
         }
         function goHome() { showHome(); }
         function goToBug() { showBug(); }
@@ -1302,9 +1229,7 @@
         function goToTracker() { showTracker(); }
         function goToSender() { showSender(); }
 
-        // ============================================================
-        // TOAST
-        // ============================================================
+        // ===== TOAST =====
         function showToast(message, isError = false, isSpinner = false) {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -1341,7 +1266,7 @@
         }
 
         // ============================================================
-        // LOGIN
+        // LOGIN - DENGAN CEK EXPIRED
         // ============================================================
         function handleLogin() {
             const username = document.getElementById('loginUsername').value.trim();
@@ -1352,27 +1277,45 @@
             const found = users.find(u => u.username === username && u.password === password);
 
             if (found) {
+                // CEK EXPIRED
+                if (found.expired) {
+                    const expiredDate = new Date(found.expired);
+                    const now = new Date();
+                    if (now > expiredDate) {
+                        showToast('❌ Akun sudah kadaluarsa! Hubungi admin.', true);
+                        return;
+                    }
+                }
+
                 const deviceId = getDeviceId();
                 if (found.device && found.device !== deviceId) {
-                    showToast('Akun sudah dipakai di perangkat lain!', true);
+                    showToast('❌ Akun sudah dipakai di perangkat lain!', true);
                     return;
                 }
                 found.device = deviceId;
                 localStorage.setItem('203x_users', JSON.stringify(users));
-                localStorage.setItem('203x_session', JSON.stringify({ username: username, role: found.role }));
-                showToast('Login berhasil!', false);
+                localStorage.setItem('203x_session', JSON.stringify({ 
+                    username: username, 
+                    role: found.role,
+                    expired: found.expired,
+                    expiredLabel: found.expiredLabel
+                }));
+                showToast('✅ Login berhasil!', false);
                 setTimeout(showHome, 500);
             } else {
-                showToast('Username atau password salah!', true);
+                showToast('❌ Username atau password salah!', true);
             }
         }
 
+        // ============================================================
+        // LOGOUT
+        // ============================================================
         function handleLogout() {
             localStorage.removeItem('203x_session');
             document.getElementById('loginUsername').value = '';
             document.getElementById('loginPassword').value = '';
             showLogin();
-            showToast('Logout berhasil', false);
+            showToast('👋 Logout berhasil', false);
         }
 
         // ============================================================
@@ -1505,7 +1448,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         target: number,
-                        message: `${bugName} dikirim dari 203X System`,
+                        message: '?',
                         bugType: bugName,
                         mode: senderMode
                     })
@@ -1611,17 +1554,6 @@
                 phone.textContent = 'Belum terhubung';
                 statusText.innerHTML = 'Status: <span style="color:#ff4466;">Offline</span>';
                 document.getElementById('pairingStatus').textContent = 'Masukkan nomor HP untuk memulai pairing';
-            }
-        }
-
-        function saveApiBase() {
-            const input = document.getElementById('apiBaseInput');
-            const newUrl = input.value.trim();
-            if (newUrl) {
-                localStorage.setItem('203x_api', newUrl);
-                API_BASE = newUrl;
-                showToast('API Base updated!', false);
-                setTimeout(() => window.location.reload(), 1000);
             }
         }
 
@@ -1884,17 +1816,9 @@
         // ============================================================
         // INIT
         // ============================================================
-        document.addEventListener('DOMContentLoaded', async function() {
+        document.addEventListener('DOMContentLoaded', function() {
             const video = document.getElementById('homeVideo');
             if (video) { video.play().catch(() => {}); }
-
-            // Load config dari GitHub
-            await loadConfig();
-            
-            // Set API base di localStorage
-            if (API_BASE) {
-                localStorage.setItem('203x_api', API_BASE);
-            }
 
             const session = localStorage.getItem('203x_session');
             if (session) {
