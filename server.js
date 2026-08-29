@@ -8,11 +8,7 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(cors({ origin: '*', methods: ['GET', 'POST'], allowedHeaders: ['Content-Type'] }));
 app.use(express.json());
 
 let sock = null;
@@ -22,16 +18,13 @@ let pairingCode = null;
 let isPairing = false;
 const AUTH_DIR = path.join(__dirname, 'auth_info');
 
-if (!fs.existsSync(AUTH_DIR)) {
-    fs.mkdirSync(AUTH_DIR, { recursive: true });
-}
+if (!fs.existsSync(AUTH_DIR)) fs.mkdirSync(AUTH_DIR, { recursive: true });
 
 const silentLogger = pino({ level: 'fatal' });
 
 async function startSock(pairingPhone = null) {
     try {
         const { state, saveCreds } = await useMultiFileAuthState(AUTH_DIR);
-        
         sock = makeWASocket({
             auth: state,
             printQRInTerminal: false,
@@ -41,13 +34,11 @@ async function startSock(pairingPhone = null) {
 
         sock.ev.on('connection.update', async (update) => {
             const { connection, lastDisconnect, pairingCode: pc } = update;
-
             if (pc && !isPairing) {
                 isPairing = true;
                 pairingCode = pc;
                 console.log(`[PAIR] Code: ${pc}`);
             }
-
             if (connection === 'open') {
                 isConnected = true;
                 isPairing = false;
@@ -55,7 +46,6 @@ async function startSock(pairingPhone = null) {
                 console.log(`[WA] Connected: ${phoneNumber}`);
                 pairingCode = null;
             }
-
             if (connection === 'close') {
                 isConnected = false;
                 const shouldReconnect = lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut;
@@ -84,7 +74,6 @@ async function startSock(pairingPhone = null) {
                 throw err;
             }
         }
-
         return sock;
     } catch (err) {
         console.log(`[ERR] startSock: ${err.message}`);
@@ -92,7 +81,6 @@ async function startSock(pairingPhone = null) {
     }
 }
 
-// ===== ROUTES =====
 app.get('/api/status', (req, res) => {
     res.json({
         connected: isConnected,
@@ -104,24 +92,19 @@ app.get('/api/status', (req, res) => {
 
 app.post('/api/pair', async (req, res) => {
     const { phone } = req.body;
-    if (!phone) {
-        return res.status(400).json({ success: false, message: 'Nomor HP harus diisi!' });
-    }
+    if (!phone) return res.status(400).json({ success: false, message: 'Nomor HP harus diisi!' });
 
     let number = phone.replace(/\D/g, '');
     if (!number.startsWith('62')) number = '62' + number;
 
     try {
-        if (sock) { 
-            try { sock.ws?.close(); } catch(e) {}
-            sock = null; 
-        }
+        if (sock) { try { sock.ws?.close(); } catch(e) {} sock = null; }
         isConnected = false;
         isPairing = false;
         pairingCode = null;
 
         await startSock(number);
-        
+
         let waitCount = 0;
         while (!pairingCode && waitCount < 30) {
             await new Promise(r => setTimeout(r, 200));
@@ -129,26 +112,21 @@ app.post('/api/pair', async (req, res) => {
         }
 
         if (pairingCode) {
-            res.json({ success: true, code: pairingCode, message: `Kode pairing: ${pairingCode}` });
+            res.json({ success: true, code: pairingCode });
         } else {
             res.json({ success: false, message: 'Gagal mendapatkan kode pairing. Coba lagi.' });
         }
     } catch (err) {
-        console.log(`[ERR] pair: ${err.message}`);
         res.status(500).json({ success: false, message: err.message });
     }
 });
 
 app.post('/api/send', async (req, res) => {
-    const { target, message, bugType, mode } = req.body;
+    const { target, message, bugType } = req.body;
 
     if (!sock || !isConnected) {
-        return res.status(400).json({ 
-            success: false, 
-            message: 'WhatsApp belum terhubung!' 
-        });
+        return res.status(400).json({ success: false, message: 'WhatsApp belum terhubung!' });
     }
-
     if (!target || !message) {
         return res.status(400).json({ success: false, message: 'Target dan pesan harus diisi!' });
     }
@@ -158,45 +136,30 @@ app.post('/api/send', async (req, res) => {
         if (!number.startsWith('62')) number = '62' + number;
         const jid = number + '@s.whatsapp.net';
 
-        const modeText = mode === 'private' ? '[PRIVATE]' : '[GLOBAL]';
-        const fullMessage = `${modeText} ${bugType || '203X BUG'}\n${message}\n\n203X System`;
-
+        const fullMessage = `${bugType || '203X BUG'}\n${message}`;
         await sock.sendMessage(jid, { text: fullMessage });
-        console.log(`[SEND] ${modeText} -> ${jid}`);
-        res.json({ 
-            success: true, 
-            message: `Pesan terkirim ke ${target}` 
-        });
+        console.log(`[SEND] ${bugType} -> ${jid}`);
+        res.json({ success: true, message: `Pesan terkirim ke ${target}` });
     } catch (err) {
-        console.log(`[ERR] send: ${err.message}`);
         res.status(500).json({ success: false, message: 'Gagal kirim: ' + err.message });
     }
 });
 
 app.post('/api/logout', async (req, res) => {
     try {
-        if (sock) { 
-            try { sock.ws?.close(); } catch(e) {}
-            sock = null; 
-        }
+        if (sock) { try { sock.ws?.close(); } catch(e) {} sock = null; }
         isConnected = false;
         phoneNumber = 'Not Connected';
         pairingCode = null;
         isPairing = false;
-        
         if (fs.existsSync(AUTH_DIR)) {
             fs.rmSync(AUTH_DIR, { recursive: true, force: true });
             fs.mkdirSync(AUTH_DIR, { recursive: true });
         }
-        
         res.json({ success: true, message: 'Logout berhasil' });
     } catch (err) {
         res.status(500).json({ success: false, message: err.message });
     }
-});
-
-app.get('/', (req, res) => {
-    res.send('203X Sender Bot Running');
 });
 
 app.listen(PORT, '0.0.0.0', () => {
