@@ -1150,6 +1150,19 @@
                     <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:#FF4400;fill:none;stroke-width:2;display:inline-block;vertical-align:middle;margin-right:8px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                     PUTUSKAN KONEKSI
                 </button>
+                <!-- API Base Setting - TIDAK TERLIHAT OLEH PENGGUNA -->
+                <div id="apiBaseHidden" style="display:none;">
+                    <div style="display:flex;gap:8px;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.05);">
+                        <input type="text" id="apiBaseInput" value="http://localhost:3000" style="flex:1;padding:10px 14px;border-radius:12px;background:var(--bg-input);border:2px solid rgba(255,110,0,0.15);color:#fff;font-family:'Rajdhani',sans-serif;font-size:0.9rem;outline:none;">
+                        <button onclick="saveApiBase()" style="padding:10px 16px;border-radius:12px;border:none;background:var(--accent-orange);color:#fff;font-weight:700;cursor:pointer;">Simpan</button>
+                    </div>
+                    <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px;">Ganti URL server jika diperlukan</div>
+                </div>
+                <!-- Server Status - TIDAK TERLIHAT OLEH PENGGUNA -->
+                <div id="apiStatusHidden" style="display:none;" class="api-status">
+                    <span class="label">Server Status:</span>
+                    <span class="value checking" id="serverStatus">Checking...</span>
+                </div>
             </div>
             <button class="btn-back" onclick="goHome()">KEMBALI KE HOME</button>
             <div class="footer">
@@ -1163,294 +1176,737 @@
 
     <script>
         // ============================================================
-        // 203X - SIMPLE VERSION
+        // 203X - AUTO DETECT API BASE FROM CONFIG.JS
         // ============================================================
 
-        // ===== CONFIG - GANTI DENGAN URL CLOUDFLARE LO =====
-        const API_BASE = 'https://opponents-modify-athletes-licens.es.trycloudflare.com';
+        // ===== LOAD CONFIG.JS DARI GITHUB =====
+        let API_BASE = 'http://localhost:3000';
+        let configLoaded = false;
 
-        let isConnected = false;
-        let isPairing = false;
-        let phoneNumber = '';
-        let selectedBug = '203X BUG';
-        let isProcessing = false;
+        async function loadConfig() {
+            try {
+                const resp = await fetch('config.js?t=' + Date.now());
+                const text = await resp.text();
+                // Ekstrak API_BASE dari config.js
+                const match = text.match(/API_BASE\s*=\s*['"]([^'"]+)['"]/);
+                if (match && match[1]) {
+                    API_BASE = match[1];
+                    configLoaded = true;
+                    console.log('[API] Loaded from config.js:', API_BASE);
+                    localStorage.setItem('203x_api', API_BASE);
+                    
+                    // Update input hidden
+                    const apiInput = document.getElementById('apiBaseInput');
+                    if (apiInput) apiInput.value = API_BASE;
+                    
+                    return true;
+                }
+                return false;
+            } catch (err) {
+                console.log('[API] Failed to load config.js:', err);
+                return false;
+            }
+        }
 
-        // ===== DOM REFS =====
-        const waStatusDot = document.getElementById('waStatusDot');
-        const waStatusText = document.getElementById('waStatusText');
-        const waPhone = document.getElementById('waPhone');
-        const bugStatusDot = document.getElementById('bugStatusDot');
-        const bugStatusText = document.getElementById('bugStatusText');
-        const pairBtn = document.getElementById('pairBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const codeDisplay = document.getElementById('codeDisplay');
-        const pairingCode = document.getElementById('pairingCode');
-        const phoneInput = document.getElementById('phoneInput');
-        const targetInput = document.getElementById('targetInput');
-        const pageBug = document.getElementById('pageBug');
+        // ===== CEK DAN RELOAD CONFIG SECARA PERIODIK =====
+        async function reloadConfig() {
+            const oldBase = API_BASE;
+            const loaded = await loadConfig();
+            if (loaded && API_BASE !== oldBase) {
+                console.log('[API] Config updated:', API_BASE);
+                showToast('Server URL updated!', false);
+                // Update status
+                await checkServerStatus();
+            }
+        }
 
-        // ===== TOAST =====
+        // ============================================================
+        // API STATUS CHECK
+        // ============================================================
+        async function checkServer(url) {
+            try {
+                const resp = await fetch(`${url}/api/status`, {
+                    method: 'GET',
+                    signal: AbortSignal.timeout(5000)
+                });
+                if (resp.ok) {
+                    const data = await resp.json();
+                    return { alive: true, url: url, data: data };
+                }
+                return { alive: false };
+            } catch (err) {
+                return { alive: false };
+            }
+        }
+
+        async function checkServerStatus() {
+            // Hanya untuk internal, tidak ditampilkan ke user
+            const result = await checkServer(API_BASE);
+            if (!result.alive) {
+                console.log('[API] Server offline, reloading config...');
+                await reloadConfig();
+            }
+            return result;
+        }
+
+        // ===== RELOAD CONFIG SETIAP 30 DETIK =====
+        setInterval(reloadConfig, 30000);
+
+        // ============================================================
+        // DEVICE FINGERPRINT
+        // ============================================================
+        function getDeviceId() {
+            let deviceId = localStorage.getItem('203x_device_id');
+            if (!deviceId) {
+                deviceId = 'dev_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
+                localStorage.setItem('203x_device_id', deviceId);
+            }
+            return deviceId;
+        }
+
+        // ============================================================
+        // PAGE NAV
+        // ============================================================
+        function showLogin() {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('pageLogin').classList.add('active');
+        }
+        function showHome() {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('pageHome').classList.add('active');
+            renderHome();
+            updateSenderStatus();
+        }
+        function showBug() {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('pageBug').classList.add('active');
+            updateSenderStatus();
+        }
+        function showDownloader() {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('pageDownloader').classList.add('active');
+        }
+        function showTracker() {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('pageTracker').classList.add('active');
+        }
+        function showSender() {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('pageSender').classList.add('active');
+            updateSenderDashboard();
+            document.getElementById('apiBaseInput').value = API_BASE;
+        }
+        function goHome() { showHome(); }
+        function goToBug() { showBug(); }
+        function goToDownloader() { showDownloader(); }
+        function goToTracker() { showTracker(); }
+        function goToSender() { showSender(); }
+
+        // ============================================================
+        // TOAST
+        // ============================================================
         function showToast(message, isError = false, isSpinner = false) {
-            const existing = document.querySelector('.toast');
-            if (existing) existing.remove();
-
+            const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = `toast ${isError ? 'error' : ''}`;
             
-            if (isSpinner) {
+            if(isSpinner) {
                 const spinner = document.createElement('div');
                 spinner.className = 'spinner';
                 toast.appendChild(spinner);
+            } else {
+                const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                icon.setAttribute('viewBox', '0 0 24 24');
+                icon.classList.add('toast-icon');
+                if(isError) {
+                    icon.innerHTML = `<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>`;
+                } else {
+                    icon.innerHTML = `<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>`;
+                }
+                toast.appendChild(icon);
             }
             
             const text = document.createElement('span');
             text.innerText = message;
             toast.appendChild(text);
-            document.body.appendChild(toast);
-
+            container.appendChild(toast);
             setTimeout(() => {
-                if (toast.parentNode) {
+                if(toast.parentNode) {
                     toast.style.opacity = '0';
-                    toast.style.transform = 'translateY(-20px) translateX(-50%)';
+                    toast.style.transform = 'translateY(-20px)';
                     toast.style.transition = '0.3s';
                     setTimeout(() => toast.remove(), 300);
                 }
-            }, 5000);
+            }, 4000);
         }
 
-        // ===== GET STATUS =====
-        async function getStatus() {
+        // ============================================================
+        // LOGIN
+        // ============================================================
+        function handleLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            if (!username || !password) { showToast('Isi semua field!', true); return; }
+
+            const users = JSON.parse(localStorage.getItem('203x_users') || '[]');
+            const found = users.find(u => u.username === username && u.password === password);
+
+            if (found) {
+                const deviceId = getDeviceId();
+                if (found.device && found.device !== deviceId) {
+                    showToast('Akun sudah dipakai di perangkat lain!', true);
+                    return;
+                }
+                found.device = deviceId;
+                localStorage.setItem('203x_users', JSON.stringify(users));
+                localStorage.setItem('203x_session', JSON.stringify({ username: username, role: found.role }));
+                showToast('Login berhasil!', false);
+                setTimeout(showHome, 500);
+            } else {
+                showToast('Username atau password salah!', true);
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('203x_session');
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+            showLogin();
+            showToast('Logout berhasil', false);
+        }
+
+        // ============================================================
+        // HOME — RENDER
+        // ============================================================
+        function renderHome() {
+            const session = JSON.parse(localStorage.getItem('203x_session') || '{}');
+            if (!session.username) { showLogin(); return; }
+            document.getElementById('homeUsername').textContent = session.username;
+            document.getElementById('homeRole').textContent = session.role || 'Reseller';
+
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const waktu = hours + minutes / 60;
+
+            const jadwal = { subuh: 4.5, dzuhur: 12.0, ashar: 15.0, maghrib: 18.0, isya: 19.0 };
+
+            function formatTime(dec) {
+                const h = Math.floor(dec);
+                const m = Math.round((dec - h) * 60);
+                return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+            }
+
+            document.getElementById('sholatSubuh').textContent = formatTime(jadwal.subuh);
+            document.getElementById('sholatDzuhur').textContent = formatTime(jadwal.dzuhur);
+            document.getElementById('sholatAshar').textContent = formatTime(jadwal.ashar);
+            document.getElementById('sholatMaghrib').textContent = formatTime(jadwal.maghrib);
+            document.getElementById('sholatIsya').textContent = formatTime(jadwal.isya);
+
+            const allSholat = ['sholatSubuh','sholatDzuhur','sholatAshar','sholatMaghrib','sholatIsya'];
+            const times = [jadwal.subuh, jadwal.dzuhur, jadwal.ashar, jadwal.maghrib, jadwal.isya];
+            let found = false;
+            allSholat.forEach((id, i) => {
+                const el = document.getElementById(id);
+                el.classList.remove('orange');
+                if (!found && waktu < times[i]) {
+                    el.classList.add('orange');
+                    found = true;
+                }
+            });
+            if (!found && waktu > times[times.length-1]) {
+                document.getElementById('sholatIsya').classList.add('orange');
+            }
+        }
+
+        // ============================================================
+        // BUG PAGE
+        // ============================================================
+        let isProcessing = false;
+        let senderMode = 'global';
+
+        function selectBug(el) {
+            if(isProcessing) return;
+            document.querySelectorAll('.bug-item').forEach(e => e.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function getActiveBugName() {
+            const active = document.querySelector('.bug-item.active');
+            return active ? active.querySelector('.bug-title').textContent : '203X BUG';
+        }
+
+        function toggleSenderMode() {
+            const toggle = document.getElementById('senderModeToggle');
+            const modeLabel = document.getElementById('senderModeLabel');
+            const modeBadge = document.getElementById('senderModeBadge');
+            const modeDesc = document.getElementById('senderModeDesc');
+            const activeMode = document.getElementById('senderActiveMode');
+            
+            if (toggle.checked) {
+                senderMode = 'private';
+                modeLabel.textContent = 'Pribadi (WA pribadi)';
+                modeBadge.textContent = 'PRIBADI';
+                modeBadge.style.color = '#00ff88';
+                modeDesc.innerHTML = 'Mengirim menggunakan WhatsApp pribadi yang sudah ditautkan';
+                if (activeMode) activeMode.innerHTML = 'Mode: <strong style="color:#00ff88;">PRIBADI</strong>';
+                showToast('Mode Sender Pribadi aktif', false);
+            } else {
+                senderMode = 'global';
+                modeLabel.textContent = 'Global (Bot sistem)';
+                modeBadge.textContent = 'GLOBAL';
+                modeBadge.style.color = 'var(--accent-orange)';
+                modeDesc.innerHTML = 'Menggunakan bot WhatsApp sistem (global)';
+                if (activeMode) activeMode.innerHTML = 'Mode: <strong style="color:var(--accent-orange);">GLOBAL</strong>';
+                showToast('Mode Sender Global aktif', false);
+            }
+        }
+
+        // ============================================================
+        // SEND BUG
+        // ============================================================
+        async function sendBug() {
+            if(isProcessing) return;
+            
+            const input = document.getElementById('targetInput');
+            const wrapper = document.getElementById('inputWrapper');
+            let rawVal = input.value.replace(/\D/g, '');
+            const bugName = getActiveBugName();
+            
+            if (!rawVal) {
+                showToast('Masukkan nomor target!', true);
+                return;
+            }
+            
+            let number = rawVal;
+            if (!number.startsWith('62')) {
+                number = '62' + number;
+            }
+            
+            if (number.length < 10 || number.length > 15) {
+                showToast('Nomor tidak valid!', true);
+                return;
+            }
+            
+            const status = await getWhatsAppStatus();
+            if (senderMode === 'private' && !status.connected) {
+                showToast('WhatsApp pribadi belum terhubung! Buka menu Sender dulu.', true);
+                return;
+            }
+            
+            isProcessing = true;
+            document.querySelector('.btn-send').style.opacity = '0.7';
+            const modeText = senderMode === 'private' ? 'Pribadi' : 'Global';
+            showToast(`Mengirim bug (${modeText})...`, false, true);
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/send`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        target: number,
+                        message: `${bugName} dikirim dari 203X System`,
+                        bugType: bugName,
+                        mode: senderMode
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    wrapper.className = 'target-wrapper success';
+                    showToast(`${data.message}`, false);
+                } else {
+                    wrapper.className = 'target-wrapper error';
+                    showToast(`${data.message}`, true);
+                }
+            } catch (err) {
+                wrapper.className = 'target-wrapper error';
+                showToast(`Gagal konek ke server: ${err.message}`, true);
+            } finally {
+                isProcessing = false;
+                document.querySelector('.btn-send').style.opacity = '1';
+            }
+        }
+
+        // ============================================================
+        // SENDER — WHATSAPP PAIRING
+        // ============================================================
+        async function getWhatsAppStatus() {
             try {
                 const resp = await fetch(`${API_BASE}/api/status`);
                 const data = await resp.json();
                 return data;
             } catch (err) {
-                return { connected: false, phone: 'Error', pairingCode: null, isPairing: false };
+                return { connected: false, phone: 'Error', pairingCode: null };
             }
         }
 
-        // ===== UPDATE UI =====
-        async function updateUI() {
-            const status = await getStatus();
+        async function updateSenderStatus() {
+            const status = await getWhatsAppStatus();
+            
+            const waStatus = document.getElementById('bugWaStatus');
+            if (waStatus) {
+                const modeText = senderMode === 'private' ? '[Pribadi]' : '[Global]';
+                if (status.connected) {
+                    waStatus.innerHTML = `WA: <span style="color:#00ff88;">Terhubung (${status.phone})</span> <span style="font-size:0.7rem;color:var(--text-muted);margin-left:6px;">${modeText}</span>`;
+                } else if (status.isPairing) {
+                    waStatus.innerHTML = `WA: <span style="color:#ff8c00;">Menunggu pairing...</span>`;
+                } else {
+                    waStatus.innerHTML = `WA: <span style="color:#ff4466;">Belum terhubung</span> <span style="font-size:0.7rem;color:var(--text-muted);margin-left:6px;">${modeText}</span>`;
+                }
+            }
+            
+            const senderTitle = document.getElementById('senderTitle');
+            const senderStatus = document.getElementById('senderStatus');
+            const senderOnline = document.getElementById('senderOnlineCount');
+            const activeMode = document.getElementById('senderActiveMode');
+            
+            if (senderTitle) {
+                if (status.connected) {
+                    senderTitle.textContent = `${status.phone}`;
+                    const modeText = senderMode === 'private' ? '[Pribadi]' : '[Global]';
+                    senderStatus.textContent = `Online — Siap kirim bug ${modeText}`;
+                    senderStatus.style.color = '#00ff88';
+                    if (senderOnline) senderOnline.textContent = '1 online';
+                    if (activeMode) {
+                        const modeLabel = senderMode === 'private' ? 'PRIBADI' : 'GLOBAL';
+                        const modeColor = senderMode === 'private' ? '#00ff88' : 'var(--accent-orange)';
+                        activeMode.innerHTML = `Mode: <strong style="color:${modeColor};">${modeLabel}</strong>`;
+                    }
+                } else if (status.isPairing) {
+                    senderTitle.textContent = 'Pairing...';
+                    senderStatus.textContent = 'Masukkan kode di WhatsApp';
+                    senderStatus.style.color = '#ff8c00';
+                    if (senderOnline) senderOnline.textContent = '0 online';
+                } else {
+                    senderTitle.textContent = 'Belum Terhubung';
+                    senderStatus.textContent = 'Koneksi WA diperlukan';
+                    senderStatus.style.color = '#ff4466';
+                    if (senderOnline) senderOnline.textContent = '0 online';
+                }
+            }
+        }
 
-            isConnected = status.connected;
-            isPairing = status.isPairing;
-            phoneNumber = status.phone || '';
-
-            // Status WA
-            if (isConnected) {
-                waStatusDot.style.background = '#00ff88';
-                waStatusText.textContent = 'Terhubung';
-                waStatusText.style.color = '#00ff88';
-                waPhone.textContent = phoneNumber;
-                bugStatusDot.style.background = '#00ff88';
-                bugStatusText.textContent = `WA: Terhubung (${phoneNumber})`;
-                bugStatusText.style.color = '#00ff88';
-                pairBtn.disabled = true;
-                pairBtn.textContent = '✅ TERHUBUNG';
-                logoutBtn.disabled = false;
-                codeDisplay.classList.add('hidden');
-            } else if (isPairing) {
-                waStatusDot.style.background = '#ff8c00';
-                waStatusText.textContent = 'Menunggu pairing...';
-                waStatusText.style.color = '#ff8c00';
-                waPhone.textContent = '';
-                bugStatusDot.style.background = '#ff8c00';
-                bugStatusText.textContent = 'WA: Menunggu pairing...';
-                bugStatusText.style.color = '#ff8c00';
-                pairBtn.disabled = true;
-                pairBtn.textContent = '⏳ MENUNGGU...';
-                logoutBtn.disabled = true;
+        async function updateSenderDashboard() {
+            const status = await getWhatsAppStatus();
+            
+            const dot = document.getElementById('senderDot');
+            const phone = document.getElementById('senderPhone');
+            const statusText = document.getElementById('senderStatusText');
+            
+            if (status.connected) {
+                dot.className = 'dot online';
+                phone.textContent = `${status.phone}`;
+                statusText.innerHTML = 'Status: <span style="color:#00ff88;">Online — Siap kirim pesan</span>';
+                document.getElementById('pairingStatus').textContent = 'WhatsApp terhubung!';
+                document.getElementById('codeDisplay').style.display = 'none';
+            } else if (status.isPairing) {
+                dot.className = 'dot';
+                phone.textContent = 'Menunggu pairing...';
+                statusText.innerHTML = 'Status: <span style="color:#ff8c00;">Pairing code dikirim</span>';
+                document.getElementById('pairingStatus').textContent = 'Masukkan kode di WhatsApp';
             } else {
-                waStatusDot.style.background = '#ff4466';
-                waStatusText.textContent = 'Belum terhubung';
-                waStatusText.style.color = '#ff4466';
-                waPhone.textContent = '';
-                bugStatusDot.style.background = '#ff4466';
-                bugStatusText.textContent = 'WA: Belum terhubung';
-                bugStatusText.style.color = '#ff4466';
-                pairBtn.disabled = false;
-                pairBtn.textContent = '🔗 TAUTKAN WHATSAPP';
-                logoutBtn.disabled = true;
-                codeDisplay.classList.add('hidden');
+                dot.className = 'dot';
+                phone.textContent = 'Belum terhubung';
+                statusText.innerHTML = 'Status: <span style="color:#ff4466;">Offline</span>';
+                document.getElementById('pairingStatus').textContent = 'Masukkan nomor HP untuk memulai pairing';
             }
         }
 
-        // ===== PAIR WHATSAPP =====
-        async function pairWhatsApp() {
-            let number = phoneInput.value.replace(/\D/g, '');
+        function saveApiBase() {
+            const input = document.getElementById('apiBaseInput');
+            const newUrl = input.value.trim();
+            if (newUrl) {
+                localStorage.setItem('203x_api', newUrl);
+                API_BASE = newUrl;
+                showToast('API Base updated!', false);
+                setTimeout(() => window.location.reload(), 1000);
+            }
+        }
+
+        async function requestPairing() {
+            const input = document.getElementById('pairingPhoneInput');
+            let number = input.value.replace(/\D/g, '');
+            
             if (!number) {
                 showToast('Masukkan nomor WhatsApp!', true);
                 return;
             }
+            
             if (!number.startsWith('62')) {
                 number = '62' + number;
             }
+            
             if (number.length < 10) {
                 showToast('Nomor tidak valid!', true);
                 return;
             }
-
-            pairBtn.disabled = true;
-            pairBtn.textContent = '⏳ MEMINTA KODE...';
-            showToast('Menghubungi server...', false, true);
-
+            
+            const btn = document.getElementById('pairBtn');
+            btn.disabled = true;
+            btn.textContent = 'Meminta kode...';
+            document.getElementById('pairingStatus').textContent = 'Menghubungi server...';
+            
             try {
                 const resp = await fetch(`${API_BASE}/api/pair`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ phone: number })
                 });
+                
                 const data = await resp.json();
-
+                
                 if (data.success && data.code) {
-                    codeDisplay.classList.remove('hidden');
-                    pairingCode.textContent = data.code;
-                    showToast(`Kode: ${data.code}`, false);
+                    document.getElementById('codeDisplay').style.display = 'block';
+                    document.getElementById('pairingCodeDisplay').textContent = data.code;
+                    document.getElementById('pairingStatus').textContent = `Kode dikirim! Masukkan ${data.code} di WhatsApp`;
+                    showToast(`Kode pairing: ${data.code}`, false);
                     
-                    // Auto check status
-                    let count = 0;
-                    const interval = setInterval(async () => {
-                        const s = await getStatus();
-                        if (s.connected) {
-                            clearInterval(interval);
-                            showToast('✅ WhatsApp terhubung!', false);
-                            await updateUI();
+                    let checkCount = 0;
+                    const checkInterval = setInterval(async () => {
+                        const status = await getWhatsAppStatus();
+                        if (status.connected) {
+                            clearInterval(checkInterval);
+                            updateSenderDashboard();
+                            showToast('WhatsApp berhasil terhubung!', false);
+                            btn.disabled = false;
+                            btn.textContent = 'HUBUNGKAN WHATSAPP';
                         }
-                        count++;
-                        if (count > 20) {
-                            clearInterval(interval);
-                            pairBtn.disabled = false;
-                            pairBtn.textContent = '🔗 TAUTKAN WHATSAPP';
+                        checkCount++;
+                        if (checkCount > 30) {
+                            clearInterval(checkInterval);
+                            btn.disabled = false;
+                            btn.textContent = 'HUBUNGKAN WHATSAPP';
                         }
                     }, 3000);
                 } else {
-                    showToast(data.message || 'Gagal pairing!', true);
-                    pairBtn.disabled = false;
-                    pairBtn.textContent = '🔗 TAUTKAN WHATSAPP';
+                    showToast(`${data.message || 'Gagal pairing'}`, true);
+                    btn.disabled = false;
+                    btn.textContent = 'HUBUNGKAN WHATSAPP';
                 }
             } catch (err) {
-                showToast(`Error: ${err.message}`, true);
-                pairBtn.disabled = false;
-                pairBtn.textContent = '🔗 TAUTKAN WHATSAPP';
+                showToast(`Gagal konek ke server: ${err.message}`, true);
+                btn.disabled = false;
+                btn.textContent = 'HUBUNGKAN WHATSAPP';
             }
         }
 
-        // ===== LOGOUT =====
         async function logoutWhatsApp() {
             try {
-                const resp = await fetch(`${API_BASE}/api/logout`, { method: 'POST' });
-                const data = await resp.json();
-                showToast(data.message || 'Logout berhasil', false);
-                await updateUI();
-            } catch (err) {
-                showToast(`Error: ${err.message}`, true);
-            }
-        }
-
-        // ===== SELECT BUG =====
-        function selectBug(el) {
-            if (isProcessing) return;
-            document.querySelectorAll('.bug-item').forEach(e => e.classList.remove('active'));
-            el.classList.add('active');
-            selectedBug = el.querySelector('.bug-title').textContent;
-        }
-
-        // ===== SEND BUG =====
-        async function sendBug() {
-            if (isProcessing) return;
-
-            const target = targetInput.value.replace(/\D/g, '');
-            if (!target) {
-                showToast('Masukkan nomor target!', true);
-                return;
-            }
-
-            let number = target;
-            if (!number.startsWith('62')) {
-                number = '62' + number;
-            }
-            if (number.length < 10) {
-                showToast('Nomor target tidak valid!', true);
-                return;
-            }
-
-            const status = await getStatus();
-            if (!status.connected) {
-                showToast('❌ WhatsApp belum terhubung! Tautkan dulu.', true);
-                return;
-            }
-
-            isProcessing = true;
-            const btn = document.getElementById('sendBugBtn');
-            btn.disabled = true;
-            btn.innerHTML = '<span>⏳</span> MENGIRIM...';
-            showToast(`Mengirim ${selectedBug}...`, false, true);
-
-            try {
-                const resp = await fetch(`${API_BASE}/api/send`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        target: number,
-                        message: '?',
-                        bugType: selectedBug,
-                        mode: 'private'
-                    })
+                const resp = await fetch(`${API_BASE}/api/logout`, {
+                    method: 'POST'
                 });
                 const data = await resp.json();
-
-                if (data.success) {
-                    showToast(`✅ ${data.message}`, false);
-                } else {
-                    showToast(`❌ ${data.message}`, true);
-                }
+                showToast(data.message || 'Logout berhasil', false);
+                updateSenderDashboard();
             } catch (err) {
-                showToast(`❌ Error: ${err.message}`, true);
-            } finally {
-                isProcessing = false;
-                btn.disabled = false;
-                btn.innerHTML = '<span>▶</span> KIRIM BUG';
+                showToast(`Gagal logout: ${err.message}`, true);
             }
         }
 
-        // ===== NAVIGATION =====
-        function goToBug() {
-            pageBug.classList.remove('hidden');
-            document.querySelector('.card:not(#pageBug)').style.display = 'none';
-            // Hide menu card
-            document.querySelectorAll('.card').forEach(c => {
-                if (c.id !== 'pageBug' && !c.querySelector('.header')) {
-                    c.style.display = 'none';
+        // ============================================================
+        // DOWNLOADER — TIKTOK HD
+        // ============================================================
+        const dlBtnTiktok = document.getElementById('dlBtnTiktok');
+        const dlUrlInput = document.getElementById('dlUrlInput');
+        const dlBtnDownload = document.getElementById('dlBtnDownload');
+        const dlStatus = document.getElementById('dlStatus');
+        const dlPreview = document.getElementById('dlPreview');
+        const dlPreviewVideo = document.getElementById('dlPreviewVideo');
+        const dlPreviewInfo = document.getElementById('dlPreviewInfo');
+
+        dlBtnTiktok.addEventListener('click', function() {
+            document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+
+        dlBtnDownload.addEventListener('click', async function() {
+            const url = dlUrlInput.value.trim();
+            if (!url) {
+                dlStatus.textContent = 'Masukkan URL dulu!';
+                dlStatus.className = 'dl-status error';
+                return;
+            }
+
+            if (!url.includes('tiktok.com')) {
+                dlStatus.textContent = 'Hanya support TikTok!';
+                dlStatus.className = 'dl-status error';
+                return;
+            }
+
+            this.disabled = true;
+            this.style.opacity = '0.6';
+            dlStatus.textContent = 'Mencari video HD...';
+            dlStatus.className = 'dl-status loading';
+
+            try {
+                const resp = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}&hd=1`);
+                const data = await resp.json();
+
+                if (data.code === 0 && data.data) {
+                    let videoUrl = data.data.play || data.data.play1 || data.data.wmplay;
+
+                    if (videoUrl) {
+                        dlPreviewVideo.src = videoUrl + '?nocache=' + Date.now();
+                        dlPreview.style.display = 'block';
+                        dlPreviewInfo.textContent = 'TikTok HD';
+
+                        const videoResp = await fetch(videoUrl);
+                        const blob = await videoResp.blob();
+                        const blobUrl = URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.href = blobUrl;
+                        link.download = `tiktok_HD_${Date.now()}.mp4`;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+
+                        setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+
+                        dlStatus.textContent = 'Video HD berhasil diunduh!';
+                        dlStatus.className = 'dl-status success';
+                    } else {
+                        dlStatus.textContent = 'Gak nemu video. Coba URL lain.';
+                        dlStatus.className = 'dl-status error';
+                    }
+                } else {
+                    dlStatus.textContent = 'Gagal ambil data. Coba lagi.';
+                    dlStatus.className = 'dl-status error';
                 }
-            });
-            // Show pageBug card
-            pageBug.style.display = 'block';
-            updateUI();
+            } catch (err) {
+                dlStatus.textContent = 'Error: ' + err.message;
+                dlStatus.className = 'dl-status error';
+            } finally {
+                this.disabled = false;
+                this.style.opacity = '1';
+            }
+        });
+
+        dlUrlInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') dlBtnDownload.click();
+        });
+
+        // ============================================================
+        // TRACKER
+        // ============================================================
+        const validPrefixes = ['812', '813', '814', '815', '816', '817', '818', '819', '822', '823', '824', '825', '826', '827', '828', '829', '852', '853', '854', '855', '856', '857', '858', '859', '878', '879', '881', '882', '883', '884', '885', '886', '887', '888', '889', '831', '832', '833', '834', '835', '836', '837', '838', '839'];
+
+        function generateRandomCoordinate(centerLat, centerLng, radiusKm) {
+            const radiusDeg = radiusKm / 111.32;
+            const u = Math.random();
+            const v = Math.random();
+            const w = radiusDeg * Math.sqrt(u);
+            const t = 2 * Math.PI * v;
+            return { lat: centerLat + w * Math.cos(t), lng: centerLng + w * Math.sin(t) };
         }
 
-        function goHome() {
-            pageBug.classList.add('hidden');
-            pageBug.style.display = 'none';
-            document.querySelectorAll('.card').forEach(c => {
-                if (c.id !== 'pageBug') {
-                    c.style.display = 'block';
+        function startTracking() {
+            const input = document.getElementById('trackNumberInput');
+            const msgBox = document.getElementById('trackStatus');
+            const btn = document.getElementById('trackBtn');
+            const wrapper = document.getElementById('trackInputWrapper');
+            const mapWrapper = document.getElementById('trackMapWrapper');
+            const mapIframe = document.getElementById('trackMapIframe');
+            
+            mapWrapper.classList.remove('active');
+            mapWrapper.style.display = 'none';
+            mapIframe.src = '';
+            msgBox.className = 'track-status';
+            wrapper.className = 'track-input-wrap';
+            
+            let rawVal = input.value.replace(/\D/g, '');
+            
+            if (rawVal.startsWith('62')) {
+                let after62 = rawVal.substring(2);
+                if (after62.length >= 8 && after62.length <= 13) {
+                    let prefix = after62.substring(0, 3);
+                    if (validPrefixes.includes(prefix)) {
+                        msgBox.textContent = "CONNECTING TO SATELLITE...";
+                        msgBox.className = 'track-status loading';
+                        btn.disabled = true;
+
+                        setTimeout(() => {
+                            const center = { lat: -6.9175, lng: 107.6191 }; 
+                            const randomLoc = generateRandomCoordinate(center.lat, center.lng, 40);
+
+                            msgBox.textContent = `TARGET IDENTIFIED (62${after62})`;
+                            msgBox.className = 'track-status success';
+                            wrapper.className = 'track-input-wrap success';
+                            
+                            mapWrapper.style.display = 'block';
+                            setTimeout(() => mapWrapper.classList.add('active'), 50);
+                            
+                            mapIframe.src = `https://maps.google.com/maps?q=${randomLoc.lat},${randomLoc.lng}&z=15&output=embed`;
+
+                            btn.disabled = false;
+                        }, 4000);
+                        return;
+                    }
                 }
-            });
-            // Show header
-            document.querySelector('.header').style.display = 'block';
+            }
+
+            msgBox.textContent = "TARGET INVALID. MUST USE 62 + 812/813/822/852...";
+            msgBox.className = 'track-status error';
+            wrapper.className = 'track-input-wrap error';
+            input.focus();
         }
 
-        // ===== AUTO UPDATE =====
-        setInterval(updateUI, 5000);
+        document.getElementById('trackNumberInput').addEventListener('keydown', function(e) {
+            if(e.key === 'Enter') e.preventDefault(); 
+        });
 
-        // ===== INIT =====
-        document.addEventListener('DOMContentLoaded', () => {
-            updateUI();
-            // Select default bug
-            document.querySelector('.bug-item.active')?.classList.remove('active');
-            document.querySelector('.bug-item')?.classList.add('active');
-            selectedBug = '203X BUG';
+        // ============================================================
+        // KEYBOARD SUPPORT
+        // ============================================================
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const active = document.querySelector('.page.active');
+                if (active && active.id === 'pageLogin') handleLogin();
+            }
+        });
+
+        // ============================================================
+        // AUTO UPDATE SENDER STATUS
+        // ============================================================
+        setInterval(() => {
+            const activePage = document.querySelector('.page.active');
+            if (activePage) {
+                if (activePage.id === 'pageBug' || activePage.id === 'pageHome') {
+                    updateSenderStatus();
+                }
+                if (activePage.id === 'pageSender') {
+                    updateSenderDashboard();
+                }
+            }
+        }, 10000);
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', async function() {
+            const video = document.getElementById('homeVideo');
+            if (video) { video.play().catch(() => {}); }
+
+            // Load config dari GitHub
+            await loadConfig();
+            
+            // Set API base di localStorage
+            if (API_BASE) {
+                localStorage.setItem('203x_api', API_BASE);
+            }
+
+            const session = localStorage.getItem('203x_session');
+            if (session) {
+                try {
+                    const data = JSON.parse(session);
+                    if (data && data.username) {
+                        showHome();
+                        return;
+                    }
+                } catch(e) {}
+            }
+            showLogin();
         });
     </script>
 </body>
