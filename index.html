@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>203'X - System</title>
+    <title>203X - System</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -817,7 +817,6 @@
             margin-top: 4px;
         }
 
-        /* ===== SWITCH TOGGLE ===== */
         .switch { position: relative; display: inline-block; width: 48px; height: 26px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .switch .slider {
@@ -898,7 +897,7 @@
         <div class="page active" id="pageLogin">
             <div class="card">
                 <div class="header">
-                    <h2>203'X</h2>
+                    <h2>203X</h2>
                 </div>
 
                 <form id="loginForm" onsubmit="return false;">
@@ -918,7 +917,7 @@
                 </div>
 
                 <div class="footer">
-                    <strong>203'X TEAM</strong> — © 2026
+                    <strong>203X TEAM</strong> &copy; 2026
                     <div class="footer-credit">@create apk by samil</div>
                 </div>
             </div>
@@ -929,7 +928,7 @@
         <!-- ============================================================ -->
         <div class="page" id="pageHome">
             <div class="header" style="padding-bottom:12px;margin-bottom:0;">
-                <h2 style="font-size:2.2rem;">203'X</h2>
+                <h2 style="font-size:2.2rem;">203X</h2>
             </div>
 
             <div class="card" style="padding:12px;">
@@ -993,8 +992,8 @@
                 <button class="logout-btn" onclick="handleLogout()">LOG OUT</button>
 
                 <div class="footer">
-                    <strong>203'X TEAM</strong><br>
-                    © 2026 203'X Always For You
+                    <strong>203X TEAM</strong><br>
+                    &copy; 2026 203X Always For You
                     <div class="footer-credit">@create apk by samil</div>
                 </div>
             </div>
@@ -1005,13 +1004,13 @@
         <!-- ============================================================ -->
         <div class="page" id="pageBug">
             <div class="header" style="padding-bottom:12px;margin-bottom:0;">
-                <h2 style="font-size:2rem;">203'X BUG</h2>
+                <h2 style="font-size:2rem;">203X BUG</h2>
             </div>
 
             <div class="card">
                 <!-- Status koneksi WA -->
                 <div style="margin-bottom:16px;padding:10px 14px;border-radius:12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:10px;font-size:0.85rem;">
-                    <span id="bugWaStatus" style="color:var(--text-muted);">📱 WhatsApp: <span style="color:#ff4466;">Belum terhubung</span></span>
+                    <span id="bugWaStatus" style="color:var(--text-muted);">WA: <span style="color:#ff4466;">Belum terhubung</span></span>
                 </div>
 
                 <!-- ===== SENDER MODE TOGGLE ===== -->
@@ -1035,7 +1034,7 @@
                         </div>
                     </div>
                     <div style="margin-top:8px;font-size:0.7rem;color:var(--text-muted);padding:6px 10px;border-radius:8px;background:rgba(0,0,0,0.3);">
-                        <span id="senderModeDesc">📡 Menggunakan bot WhatsApp sistem (global)</span>
+                        <span id="senderModeDesc">Menggunakan bot WhatsApp sistem (global)</span>
                     </div>
                 </div>
 
@@ -1058,7 +1057,7 @@
                     <div class="bug-scroll" id="bugContainer">
                         <div class="bug-item active" onclick="selectBug(this)">
                             <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-                            <div class="bug-title">203'X BUG</div>
+                            <div class="bug-title">203X BUG</div>
                             <div class="bug-tag">203x</div>
                         </div>
                         <div class="bug-item" onclick="selectBug(this)">
@@ -1091,7 +1090,7 @@
                         <svg viewBox="0 0 24 24"><path d="M12 2v4M12 6l-4 4M12 6l4 4M4 16l8 8M20 16l-8 8M4 20h16"/></svg>
                         SENDER
                     </div>
-                    <div style="background:rgba(255,110,0,0.1);color:var(--accent-orange);padding:4px 12px;border-radius:30px;font-size:0.7rem;font-weight:700;border:1px solid rgba(255,110,0,0.1);letter-spacing:1px;" id="senderOnlineCount">● 0 online</div>
+                    <div style="background:rgba(255,110,0,0.1);color:var(--accent-orange);padding:4px 12px;border-radius:30px;font-size:0.7rem;font-weight:700;border:1px solid rgba(255,110,0,0.1);letter-spacing:1px;" id="senderOnlineCount">0 online</div>
                 </div>
                 <div class="sender-single" id="senderInfo">
                     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
@@ -1099,7 +1098,7 @@
                     <span class="sstatus" id="senderStatus">Koneksi WA diperlukan</span>
                 </div>
                 <div style="margin-top:10px;padding:8px 12px;border-radius:10px;background:rgba(255,110,0,0.05);border:1px solid rgba(255,110,0,0.08);text-align:center;font-size:0.75rem;color:var(--text-muted);">
-                    <span id="senderActiveMode">🔹 Mode: <strong style="color:var(--accent-orange);">GLOBAL</strong></span>
+                    <span id="senderActiveMode">Mode: <strong style="color:var(--accent-orange);">GLOBAL</strong></span>
                 </div>
             </div>
 
@@ -1113,8 +1112,8 @@
             <button class="btn-back" onclick="goHome()">KEMBALI KE HOME</button>
 
             <div class="footer">
-                <strong>203'X TEAM</strong><br>
-                © 2026 203'X Always For You
+                <strong>203X TEAM</strong><br>
+                &copy; 2026 203X Always For You
                 <div class="footer-credit">@create apk by samil</div>
             </div>
         </div>
@@ -1124,7 +1123,7 @@
         <!-- ============================================================ -->
         <div class="page" id="pageDownloader">
             <div class="header" style="padding-bottom:12px;margin-bottom:0;">
-                <h2 style="font-size:2rem;">203'X DOWNLOADER</h2>
+                <h2 style="font-size:2rem;">203X DOWNLOADER</h2>
             </div>
 
             <div class="card">
@@ -1146,7 +1145,7 @@
                 </div>
 
                 <button class="btn-action" id="dlBtnDownload" style="margin-top:6px;padding:16px;border-radius:20px;background:linear-gradient(135deg,#ff6b00,#ff8c00);border:none;color:#fff;font-weight:900;font-size:1.2rem;letter-spacing:4px;cursor:pointer;transition:0.3s;font-family:'Rajdhani',sans-serif;">
-                    ⬇ DOWNLOAD HD
+                    DOWNLOAD HD
                 </button>
 
                 <div class="dl-status" id="dlStatus">Siap mengunduh</div>
@@ -1155,7 +1154,7 @@
                     <video id="dlPreviewVideo" controls></video>
                     <div class="info">
                         <span id="dlPreviewInfo">Video siap</span>
-                        <span class="tag">✦ HD TANPA WATERMARK</span>
+                        <span class="tag">HD TANPA WATERMARK</span>
                     </div>
                 </div>
             </div>
@@ -1163,8 +1162,8 @@
             <button class="btn-back" onclick="goHome()">KEMBALI KE HOME</button>
 
             <div class="footer">
-                <strong>203'X TEAM</strong><br>
-                © 2026 203'X Always For You
+                <strong>203X TEAM</strong><br>
+                &copy; 2026 203X Always For You
                 <div class="footer-credit">@create apk by samil</div>
             </div>
         </div>
@@ -1174,7 +1173,7 @@
         <!-- ============================================================ -->
         <div class="page" id="pageTracker">
             <div class="header" style="padding-bottom:12px;margin-bottom:0;">
-                <h2 style="font-size:2rem;">203'X TRACKER</h2>
+                <h2 style="font-size:2rem;">203X TRACKER</h2>
             </div>
 
             <div class="card">
@@ -1203,18 +1202,18 @@
             <button class="btn-back" onclick="goHome()">KEMBALI KE HOME</button>
 
             <div class="footer">
-                <strong>203'X TEAM</strong><br>
-                © 2026 203'X Tracker Technology
+                <strong>203X TEAM</strong><br>
+                &copy; 2026 203X Tracker Technology
                 <div class="footer-credit">@create apk by samil</div>
             </div>
         </div>
 
         <!-- ============================================================ -->
-        <!-- PAGE SENDER -->
+        <!-- PAGE SENDER (No Server Info) -->
         <!-- ============================================================ -->
         <div class="page" id="pageSender">
             <div class="header" style="padding-bottom:12px;margin-bottom:0;">
-                <h2 style="font-size:2rem;">203'X SENDER</h2>
+                <h2 style="font-size:2rem;">203X SENDER</h2>
             </div>
 
             <div class="card">
@@ -1232,12 +1231,13 @@
                 </div>
 
                 <div class="pairing-input-wrap">
-                    <span class="prefix">📱</span>
+                    <span class="prefix">WA</span>
                     <input type="tel" id="pairingPhoneInput" placeholder="Masukkan nomor WhatsApp" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                 </div>
 
                 <button class="btn-primary" id="pairBtn" onclick="requestPairing()">
-                    🔗 HUBUNGKAN WHATSAPP
+                    <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:#0A0C12;display:inline-block;vertical-align:middle;margin-right:8px;"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                    HUBUNGKAN WHATSAPP
                 </button>
 
                 <div id="codeDisplay" class="code-display" style="display:none;">
@@ -1250,26 +1250,25 @@
                 </div>
 
                 <button class="btn-danger" onclick="logoutWhatsApp()" style="margin-top:16px;">
-                    🚫 PUTUSKAN KONEKSI
+                    <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:#FF4400;fill:none;stroke-width:2;display:inline-block;vertical-align:middle;margin-right:8px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    PUTUSKAN KONEKSI
                 </button>
-            </div>
 
-            <div class="card">
-                <div class="section-title">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                    SERVER INFO
-                </div>
-                <div style="font-size:0.9rem;color:var(--text-sub);">
-                    <div>🔗 Server: <span id="serverUrl" style="color:var(--text-main);">http://localhost:3000</span></div>
-                    <div style="margin-top:4px;">📡 Status: <span id="serverStatus" style="color:#ff4466;">● Offline</span></div>
+                <!-- Input ganti URL server (tetap ada) -->
+                <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.05);">
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <input type="text" id="apiBaseInput" value="http://localhost:3000" style="flex:1;padding:10px 14px;border-radius:12px;background:var(--bg-input);border:2px solid rgba(255,110,0,0.15);color:#fff;font-family:'Rajdhani',sans-serif;font-size:0.9rem;outline:none;">
+                        <button onclick="saveApiBase()" style="padding:10px 16px;border-radius:12px;border:none;background:var(--accent-orange);color:#fff;font-weight:700;cursor:pointer;">Simpan</button>
+                    </div>
+                    <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px;">Ganti URL server jika diperlukan</div>
                 </div>
             </div>
 
             <button class="btn-back" onclick="goHome()">KEMBALI KE HOME</button>
 
             <div class="footer">
-                <strong>203'X TEAM</strong><br>
-                © 2026 203'X Sender System
+                <strong>203X TEAM</strong><br>
+                &copy; 2026 203X Sender System
                 <div class="footer-credit">@create apk by samil</div>
             </div>
         </div>
@@ -1278,7 +1277,7 @@
 
     <script>
         // ============================================================
-        // 203'X FULL SYSTEM
+        // 203X FULL SYSTEM
         // ============================================================
 
         const API_BASE = localStorage.getItem('203x_api') || 'http://localhost:3000';
@@ -1321,6 +1320,7 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('pageSender').classList.add('active');
             updateSenderDashboard();
+            document.getElementById('apiBaseInput').value = API_BASE;
         }
         function goHome() { showHome(); }
         function goToBug() { showBug(); }
@@ -1378,16 +1378,16 @@
             if (found) {
                 const deviceId = getDeviceId();
                 if (found.device && found.device !== deviceId) {
-                    showToast('❌ Akun ini sudah dipakai di perangkat lain!', true);
+                    showToast('Akun sudah dipakai di perangkat lain!', true);
                     return;
                 }
                 found.device = deviceId;
                 localStorage.setItem('203x_users', JSON.stringify(users));
                 localStorage.setItem('203x_session', JSON.stringify({ username: username, role: found.role }));
-                showToast('✅ Login berhasil!', false);
+                showToast('Login berhasil!', false);
                 setTimeout(showHome, 500);
             } else {
-                showToast('❌ Username atau password salah!', true);
+                showToast('Username atau password salah!', true);
             }
         }
 
@@ -1399,7 +1399,7 @@
             document.getElementById('loginUsername').value = '';
             document.getElementById('loginPassword').value = '';
             showLogin();
-            showToast('👋 Logout berhasil', false);
+            showToast('Logout berhasil', false);
         }
 
         // ============================================================
@@ -1450,7 +1450,7 @@
         // BUG PAGE
         // ============================================================
         let isProcessing = false;
-        let senderMode = 'global'; // 'global' or 'private'
+        let senderMode = 'global';
 
         function selectBug(el) {
             if(isProcessing) return;
@@ -1460,7 +1460,7 @@
 
         function getActiveBugName() {
             const active = document.querySelector('.bug-item.active');
-            return active ? active.querySelector('.bug-title').textContent : '203\'X BUG';
+            return active ? active.querySelector('.bug-title').textContent : '203X BUG';
         }
 
         function toggleSenderMode() {
@@ -1475,22 +1475,22 @@
                 modeLabel.textContent = 'Pribadi (WA pribadi)';
                 modeBadge.textContent = 'PRIBADI';
                 modeBadge.style.color = '#00ff88';
-                modeDesc.innerHTML = '📱 Mengirim menggunakan WhatsApp pribadi yang sudah ditautkan';
-                if (activeMode) activeMode.innerHTML = '🔹 Mode: <strong style="color:#00ff88;">PRIBADI</strong>';
-                showToast('✅ Mode Sender Pribadi aktif', false);
+                modeDesc.innerHTML = 'Mengirim menggunakan WhatsApp pribadi yang sudah ditautkan';
+                if (activeMode) activeMode.innerHTML = 'Mode: <strong style="color:#00ff88;">PRIBADI</strong>';
+                showToast('Mode Sender Pribadi aktif', false);
             } else {
                 senderMode = 'global';
                 modeLabel.textContent = 'Global (Bot sistem)';
                 modeBadge.textContent = 'GLOBAL';
                 modeBadge.style.color = 'var(--accent-orange)';
-                modeDesc.innerHTML = '📡 Menggunakan bot WhatsApp sistem (global)';
-                if (activeMode) activeMode.innerHTML = '🔹 Mode: <strong style="color:var(--accent-orange);">GLOBAL</strong>';
-                showToast('🌐 Mode Sender Global aktif', false);
+                modeDesc.innerHTML = 'Menggunakan bot WhatsApp sistem (global)';
+                if (activeMode) activeMode.innerHTML = 'Mode: <strong style="color:var(--accent-orange);">GLOBAL</strong>';
+                showToast('Mode Sender Global aktif', false);
             }
         }
 
         // ============================================================
-        // SEND BUG VIA WA BOT
+        // SEND BUG
         // ============================================================
         async function sendBug() {
             if(isProcessing) return;
@@ -1517,14 +1517,14 @@
             
             const status = await getWhatsAppStatus();
             if (senderMode === 'private' && !status.connected) {
-                showToast('❌ WhatsApp pribadi belum terhubung! Buka menu Sender dulu.', true);
+                showToast('WhatsApp pribadi belum terhubung! Buka menu Sender dulu.', true);
                 return;
             }
             
             isProcessing = true;
             document.querySelector('.btn-send').style.opacity = '0.7';
             const modeText = senderMode === 'private' ? 'Pribadi' : 'Global';
-            showToast(`📤 Mengirim bug (${modeText})...`, false, true);
+            showToast(`Mengirim bug (${modeText})...`, false, true);
             
             try {
                 const response = await fetch(`${API_BASE}/api/send`, {
@@ -1532,7 +1532,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         target: number,
-                        message: `🔥 ${bugName} dikirim dari 203'X System`,
+                        message: `${bugName} dikirim dari 203X System`,
                         bugType: bugName,
                         mode: senderMode
                     })
@@ -1542,14 +1542,14 @@
                 
                 if (data.success) {
                     wrapper.className = 'target-wrapper success';
-                    showToast(`✅ ${data.message}`, false);
+                    showToast(`${data.message}`, false);
                 } else {
                     wrapper.className = 'target-wrapper error';
-                    showToast(`❌ ${data.message}`, true);
+                    showToast(`${data.message}`, true);
                 }
             } catch (err) {
                 wrapper.className = 'target-wrapper error';
-                showToast(`❌ Gagal konek ke server: ${err.message}`, true);
+                showToast(`Gagal konek ke server: ${err.message}`, true);
             } finally {
                 isProcessing = false;
                 document.querySelector('.btn-send').style.opacity = '1';
@@ -1576,13 +1576,13 @@
             
             const waStatus = document.getElementById('bugWaStatus');
             if (waStatus) {
-                const modeText = senderMode === 'private' ? '🔒 Pribadi' : '🌐 Global';
+                const modeText = senderMode === 'private' ? '[Pribadi]' : '[Global]';
                 if (status.connected) {
-                    waStatus.innerHTML = `📱 WhatsApp: <span style="color:#00ff88;">✅ Terhubung (${status.phone})</span> <span style="font-size:0.7rem;color:var(--text-muted);margin-left:6px;">${modeText}</span>`;
+                    waStatus.innerHTML = `WA: <span style="color:#00ff88;">Terhubung (${status.phone})</span> <span style="font-size:0.7rem;color:var(--text-muted);margin-left:6px;">${modeText}</span>`;
                 } else if (status.isPairing) {
-                    waStatus.innerHTML = `📱 WhatsApp: <span style="color:#ff8c00;">⏳ Menunggu pairing...</span>`;
+                    waStatus.innerHTML = `WA: <span style="color:#ff8c00;">Menunggu pairing...</span>`;
                 } else {
-                    waStatus.innerHTML = `📱 WhatsApp: <span style="color:#ff4466;">❌ Belum terhubung</span> <span style="font-size:0.7rem;color:var(--text-muted);margin-left:6px;">${modeText}</span>`;
+                    waStatus.innerHTML = `WA: <span style="color:#ff4466;">Belum terhubung</span> <span style="font-size:0.7rem;color:var(--text-muted);margin-left:6px;">${modeText}</span>`;
                 }
             }
             
@@ -1593,26 +1593,26 @@
             
             if (senderTitle) {
                 if (status.connected) {
-                    senderTitle.textContent = `📱 ${status.phone}`;
-                    const modeText = senderMode === 'private' ? '🔒 Pribadi' : '🌐 Global';
-                    senderStatus.textContent = `✅ Online — Siap kirim bug (${modeText})`;
+                    senderTitle.textContent = `${status.phone}`;
+                    const modeText = senderMode === 'private' ? '[Pribadi]' : '[Global]';
+                    senderStatus.textContent = `Online — Siap kirim bug ${modeText}`;
                     senderStatus.style.color = '#00ff88';
-                    if (senderOnline) senderOnline.textContent = '● 1 online';
+                    if (senderOnline) senderOnline.textContent = '1 online';
                     if (activeMode) {
                         const modeLabel = senderMode === 'private' ? 'PRIBADI' : 'GLOBAL';
                         const modeColor = senderMode === 'private' ? '#00ff88' : 'var(--accent-orange)';
-                        activeMode.innerHTML = `🔹 Mode: <strong style="color:${modeColor};">${modeLabel}</strong>`;
+                        activeMode.innerHTML = `Mode: <strong style="color:${modeColor};">${modeLabel}</strong>`;
                     }
                 } else if (status.isPairing) {
-                    senderTitle.textContent = '⏳ Pairing...';
+                    senderTitle.textContent = 'Pairing...';
                     senderStatus.textContent = 'Masukkan kode di WhatsApp';
                     senderStatus.style.color = '#ff8c00';
-                    if (senderOnline) senderOnline.textContent = '● 0 online';
+                    if (senderOnline) senderOnline.textContent = '0 online';
                 } else {
                     senderTitle.textContent = 'Belum Terhubung';
                     senderStatus.textContent = 'Koneksi WA diperlukan';
                     senderStatus.style.color = '#ff4466';
-                    if (senderOnline) senderOnline.textContent = '● 0 online';
+                    if (senderOnline) senderOnline.textContent = '0 online';
                 }
             }
         }
@@ -1626,31 +1626,29 @@
             
             if (status.connected) {
                 dot.className = 'dot online';
-                phone.textContent = `📱 ${status.phone}`;
-                statusText.innerHTML = 'Status: <span style="color:#00ff88;">✅ Online — Siap kirim pesan</span>';
-                document.getElementById('pairingStatus').textContent = '✅ WhatsApp terhubung!';
+                phone.textContent = `${status.phone}`;
+                statusText.innerHTML = 'Status: <span style="color:#00ff88;">Online — Siap kirim pesan</span>';
+                document.getElementById('pairingStatus').textContent = 'WhatsApp terhubung!';
                 document.getElementById('codeDisplay').style.display = 'none';
             } else if (status.isPairing) {
                 dot.className = 'dot';
-                phone.textContent = '⏳ Menunggu pairing...';
-                statusText.innerHTML = 'Status: <span style="color:#ff8c00;">⏳ Pairing code dikirim</span>';
-                document.getElementById('pairingStatus').textContent = '⏳ Masukkan kode di WhatsApp';
+                phone.textContent = 'Menunggu pairing...';
+                statusText.innerHTML = 'Status: <span style="color:#ff8c00;">Pairing code dikirim</span>';
+                document.getElementById('pairingStatus').textContent = 'Masukkan kode di WhatsApp';
             } else {
                 dot.className = 'dot';
                 phone.textContent = 'Belum terhubung';
-                statusText.innerHTML = 'Status: <span style="color:#ff4466;">❌ Offline</span>';
+                statusText.innerHTML = 'Status: <span style="color:#ff4466;">Offline</span>';
                 document.getElementById('pairingStatus').textContent = 'Masukkan nomor HP untuk memulai pairing';
             }
-            
-            try {
-                const resp = await fetch(`${API_BASE}/api/status`);
-                if (resp.ok) {
-                    document.getElementById('serverStatus').style.color = '#00ff88';
-                    document.getElementById('serverStatus').textContent = '● Online';
-                }
-            } catch (err) {
-                document.getElementById('serverStatus').style.color = '#ff4466';
-                document.getElementById('serverStatus').textContent = '● Offline';
+        }
+
+        function saveApiBase() {
+            const input = document.getElementById('apiBaseInput');
+            const newUrl = input.value.trim();
+            if (newUrl) {
+                localStorage.setItem('203x_api', newUrl);
+                window.location.reload();
             }
         }
 
@@ -1674,8 +1672,8 @@
             
             const btn = document.getElementById('pairBtn');
             btn.disabled = true;
-            btn.textContent = '⏳ Meminta kode...';
-            document.getElementById('pairingStatus').textContent = '⏳ Menghubungi server...';
+            btn.textContent = 'Meminta kode...';
+            document.getElementById('pairingStatus').textContent = 'Menghubungi server...';
             
             try {
                 const resp = await fetch(`${API_BASE}/api/pair`, {
@@ -1689,8 +1687,8 @@
                 if (data.success && data.code) {
                     document.getElementById('codeDisplay').style.display = 'block';
                     document.getElementById('pairingCodeDisplay').textContent = data.code;
-                    document.getElementById('pairingStatus').textContent = `✅ Kode dikirim! Masukkan ${data.code} di WhatsApp`;
-                    showToast(`✅ Kode pairing: ${data.code}`, false);
+                    document.getElementById('pairingStatus').textContent = `Kode dikirim! Masukkan ${data.code} di WhatsApp`;
+                    showToast(`Kode pairing: ${data.code}`, false);
                     
                     let checkCount = 0;
                     const checkInterval = setInterval(async () => {
@@ -1698,26 +1696,26 @@
                         if (status.connected) {
                             clearInterval(checkInterval);
                             updateSenderDashboard();
-                            showToast('✅ WhatsApp berhasil terhubung!', false);
+                            showToast('WhatsApp berhasil terhubung!', false);
                             btn.disabled = false;
-                            btn.textContent = '🔗 HUBUNGKAN WHATSAPP';
+                            btn.textContent = 'HUBUNGKAN WHATSAPP';
                         }
                         checkCount++;
                         if (checkCount > 30) {
                             clearInterval(checkInterval);
                             btn.disabled = false;
-                            btn.textContent = '🔗 HUBUNGKAN WHATSAPP';
+                            btn.textContent = 'HUBUNGKAN WHATSAPP';
                         }
                     }, 3000);
                 } else {
-                    showToast(`❌ ${data.message || 'Gagal pairing'}`, true);
+                    showToast(`${data.message || 'Gagal pairing'}`, true);
                     btn.disabled = false;
-                    btn.textContent = '🔗 HUBUNGKAN WHATSAPP';
+                    btn.textContent = 'HUBUNGKAN WHATSAPP';
                 }
             } catch (err) {
-                showToast(`❌ Gagal konek ke server: ${err.message}`, true);
+                showToast(`Gagal konek ke server: ${err.message}`, true);
                 btn.disabled = false;
-                btn.textContent = '🔗 HUBUNGKAN WHATSAPP';
+                btn.textContent = 'HUBUNGKAN WHATSAPP';
             }
         }
 
@@ -1730,7 +1728,7 @@
                 showToast(data.message || 'Logout berhasil', false);
                 updateSenderDashboard();
             } catch (err) {
-                showToast(`❌ Gagal logout: ${err.message}`, true);
+                showToast(`Gagal logout: ${err.message}`, true);
             }
         }
 
@@ -1756,20 +1754,20 @@
         dlBtnDownload.addEventListener('click', async function() {
             const url = dlUrlInput.value.trim();
             if (!url) {
-                dlStatus.textContent = '❌ Masukkan URL dulu!';
+                dlStatus.textContent = 'Masukkan URL dulu!';
                 dlStatus.className = 'dl-status error';
                 return;
             }
 
             if (!url.includes('tiktok.com')) {
-                dlStatus.textContent = '❌ Hanya support TikTok!';
+                dlStatus.textContent = 'Hanya support TikTok!';
                 dlStatus.className = 'dl-status error';
                 return;
             }
 
             this.disabled = true;
             this.style.opacity = '0.6';
-            dlStatus.textContent = '⏳ Mencari video HD...';
+            dlStatus.textContent = 'Mencari video HD...';
             dlStatus.className = 'dl-status loading';
 
             try {
@@ -1782,7 +1780,7 @@
                     if (videoUrl) {
                         dlPreviewVideo.src = videoUrl + '?nocache=' + Date.now();
                         dlPreview.style.display = 'block';
-                        dlPreviewInfo.textContent = '📥 TikTok HD';
+                        dlPreviewInfo.textContent = 'TikTok HD';
 
                         const videoResp = await fetch(videoUrl);
                         const blob = await videoResp.blob();
@@ -1800,18 +1798,18 @@
 
                         setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
 
-                        dlStatus.textContent = '✅ Video HD berhasil diunduh!';
+                        dlStatus.textContent = 'Video HD berhasil diunduh!';
                         dlStatus.className = 'dl-status success';
                     } else {
-                        dlStatus.textContent = '⚠️ Gak nemu video. Coba URL lain.';
+                        dlStatus.textContent = 'Gak nemu video. Coba URL lain.';
                         dlStatus.className = 'dl-status error';
                     }
                 } else {
-                    dlStatus.textContent = '⚠️ Gagal ambil data. Coba lagi.';
+                    dlStatus.textContent = 'Gagal ambil data. Coba lagi.';
                     dlStatus.className = 'dl-status error';
                 }
             } catch (err) {
-                dlStatus.textContent = '❌ Error: ' + err.message;
+                dlStatus.textContent = 'Error: ' + err.message;
                 dlStatus.className = 'dl-status error';
             } finally {
                 this.disabled = false;
@@ -1869,7 +1867,7 @@
                             const center = { lat: -6.9175, lng: 107.6191 }; 
                             const randomLoc = generateRandomCoordinate(center.lat, center.lng, 40);
 
-                            msgBox.textContent = `✓ TARGET IDENTIFIED (62${after62})`;
+                            msgBox.textContent = `TARGET IDENTIFIED (62${after62})`;
                             msgBox.className = 'track-status success';
                             wrapper.className = 'track-input-wrap success';
                             
@@ -1886,7 +1884,7 @@
                 }
             }
 
-            msgBox.textContent = "✗ TARGET INVALID. MUST USE 62 + 812/813/822/852...";
+            msgBox.textContent = "TARGET INVALID. MUST USE 62 + 812/813/822/852...";
             msgBox.className = 'track-status error';
             wrapper.className = 'track-input-wrap error';
             input.focus();
@@ -1922,15 +1920,13 @@
         }, 10000);
 
         // ============================================================
-        // INIT — CHECK SESSION + VIDEO
+        // INIT
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             const video = document.getElementById('homeVideo');
             if (video) {
                 video.play().catch(() => {});
             }
-
-            document.getElementById('serverUrl').textContent = API_BASE;
 
             const session = localStorage.getItem('203x_session');
             if (session) {
