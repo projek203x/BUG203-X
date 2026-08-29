@@ -2,9 +2,9 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>203'X - System</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-primary: #0A0B0E;
@@ -251,7 +251,6 @@
             max-height: 220px;
             object-fit: cover;
         }
-        /* Sembunyikan kontrol bawaan browser */
         .video-wrapper video::-webkit-media-controls {
             display: none !important;
         }
@@ -326,6 +325,7 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
         }
         .bug-item:hover { transform: translateY(-4px); border-color: rgba(255, 110, 0, 0.2); }
         .bug-item.active { border-color: var(--accent-orange); background: rgba(255, 110, 0, 0.05); box-shadow: 0 0 40px rgba(255, 110, 0, 0.05); }
@@ -359,7 +359,6 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
         .bug-item.active .bug-tag { color: var(--accent-orange); border-color: rgba(255, 110, 0, 0.2); background: rgba(255, 110, 0, 0.1); }
-        .bug-item { position: relative; }
 
         .dots { display: flex; justify-content: center; gap: 8px; margin-top: -5px; }
         .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.05); transition: 0.3s; }
@@ -518,6 +517,83 @@
         }
         .section-title svg { width: 20px; height: 20px; stroke: var(--accent-orange); fill: none; stroke-width: 2; }
 
+        /* ===== PLATFORM BTN (DOWNLOADER) ===== */
+        .platform-btn {
+            flex: 1;
+            min-width: auto;
+            padding: 12px;
+            border: 2px solid rgba(255, 110, 0, 0.2);
+            border-radius: 16px;
+            background: rgba(255, 110, 0, 0.05);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Rajdhani', sans-serif;
+            letter-spacing: 1px;
+        }
+        .platform-btn.active {
+            border-color: #ff6b00;
+            background: rgba(255, 110, 0, 0.12);
+            box-shadow: 0 0 30px rgba(255, 110, 0, 0.05);
+        }
+        .platform-btn .sub {
+            display: block;
+            font-size: 0.5rem;
+            color: rgba(255,255,255,0.2);
+        }
+        .platform-btn.active .sub { color: rgba(255, 140, 0, 0.4); }
+
+        /* ===== PREVIEW ===== */
+        .dl-preview {
+            display: none;
+            margin-top: 18px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 110, 0, 0.1);
+            background: rgba(0, 0, 0, 0.3);
+        }
+        .dl-preview video {
+            width: 100%;
+            max-height: 320px;
+            object-fit: cover;
+            display: block;
+        }
+        .dl-preview .info {
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.7rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-top: 1px solid rgba(255, 110, 0, 0.04);
+            color: rgba(255, 255, 255, 0.2);
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .dl-preview .tag {
+            padding: 2px 12px;
+            border-radius: 12px;
+            background: rgba(255, 110, 0, 0.06);
+            border: 1px solid rgba(255, 110, 0, 0.06);
+            color: #ff8c00;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+        }
+        .dl-status {
+            text-align: center;
+            margin-top: 16px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            min-height: 30px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+        .dl-status.success { color: #00ff88; }
+        .dl-status.error { color: #ff4466; }
+        .dl-status.loading { color: #ff8c00; animation: blink 0.8s step-end infinite; }
+
+        @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.2; } }
+
         @media (max-width: 480px) {
             .header h2 { font-size: 2.4rem; letter-spacing: 6px; }
             .header h3 { font-size: 1.4rem; }
@@ -530,6 +606,7 @@
             .menu-grid { gap: 8px; }
             .menu-item { padding: 14px 8px; }
             .menu-item svg { width: 22px; height: 22px; }
+            .platform-btn { font-size: 0.85rem; padding: 12px 6px; }
         }
         @media (max-width: 380px) {
             .header h2 { font-size: 1.8rem; letter-spacing: 4px; }
@@ -573,7 +650,7 @@
                 </form>
 
                 <div style="text-align:center;margin-top:14px;color:var(--text-muted);font-size:0.85rem;">
-                    Belum punya akun? <a href="create.html" style="color:var(--accent-orange);cursor:pointer;font-weight:700;text-decoration:none;">Buat Akun</a>
+                    Belum punya akun? <a href="#" style="color:var(--accent-orange);cursor:pointer;font-weight:700;text-decoration:none;" onclick="showToast('Hubungi admin untuk daftar', false)">Buat Akun</a>
                 </div>
 
                 <div class="footer">
@@ -635,10 +712,10 @@
                             <div class="mname">Bug</div>
                             <div class="mdesc">Kirim bug ke target</div>
                         </div>
-                        <div class="menu-item" onclick="showToast('Coming soon!',false)">
-                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                            <div class="mname">Settings</div>
-                            <div class="mdesc">Pengaturan akun</div>
+                        <div class="menu-item" onclick="goToDownloader()">
+                            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            <div class="mname">Downloader</div>
+                            <div class="mdesc">Download video HD</div>
                         </div>
                     </div>
                 </div>
@@ -739,6 +816,58 @@
             </div>
         </div>
 
+        <!-- ============================================================ -->
+        <!-- PAGE DOWNLOADER -->
+        <!-- ============================================================ -->
+        <div class="page" id="pageDownloader">
+            <div class="header" style="padding-bottom:12px;margin-bottom:0;">
+                <h2 style="font-size:2rem;">203'X DOWNLOADER</h2>
+            </div>
+
+            <div class="card">
+                <div class="section-title">
+                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    DOWNLOAD TANPA WATERMARK
+                </div>
+
+                <!-- Platform selector (cuma TikTok) -->
+                <div style="display:flex;gap:12px;margin-bottom:18px;justify-content:center;">
+                    <button class="platform-btn active" id="dlBtnTiktok" style="flex:1;min-width:auto;padding:12px;border:2px solid rgba(255,110,0,0.2);border-radius:16px;background:rgba(255,110,0,0.05);color:#fff;font-weight:700;font-size:1rem;cursor:pointer;transition:0.3s;font-family:'Rajdhani',sans-serif;letter-spacing:1px;">
+                        TikTok
+                        <span style="display:block;font-size:0.5rem;color:rgba(255,255,255,0.2);">video & foto</span>
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <label>URL</label>
+                    <input type="url" id="dlUrlInput" placeholder="https://www.tiktok.com/@user/video/1234567890" style="font-family:'Rajdhani',sans-serif;">
+                </div>
+
+                <button class="btn-action" id="dlBtnDownload" style="margin-top:6px;padding:16px;border-radius:20px;background:linear-gradient(135deg,#ff6b00,#ff8c00);border:none;color:#fff;font-weight:900;font-size:1.2rem;letter-spacing:4px;cursor:pointer;transition:0.3s;font-family:'Rajdhani',sans-serif;">
+                    ⬇ DOWNLOAD HD
+                </button>
+
+                <div class="dl-status" id="dlStatus">Siap mengunduh</div>
+
+                <!-- Preview -->
+                <div class="dl-preview" id="dlPreview">
+                    <video id="dlPreviewVideo" controls></video>
+                    <div class="info">
+                        <span id="dlPreviewInfo">Video siap</span>
+                        <span class="tag">✦ HD TANPA WATERMARK</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-back" onclick="goHome()">KEMBALI KE HOME</button>
+
+            <div class="footer">
+                <strong>203'X TEAM</strong><br>
+                © 2026 203'X Always For You
+                <div class="footer-credit">@create apk by samil</div>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -770,8 +899,13 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('pageBug').classList.add('active');
         }
+        function showDownloader() {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('pageDownloader').classList.add('active');
+        }
         function goHome() { showHome(); }
         function goToBug() { showBug(); }
+        function goToDownloader() { showDownloader(); }
 
         // ===== TOAST =====
         function showToast(message, isError = false, isSpinner = false) {
@@ -949,12 +1083,106 @@
         }
 
         // ============================================================
+        // DOWNLOADER — TIKTOK HD
+        // ============================================================
+        const dlBtnTiktok = document.getElementById('dlBtnTiktok');
+        const dlUrlInput = document.getElementById('dlUrlInput');
+        const dlBtnDownload = document.getElementById('dlBtnDownload');
+        const dlStatus = document.getElementById('dlStatus');
+        const dlPreview = document.getElementById('dlPreview');
+        const dlPreviewVideo = document.getElementById('dlPreviewVideo');
+        const dlPreviewInfo = document.getElementById('dlPreviewInfo');
+
+        let dlPlatform = 'tiktok';
+
+        // Tombol platform (cuma TikTok, tapi tetep)
+        dlBtnTiktok.addEventListener('click', function() {
+            document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            dlPlatform = 'tiktok';
+        });
+
+        dlBtnDownload.addEventListener('click', async function() {
+            const url = dlUrlInput.value.trim();
+            if (!url) {
+                dlStatus.textContent = '❌ Masukkan URL dulu!';
+                dlStatus.className = 'dl-status error';
+                return;
+            }
+
+            if (!url.includes('tiktok.com')) {
+                dlStatus.textContent = '❌ Hanya support TikTok!';
+                dlStatus.className = 'dl-status error';
+                return;
+            }
+
+            this.disabled = true;
+            this.style.opacity = '0.6';
+            dlStatus.textContent = '⏳ Mencari video HD...';
+            dlStatus.className = 'dl-status loading';
+
+            try {
+                const resp = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}&hd=1`);
+                const data = await resp.json();
+
+                if (data.code === 0 && data.data) {
+                    let videoUrl = data.data.play || data.data.play1 || data.data.wmplay;
+
+                    if (videoUrl) {
+                        // Preview
+                        dlPreviewVideo.src = videoUrl + '?nocache=' + Date.now();
+                        dlPreview.style.display = 'block';
+                        dlPreviewInfo.textContent = '📥 TikTok HD';
+
+                        // Download ke galeri
+                        const videoResp = await fetch(videoUrl);
+                        const blob = await videoResp.blob();
+                        const blobUrl = URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.href = blobUrl;
+                        link.download = `tiktok_HD_${Date.now()}.mp4`;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+
+                        // Android bridge (kalo pake WebView)
+                        if (window.AndroidDownload) {
+                            window.AndroidDownload.download(videoUrl, `tiktok_HD_${Date.now()}.mp4`);
+                        }
+
+                        setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+
+                        dlStatus.textContent = '✅ Video HD berhasil diunduh!';
+                        dlStatus.className = 'dl-status success';
+                    } else {
+                        dlStatus.textContent = '⚠️ Gak nemu video. Coba URL lain.';
+                        dlStatus.className = 'dl-status error';
+                    }
+                } else {
+                    dlStatus.textContent = '⚠️ Gagal ambil data. Coba lagi.';
+                    dlStatus.className = 'dl-status error';
+                }
+            } catch (err) {
+                dlStatus.textContent = '❌ Error: ' + err.message;
+                dlStatus.className = 'dl-status error';
+            } finally {
+                this.disabled = false;
+                this.style.opacity = '1';
+            }
+        });
+
+        // Enter key support
+        dlUrlInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') dlBtnDownload.click();
+        });
+
+        // ============================================================
         // KEYBOARD SUPPORT
         // ============================================================
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 const active = document.querySelector('.page.active');
-                if (active.id === 'pageLogin') handleLogin();
+                if (active && active.id === 'pageLogin') handleLogin();
             }
         });
 
@@ -982,4 +1210,4 @@
         });
     </script>
 </body>
-            </html>
+    </html>
