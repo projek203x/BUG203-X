@@ -1169,6 +1169,16 @@
         // ===== CONFIG - GANTI DENGAN URL CLOUDFLARE LO =====
         const API_BASE = 'https://opponents-modify-athletes-licens.es.trycloudflare.com';
 
+        // ===== DAFTAR PREFIX HP VALID INDONESIA =====
+        const VALID_PREFIXES = [
+            '811', '812', '813', '814', '815', '816', '817', '818', '819',
+            '821', '822', '823', '824', '825', '826', '827', '828', '829',
+            '831', '832', '833', '834', '835', '836', '837', '838', '839',
+            '851', '852', '853', '854', '855', '856', '857', '858', '859',
+            '877', '878', '879',
+            '881', '882', '883', '884', '885', '886', '887', '888', '889'
+        ];
+
         // ===== DEVICE FINGERPRINT =====
         function getDeviceId() {
             let deviceId = localStorage.getItem('203x_device_id');
@@ -1184,6 +1194,7 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('pageLogin').classList.add('active');
         }
+
         function showHome() {
             const session = JSON.parse(localStorage.getItem('203x_session') || '{}');
             if (!session.username) { showLogin(); return; }
@@ -1205,24 +1216,29 @@
             renderHome();
             updateSenderStatus();
         }
+
         function showBug() {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('pageBug').classList.add('active');
             updateSenderStatus();
         }
+
         function showDownloader() {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('pageDownloader').classList.add('active');
         }
+
         function showTracker() {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('pageTracker').classList.add('active');
         }
+
         function showSender() {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('pageSender').classList.add('active');
             updateSenderDashboard();
         }
+
         function goHome() { showHome(); }
         function goToBug() { showBug(); }
         function goToDownloader() { showDownloader(); }
@@ -1406,43 +1422,71 @@
         }
 
         // ============================================================
-        // SEND BUG
+        // SEND BUG - DENGAN VALIDASI & SIMULASI 5 DETIK
         // ============================================================
         async function sendBug() {
-            if(isProcessing) return;
-            
+            if (isProcessing) return;
+
             const input = document.getElementById('targetInput');
             const wrapper = document.getElementById('inputWrapper');
             let rawVal = input.value.replace(/\D/g, '');
             const bugName = getActiveBugName();
-            
+
+            // ===== VALIDASI NOMOR =====
             if (!rawVal) {
-                showToast('Masukkan nomor target!', true);
+                showToast('❌ Masukkan nomor target!', true);
                 return;
             }
-            
+
+            // Pastikan dimulai dengan 62
             let number = rawVal;
             if (!number.startsWith('62')) {
                 number = '62' + number;
             }
-            
+
+            // Cek panjang minimal
             if (number.length < 10 || number.length > 15) {
-                showToast('Nomor tidak valid!', true);
+                showToast('❌ Nomor tidak valid! Minimal 10 digit.', true);
                 return;
             }
-            
+
+            // Ambil prefix 3 digit setelah 62
+            let prefix = number.substring(2, 5);
+
+            if (!VALID_PREFIXES.includes(prefix)) {
+                showToast('❌ Nomor tidak valid! Gunakan prefix yang benar (811, 812, 813, dst).', true);
+                return;
+            }
+
+            // ===== CEK KONEKSI WA =====
             const status = await getWhatsAppStatus();
             if (senderMode === 'private' && !status.connected) {
-                showToast('WhatsApp pribadi belum terhubung! Buka menu Sender dulu.', true);
+                showToast('❌ WhatsApp pribadi belum terhubung! Buka menu Sender dulu.', true);
                 return;
             }
-            
+
+            if (senderMode === 'global') {
+                if (!status.connected) {
+                    showToast('❌ Bot WhatsApp belum terhubung! Buka menu Sender dulu.', true);
+                    return;
+                }
+            }
+
+            // ===== PROSES KIRIM =====
             isProcessing = true;
-            document.querySelector('.btn-send').style.opacity = '0.7';
-            const modeText = senderMode === 'private' ? 'Pribadi' : 'Global';
-            showToast(`Mengirim bug (${modeText})...`, false, true);
+            const btn = document.querySelector('.btn-send');
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
             
+            const modeText = senderMode === 'private' ? 'Pribadi' : 'Global';
+            const displayNumber = '62' + rawVal;
+            showToast(`📤 Mengirim ${bugName} ke ${displayNumber} (${modeText})...`, false, true);
+
+            // ===== SIMULASI 5 DETIK =====
+            await new Promise(resolve => setTimeout(resolve, 5000));
+
             try {
+                // Kirim ke server
                 const response = await fetch(`${API_BASE}/api/send`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1453,22 +1497,23 @@
                         mode: senderMode
                     })
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (data.success) {
                     wrapper.className = 'target-wrapper success';
-                    showToast(`${data.message}`, false);
+                    showToast(`✅ ${bugName} sukses terkirim ke ${displayNumber}!`, false);
                 } else {
                     wrapper.className = 'target-wrapper error';
-                    showToast(`${data.message}`, true);
+                    showToast(`❌ Gagal kirim: ${data.message}`, true);
                 }
             } catch (err) {
                 wrapper.className = 'target-wrapper error';
-                showToast(`Gagal konek ke server: ${err.message}`, true);
+                showToast(`❌ Gagal konek ke server: ${err.message}`, true);
             } finally {
                 isProcessing = false;
-                document.querySelector('.btn-send').style.opacity = '1';
+                btn.disabled = false;
+                btn.style.opacity = '1';
             }
         }
 
@@ -1722,8 +1767,6 @@
         // ============================================================
         // TRACKER
         // ============================================================
-        const validPrefixes = ['812', '813', '814', '815', '816', '817', '818', '819', '822', '823', '824', '825', '826', '827', '828', '829', '852', '853', '854', '855', '856', '857', '858', '859', '878', '879', '881', '882', '883', '884', '885', '886', '887', '888', '889', '831', '832', '833', '834', '835', '836', '837', '838', '839'];
-
         function generateRandomCoordinate(centerLat, centerLng, radiusKm) {
             const radiusDeg = radiusKm / 111.32;
             const u = Math.random();
@@ -1753,7 +1796,7 @@
                 let after62 = rawVal.substring(2);
                 if (after62.length >= 8 && after62.length <= 13) {
                     let prefix = after62.substring(0, 3);
-                    if (validPrefixes.includes(prefix)) {
+                    if (VALID_PREFIXES.includes(prefix)) {
                         msgBox.textContent = "CONNECTING TO SATELLITE...";
                         msgBox.className = 'track-status loading';
                         btn.disabled = true;
