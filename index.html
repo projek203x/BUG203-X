@@ -4,82 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>203X - System</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-primary: #0A0B0E;
-            --bg-card: rgba(16, 18, 22, 0.85);
-            --bg-input: rgba(0, 0, 0, 0.5);
-            --accent-orange: #FF6E00;
-            --accent-orange-glow: rgba(255, 110, 0, 0.4);
-            --text-main: #FFFFFF;
-            --text-sub: #9AA0A6;
-            --text-muted: #54585E;
-            --glass-border: rgba(255, 110, 0, 0.1);
-            --shadow-glow: 0 0 30px rgba(255, 110, 0, 0.05);
-        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background-color: var(--bg-primary);
-            background-image: radial-gradient(circle at 50% 0%, rgba(255, 110, 0, 0.03) 0%, transparent 60%), linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 100% 100%, 30px 30px, 30px 30px;
-            color: var(--text-main);
+            background: #0A0B0E;
+            color: #fff;
             font-family: 'Rajdhani', sans-serif;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: center;
             padding: 20px 15px 40px;
-            overflow-y: auto;
         }
-        .container { width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: 24px; }
-        .page { display: none; flex-direction: column; gap: 24px; width: 100%; }
-        .page.active { display: flex; }
+        .container { max-width: 440px; width: 100%; }
         .card {
-            background: var(--bg-card);
+            background: rgba(16, 18, 22, 0.85);
             backdrop-filter: blur(14px);
             border-radius: 24px;
             padding: 24px 22px;
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow-glow), inset 0 1px 0 rgba(255, 255, 255, 0.03);
-            position: relative;
-            overflow: hidden;
-        }
-        .card::before {
-            content: '';
-            position: absolute;
-            top: -1px; left: 20%;
-            width: 60%; height: 3px;
-            background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
-            opacity: 0.6;
-            filter: blur(2px);
+            border: 1px solid rgba(255, 110, 0, 0.1);
+            margin-bottom: 20px;
         }
         .header {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            text-align: center;
             padding-bottom: 20px;
             border-bottom: 2px solid rgba(255, 110, 0, 0.1);
-            margin-bottom: 5px;
-            position: relative;
+            margin-bottom: 20px;
         }
-        .header::after {
-            content: '';
-            position: absolute;
-            bottom: -2px; left: 10%;
-            width: 80%; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
-            filter: blur(4px);
-        }
-        .header h2 {
+        .header h1 {
             font-family: 'Orbitron', sans-serif;
             font-weight: 900;
-            letter-spacing: 10px;
-            font-size: 3.2rem;
-            background: linear-gradient(to bottom, #FFFFFF, #DBAEB2, #FF8C00);
+            font-size: 2.8rem;
+            background: linear-gradient(to bottom, #FFFFFF, #FF8C00);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 80px rgba(255, 110, 0, 0.3);
+        }
+        .header p {
+            color: #9AA0A6;
+            font-size: 0.8rem;
+            letter-spacing: 4px;
         }
         .form-group { margin-bottom: 16px; }
         .form-group label {
@@ -87,48 +50,24 @@
             font-weight: 600;
             font-size: 0.85rem;
             letter-spacing: 2px;
-            color: var(--text-sub);
+            color: #9AA0A6;
             margin-bottom: 6px;
         }
         .form-group input {
             width: 100%;
             padding: 14px 18px;
-            background: var(--bg-input);
+            background: rgba(0, 0, 0, 0.5);
             border: 2px solid rgba(255, 110, 0, 0.15);
             border-radius: 16px;
             color: #fff;
             font-family: 'Rajdhani', sans-serif;
             font-size: 1.1rem;
             outline: none;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .form-group input:focus {
-            border-color: var(--accent-orange);
-            box-shadow: 0 0 40px var(--accent-orange-glow), inset 0 0 20px rgba(255, 110, 0, 0.05);
+            border-color: #FF6E00;
+            box-shadow: 0 0 40px rgba(255, 110, 0, 0.2);
         }
-        .form-group input::placeholder { color: var(--text-muted); font-size: 0.9rem; }
-        .btn-action {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 20px;
-            background: linear-gradient(135deg, #1A1C22, #2F3138);
-            color: #FFFFFF;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 900;
-            font-size: 1.3rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid rgba(255, 110, 0, 0.1);
-        }
-        .btn-action:hover {
-            background: linear-gradient(135deg, #2A2D36, #1A1C22);
-            border-color: rgba(255, 110, 0, 0.3);
-            box-shadow: 0 0 60px rgba(255, 110, 0, 0.1);
-        }
-        .btn-action:active { transform: scale(0.97); }
         .btn-primary {
             width: 100%;
             padding: 16px;
@@ -136,19 +75,15 @@
             border-radius: 20px;
             background: linear-gradient(90deg, #FF6E00, #FF9E3D);
             color: #0A0C12;
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'Orbitron', sans-serif;
             font-weight: 900;
-            font-size: 1.2rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: 0.3s;
             box-shadow: 0 0 30px rgba(255, 110, 0, 0.2);
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 60px rgba(255, 110, 0, 0.3);
-        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(255, 110, 0, 0.3); }
         .btn-primary:active { transform: scale(0.97); }
         .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         .btn-danger {
@@ -158,60 +93,29 @@
             border-radius: 20px;
             background: transparent;
             color: #FF4400;
-            font-family: 'Rajdhani', sans-serif;
             font-weight: 700;
             font-size: 1rem;
             letter-spacing: 2px;
-            text-transform: uppercase;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: 0.3s;
         }
         .btn-danger:hover { background: rgba(255, 68, 0, 0.1); border-color: #FF4400; }
-        .greeting {
-            font-size: 1.4rem;
+        .btn-danger:disabled { opacity: 0.3; cursor: not-allowed; }
+        .btn-back {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            border-radius: 60px;
+            background: transparent;
+            color: #54585E;
             font-weight: 700;
-            color: var(--text-main);
-            letter-spacing: 1px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.3s;
+            letter-spacing: 2px;
+            margin-top: 8px;
         }
-        .greeting .username { color: var(--accent-orange); }
-        .greeting .role {
-            display: inline-block;
-            font-size: 0.8rem;
-            padding: 4px 16px;
-            border-radius: 30px;
-            background: rgba(255, 110, 0, 0.1);
-            color: var(--accent-orange);
-            border: 1px solid rgba(255, 110, 0, 0.2);
-            margin-left: 8px;
-            letter-spacing: 1px;
-        }
-        .sholat-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-            gap: 6px;
-            margin-top: 12px;
-        }
-        .sholat-item {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 12px;
-            padding: 10px 4px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
-        .sholat-item .name {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .sholat-item .time {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text-main);
-            font-family: 'Orbitron', monospace;
-            margin-top: 2px;
-        }
-        .sholat-item .time.orange { color: var(--accent-orange); }
+        .btn-back:hover { border-color: rgba(255, 110, 0, 0.3); color: #FF6E00; }
         .menu-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -225,519 +129,27 @@
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.03);
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 0.3s;
         }
         .menu-item:hover {
-            border-color: var(--accent-orange);
+            border-color: #FF6E00;
             background: rgba(255, 110, 0, 0.05);
             transform: translateY(-3px);
         }
-        .menu-item svg {
-            width: 28px; height: 28px;
-            stroke: var(--accent-orange);
-            fill: none;
-            stroke-width: 2;
-            margin-bottom: 6px;
-        }
-        .menu-item .mname {
-            font-weight: 700;
-            font-size: 1rem;
-            letter-spacing: 1px;
-            color: var(--text-main);
-        }
-        .menu-item .mdesc {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-        .video-wrapper {
-            border-radius: 16px;
-            overflow: hidden;
-            background: #0a0a0a;
-            border: 1px solid rgba(255, 110, 0, 0.1);
-            margin-bottom: 4px;
-            position: relative;
-        }
-        .video-wrapper video {
-            width: 100%;
-            height: auto;
-            display: block;
-            max-height: 220px;
-            object-fit: cover;
-        }
-        .video-wrapper video::-webkit-media-controls { display: none !important; }
-        .video-wrapper video::-webkit-media-controls-enclosure { display: none !important; }
-        .video-wrapper video::-webkit-media-controls-panel { display: none !important; }
-        .video-wrapper video::-webkit-media-controls-play-button { display: none !important; }
-        .video-wrapper video::-webkit-media-controls-start-playback-button { display: none !important; }
-        .target-wrapper {
-            background: var(--bg-input);
-            border: 2px solid rgba(255, 110, 0, 0.2);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .target-wrapper:focus-within {
-            border-color: var(--accent-orange);
-            box-shadow: 0 0 40px var(--accent-orange-glow), inset 0 0 20px rgba(255, 110, 0, 0.05);
-        }
-        .target-wrapper.success { border-color: #FF6E00; box-shadow: 0 0 40px var(--accent-orange-glow); background: rgba(255, 110, 0, 0.05); }
-        .target-wrapper.error { border-color: #CC4400; box-shadow: 0 0 40px rgba(204, 68, 0, 0.2); }
-        .prefix {
-            padding: 18px 0 18px 20px;
-            color: var(--accent-orange);
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 800;
-            font-size: 1.2rem;
-            border-right: 2px solid rgba(255, 110, 0, 0.1);
-        }
-        .target-wrapper input {
-            width: 100%;
-            padding: 18px 15px;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: #fff;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem;
-            letter-spacing: 2px;
-        }
-        .bug-scroll {
-            display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            gap: 16px;
-            padding: 5px 5px 20px 5px;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent-orange) transparent;
-        }
-        .bug-scroll::-webkit-scrollbar { height: 4px; }
-        .bug-scroll::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.03); border-radius: 4px; }
-        .bug-scroll::-webkit-scrollbar-thumb { background: var(--accent-orange); border-radius: 4px; box-shadow: 0 0 15px var(--accent-orange-glow); }
-        .bug-item {
-            flex: 0 0 150px;
-            scroll-snap-align: start;
-            padding: 18px 12px;
-            border-radius: 18px;
-            border: 2px solid rgba(255, 255, 255, 0.03);
-            background: rgba(10, 11, 14, 0.6);
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-        }
-        .bug-item:hover { transform: translateY(-4px); border-color: rgba(255, 110, 0, 0.2); }
-        .bug-item.active { border-color: var(--accent-orange); background: rgba(255, 110, 0, 0.05); box-shadow: 0 0 40px rgba(255, 110, 0, 0.05); }
-        .bug-item .check {
-            display: none;
-            position: absolute;
-            top: 6px; right: 6px;
-            width: 16px; height: 16px;
-            background: var(--accent-orange);
-            border-radius: 50%;
-            align-items: center; justify-content: center;
-        }
-        .bug-item.active .check { display: flex; }
-        .bug-item .check svg { width: 8px; height: 8px; stroke: #0A0B0E; stroke-width: 3; fill: none; }
-        .bug-title {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 800;
-            font-size: 0.8rem;
-            margin: 10px 0 8px;
-            color: var(--text-main);
-            letter-spacing: 1px;
-        }
-        .bug-tag {
+        .menu-item .icon { font-size: 28px; margin-bottom: 6px; display: block; }
+        .menu-item .name { font-weight: 700; font-size: 1rem; color: #fff; }
+        .menu-item .desc { font-size: 0.7rem; color: #54585E; }
+        .status-badge {
             display: inline-block;
-            padding: 4px 12px;
+            padding: 4px 16px;
             border-radius: 30px;
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--text-sub);
-            font-size: 0.65rem;
-            font-weight: 700;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .bug-item.active .bug-tag { color: var(--accent-orange); border-color: rgba(255, 110, 0, 0.2); background: rgba(255, 110, 0, 0.1); }
-        .dots { display: flex; justify-content: center; gap: 8px; margin-top: -5px; }
-        .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.05); transition: 0.3s; }
-        .dot.active { background: var(--accent-orange); width: 24px; border-radius: 6px; box-shadow: 0 0 15px var(--accent-orange-glow); }
-        .sender-single {
-            width: 100%;
-            padding: 16px;
-            border-radius: 16px;
-            border: 2px solid rgba(255, 110, 0, 0.2);
-            text-align: center;
-            background: rgba(255, 110, 0, 0.02);
-            margin-top: 12px;
-        }
-        .sender-single svg {
-            width: 30px; height: 30px;
-            stroke: var(--accent-orange); fill: none; stroke-width: 2;
-            margin-bottom: 6px;
-        }
-        .sender-single .stitle {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 800;
-            font-size: 1.1rem;
-            display: block;
-            color: var(--text-main);
-            letter-spacing: 2px;
-        }
-        .sender-single .sstatus { font-size: 0.8rem; color: var(--accent-orange); font-weight: 600; }
-        .btn-wrapper { position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 0 50px rgba(255, 110, 0, 0.1); }
-        .btn-send {
-            width: 100%;
-            padding: 18px;
-            border: none;
-            border-radius: 20px;
-            background: linear-gradient(135deg, #1A1C22, #2F3138);
-            color: #FFFFFF;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 900;
-            font-size: 1.4rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid rgba(255, 110, 0, 0.1);
-        }
-        .btn-send:hover { background: linear-gradient(135deg, #2A2D36, #1A1C22); border-color: rgba(255, 110, 0, 0.3); box-shadow: 0 0 60px rgba(255, 110, 0, 0.1); }
-        .btn-send:active { transform: scale(0.97); }
-        .btn-send svg { width: 24px; height: 24px; fill: #FFFFFF; transition: 0.3s; }
-        .btn-send:hover svg { fill: var(--accent-orange); }
-        .btn-back {
-            background: transparent;
-            border: 2px solid rgba(255, 255, 255, 0.05);
-            border-radius: 60px;
-            padding: 12px;
-            color: var(--text-muted);
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: 0.3s;
-            letter-spacing: 2px;
-            width: 100%;
-            margin-top: 8px;
-        }
-        .btn-back:hover { border-color: rgba(255, 110, 0, 0.3); color: var(--accent-orange); }
-        .logout-btn {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 60px;
-            padding: 10px 20px;
-            color: var(--text-muted);
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 600;
             font-size: 0.8rem;
-            cursor: pointer;
-            transition: 0.3s;
-            letter-spacing: 2px;
-            width: 100%;
-            margin-top: 8px;
-        }
-        .logout-btn:hover { border-color: rgba(255, 110, 0, 0.3); color: var(--accent-orange); }
-        .footer {
-            text-align: center;
-            margin-top: 10px;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-        .footer strong { font-family: 'Orbitron', sans-serif; color: var(--text-sub); letter-spacing: 3px; font-size: 1rem; }
-        .footer-credit {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.03);
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            letter-spacing: 1px;
-        }
-        #toastContainer {
-            position: fixed; top: 30px; left: 50%;
-            transform: translateX(-50%);
-            z-index: 9999; width: 90%; max-width: 440px;
-            pointer-events: none;
-        }
-        .toast {
-            background: rgba(10, 11, 14, 0.95);
-            backdrop-filter: blur(16px);
-            padding: 16px 22px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 110, 0, 0.1);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            border-left: 5px solid var(--accent-orange);
-            margin-bottom: 15px;
-            display: flex; align-items: center; gap: 14px;
-            font-weight: 600; font-size: 0.95rem; color: #fff;
-            font-family: 'Rajdhani', sans-serif;
-            animation: slideDown 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            pointer-events: auto;
-            letter-spacing: 1px;
-        }
-        .toast.error { border-left-color: #CC4400; border-color: rgba(204, 68, 0, 0.2); }
-        .toast .toast-icon { width: 24px; height: 24px; flex-shrink: 0; stroke: var(--accent-orange); fill: none; stroke-width: 2.5; }
-        .toast.error .toast-icon { stroke: #CC4400; }
-        .spinner {
-            width: 24px; height: 24px;
-            border: 3px solid rgba(255, 110, 0, 0.1);
-            border-top: 3px solid var(--accent-orange);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            flex-shrink: 0;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes slideDown {
-            0% { opacity: 0; transform: translateY(-30px) scale(0.9); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
             font-weight: 700;
-            font-size: 1rem;
-            letter-spacing: 2px;
-            margin-bottom: 14px;
-            text-transform: uppercase;
-            color: var(--text-sub);
-        }
-        .section-title svg { width: 20px; height: 20px; stroke: var(--accent-orange); fill: none; stroke-width: 2; }
-        .platform-btn {
-            flex: 1;
-            min-width: auto;
-            padding: 12px;
-            border: 2px solid rgba(255, 110, 0, 0.2);
-            border-radius: 16px;
-            background: rgba(255, 110, 0, 0.05);
-            color: #fff;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.3s;
-            font-family: 'Rajdhani', sans-serif;
             letter-spacing: 1px;
         }
-        .platform-btn.active {
-            border-color: #ff6b00;
-            background: rgba(255, 110, 0, 0.12);
-            box-shadow: 0 0 30px rgba(255, 110, 0, 0.05);
-        }
-        .platform-btn .sub {
-            display: block;
-            font-size: 0.5rem;
-            color: rgba(255,255,255,0.2);
-        }
-        .platform-btn.active .sub { color: rgba(255, 140, 0, 0.4); }
-        .dl-preview {
-            display: none;
-            margin-top: 18px;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 110, 0, 0.1);
-            background: rgba(0, 0, 0, 0.3);
-        }
-        .dl-preview video {
-            width: 100%;
-            max-height: 320px;
-            object-fit: cover;
-            display: block;
-        }
-        .dl-preview .info {
-            padding: 12px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.7rem;
-            background: rgba(0, 0, 0, 0.5);
-            border-top: 1px solid rgba(255, 110, 0, 0.04);
-            color: rgba(255, 255, 255, 0.2);
-            font-family: 'Share Tech Mono', monospace;
-        }
-        .dl-preview .tag {
-            padding: 2px 12px;
-            border-radius: 12px;
-            background: rgba(255, 110, 0, 0.06);
-            border: 1px solid rgba(255, 110, 0, 0.06);
-            color: #ff8c00;
-            font-size: 0.6rem;
-            letter-spacing: 1px;
-        }
-        .dl-status {
-            text-align: center;
-            margin-top: 16px;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.85rem;
-            min-height: 30px;
-            color: rgba(255, 255, 255, 0.3);
-        }
-        .dl-status.success { color: #00ff88; }
-        .dl-status.error { color: #ff4466; }
-        .dl-status.loading { color: #ff8c00; animation: blink 0.8s step-end infinite; }
-        .track-input-wrap {
-            display: flex;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid rgba(255, 110, 0, 0.15);
-            border-radius: 18px;
-            transition: all 0.4s ease;
-            margin-bottom: 18px;
-        }
-        .track-input-wrap:focus-within {
-            border-color: var(--accent-orange);
-            box-shadow: 0 0 45px var(--accent-orange-glow);
-        }
-        .track-input-wrap.success {
-            border-color: var(--accent-orange);
-            box-shadow: 0 0 45px var(--accent-orange-glow);
-            background: rgba(255, 110, 0, 0.05);
-        }
-        .track-input-wrap.error {
-            border-color: #CC3300;
-            box-shadow: 0 0 45px rgba(204, 51, 0, 0.2);
-        }
-        .track-prefix {
-            padding: 18px 0 18px 20px;
-            color: var(--accent-orange);
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 1.2rem;
-            border-right: 2px solid rgba(255, 110, 0, 0.1);
-        }
-        .track-input-wrap input {
-            width: 100%;
-            padding: 18px 16px;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: var(--text-white);
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-        }
-        .track-status {
-            margin-top: 18px;
-            text-align: center;
-            font-weight: 700;
-            font-size: 1rem;
-            display: none;
-            padding: 12px;
-            border-radius: 14px;
-            letter-spacing: 1px;
-            border: 1px solid transparent;
-        }
-        .track-status.loading {
-            display: block;
-            color: var(--accent-orange);
-            background: rgba(255, 110, 0, 0.05);
-            border-color: rgba(255, 110, 0, 0.2);
-            animation: pulseNeon 1.2s infinite alternate;
-        }
-        .track-status.success {
-            display: block;
-            color: #FF9E3D;
-            background: rgba(255, 110, 0, 0.1);
-            border-color: var(--accent-orange);
-        }
-        .track-status.error {
-            display: block;
-            color: #FF4400;
-            background: rgba(255, 68, 0, 0.1);
-            border-color: rgba(255, 68, 0, 0.3);
-        }
-        .map-wrapper {
-            margin-top: 20px;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 2px solid rgba(255, 110, 0, 0.15);
-            height: 280px;
-            display: none;
-            position: relative;
-            box-shadow: 0 0 60px rgba(255, 110, 0, 0.05);
-        }
-        .map-wrapper.active {
-            display: block;
-            animation: mapRise 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.1) forwards;
-        }
-        @keyframes mapRise {
-            0% { opacity: 0; transform: translateY(30px) scale(0.95); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        .map-wrapper iframe { width: 100%; height: 100%; border: 0; }
-        @keyframes pulseNeon {
-            0% { opacity: 0.6; box-shadow: 0 0 10px rgba(255, 110, 0, 0.1); }
-            100% { opacity: 1; box-shadow: 0 0 30px rgba(255, 110, 0, 0.3); }
-        }
-        @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.2; } }
-        .sender-status {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 18px;
-            border-radius: 16px;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            margin-bottom: 16px;
-        }
-        .sender-status .dot {
-            width: 12px; height: 12px;
-            border-radius: 50%;
-            flex-shrink: 0;
-            background: #ff4466;
-        }
-        .sender-status .dot.online {
-            background: #00ff88;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-        }
-        .sender-status .info { flex: 1; }
-        .sender-status .info .phone {
-            font-family: 'Orbitron', monospace;
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--text-main);
-        }
-        .sender-status .info .status-text {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-        .sender-status .info .status-text .highlight { color: var(--accent-orange); }
-        .pairing-input-wrap {
-            display: flex;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid rgba(255, 110, 0, 0.15);
-            border-radius: 16px;
-            transition: all 0.4s ease;
-            margin-bottom: 16px;
-        }
-        .pairing-input-wrap:focus-within {
-            border-color: var(--accent-orange);
-            box-shadow: 0 0 45px var(--accent-orange-glow);
-        }
-        .pairing-input-wrap input {
-            width: 100%;
-            padding: 16px 18px;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: #fff;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-        }
-        .pairing-input-wrap .prefix {
-            padding: 16px 0 16px 18px;
-            color: var(--accent-orange);
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 800;
-            font-size: 1rem;
-            border-right: 2px solid rgba(255, 110, 0, 0.1);
-        }
+        .status-online { background: rgba(0, 255, 136, 0.1); color: #00ff88; border: 1px solid rgba(0, 255, 136, 0.2); }
+        .status-offline { background: rgba(255, 68, 68, 0.1); color: #ff4466; border: 1px solid rgba(255, 68, 68, 0.2); }
+        .status-pairing { background: rgba(255, 140, 0, 0.1); color: #ff8c00; border: 1px solid rgba(255, 140, 0, 0.2); animation: blink 1s infinite; }
         .code-display {
             text-align: center;
             padding: 20px;
@@ -750,1163 +162,561 @@
             font-family: 'Orbitron', monospace;
             font-size: 2.5rem;
             font-weight: 900;
-            color: var(--accent-orange);
+            color: #FF6E00;
             letter-spacing: 8px;
             text-shadow: 0 0 40px rgba(255, 110, 0, 0.3);
         }
-        .code-display .label {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            letter-spacing: 2px;
-            margin-top: 4px;
+        .code-display .label { font-size: 0.7rem; color: #54585E; letter-spacing: 2px; margin-top: 4px; }
+        .bug-scroll {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 12px;
+            padding: 5px 5px 15px 5px;
         }
-        .switch { position: relative; display: inline-block; width: 48px; height: 26px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .switch .slider {
-            position: absolute;
+        .bug-item {
+            flex: 0 0 140px;
+            padding: 16px 12px;
+            border-radius: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.03);
+            background: rgba(10, 11, 14, 0.6);
+            text-align: center;
             cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: #2a2a2a;
-            transition: .3s;
-            border-radius: 26px;
-            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
         }
-        .switch .slider::before {
-            content: '';
-            position: absolute;
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background: #666;
-            transition: .3s;
-            border-radius: 50%;
-        }
-        .switch input:checked + .slider {
-            background: rgba(255, 110, 0, 0.3);
-            border-color: var(--accent-orange);
-        }
-        .switch input:checked + .slider::before {
-            transform: translateX(22px);
-            background: var(--accent-orange);
-            box-shadow: 0 0 20px var(--accent-orange-glow);
-        }
-        .api-status {
-            margin-top: 12px;
-            padding: 10px 14px;
-            border-radius: 12px;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.03);
+        .bug-item:hover { transform: translateY(-3px); border-color: rgba(255, 110, 0, 0.2); }
+        .bug-item.active { border-color: #FF6E00; background: rgba(255, 110, 0, 0.05); box-shadow: 0 0 30px rgba(255, 110, 0, 0.05); }
+        .bug-item .title { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 0.75rem; color: #fff; letter-spacing: 1px; }
+        .bug-item .tag { display: inline-block; padding: 2px 12px; border-radius: 30px; background: rgba(255, 255, 255, 0.03); color: #54585E; font-size: 0.6rem; font-weight: 700; margin-top: 4px; }
+        .bug-item.active .tag { color: #FF6E00; border-color: rgba(255, 110, 0, 0.2); background: rgba(255, 110, 0, 0.1); }
+        .bug-item .check {
             display: none;
-            justify-content: space-between;
+            width: 16px; height: 16px;
+            background: #FF6E00;
+            border-radius: 50%;
+            margin: 0 auto 4px;
+        }
+        .bug-item.active .check { display: block; }
+        .bug-item .check::after { content: '✓'; color: #0A0B0E; font-size: 10px; font-weight: 900; display: block; line-height: 16px; text-align: center; }
+        .target-wrapper {
+            display: flex;
             align-items: center;
-            font-size: 0.85rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 110, 0, 0.15);
+            border-radius: 16px;
+            overflow: hidden;
         }
-        .api-status .label { color: var(--text-muted); }
-        .api-status .value { font-weight: 700; }
-        .api-status .value.online { color: #00ff88; }
-        .api-status .value.offline { color: #ff4466; }
-        .api-status .value.checking { color: #ff8c00; }
-
+        .target-wrapper:focus-within { border-color: #FF6E00; box-shadow: 0 0 40px rgba(255, 110, 0, 0.2); }
+        .target-wrapper .prefix {
+            padding: 16px 0 16px 18px;
+            color: #FF6E00;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            border-right: 2px solid rgba(255, 110, 0, 0.1);
+        }
+        .target-wrapper input {
+            width: 100%;
+            padding: 16px 14px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+        .toast {
+            position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+            z-index: 9999; width: 90%; max-width: 440px;
+            background: rgba(10, 11, 14, 0.95);
+            backdrop-filter: blur(16px);
+            padding: 16px 22px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 110, 0, 0.1);
+            border-left: 5px solid #FF6E00;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            display: flex; align-items: center; gap: 14px;
+            font-weight: 600; font-size: 0.95rem; color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            animation: slideDown 0.4s forwards;
+            pointer-events: auto;
+        }
+        .toast.error { border-left-color: #CC4400; }
+        .toast .spinner {
+            width: 24px; height: 24px;
+            border: 3px solid rgba(255, 110, 0, 0.1);
+            border-top: 3px solid #FF6E00;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            flex-shrink: 0;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes slideDown {
+            0% { opacity: 0; transform: translateY(-30px) scale(0.9) translateX(-50%); }
+            100% { opacity: 1; transform: translateY(0) scale(1) translateX(-50%); }
+        }
+        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .footer { text-align: center; margin-top: 10px; color: #54585E; font-size: 0.8rem; }
+        .footer strong { font-family: 'Orbitron', sans-serif; color: #9AA0A6; letter-spacing: 3px; }
+        .footer-credit { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.03); font-size: 0.8rem; color: #54585E; }
+        .wa-status { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.03); font-size: 0.85rem; margin-bottom: 16px; }
+        .section-title { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1rem; letter-spacing: 2px; margin-bottom: 14px; text-transform: uppercase; color: #9AA0A6; }
+        .btn-send {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #1A1C22, #2F3138);
+            color: #FFFFFF;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 900;
+            font-size: 1.4rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 2px solid rgba(255, 110, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .btn-send:hover { background: linear-gradient(135deg, #2A2D36, #1A1C22); border-color: rgba(255, 110, 0, 0.3); box-shadow: 0 0 60px rgba(255, 110, 0, 0.1); }
+        .btn-send:active { transform: scale(0.97); }
+        .btn-send:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-wrapper { position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 0 50px rgba(255, 110, 0, 0.1); }
+        .hidden { display: none !important; }
+        .mt-12 { margin-top: 12px; }
+        .mb-12 { margin-bottom: 12px; }
+        .gap-8 { gap: 8px; }
         @media (max-width: 480px) {
-            .header h2 { font-size: 2.4rem; letter-spacing: 6px; }
-            .sholat-grid { grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 4px; }
-            .sholat-item { padding: 8px 2px; }
-            .sholat-item .time { font-size: 0.8rem; }
-            .bug-item { flex: 0 0 130px; padding: 14px 10px; }
-            .bug-title { font-size: 0.7rem; }
-            .greeting { font-size: 1.1rem; }
-            .menu-grid { gap: 8px; }
-            .menu-item { padding: 14px 8px; }
-            .menu-item svg { width: 22px; height: 22px; }
-            .platform-btn { font-size: 0.85rem; padding: 12px 6px; }
-            .track-prefix { padding: 14px 0 14px 14px; font-size: 1rem; }
-            .track-input-wrap input { padding: 14px 12px; font-size: 1rem; }
-            .map-wrapper { height: 220px; }
+            .header h1 { font-size: 2rem; }
             .code-display .code { font-size: 1.8rem; letter-spacing: 4px; }
-        }
-        @media (max-width: 380px) {
-            .header h2 { font-size: 1.8rem; letter-spacing: 4px; }
-            .sholat-grid { grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 2px; }
-            .sholat-item .time { font-size: 0.7rem; }
-            .sholat-item .name { font-size: 0.55rem; }
-            .bug-item { flex: 0 0 110px; padding: 10px 6px; }
-            .bug-title { font-size: 0.6rem; }
-            .prefix { padding: 12px 0 12px 10px; font-size: 0.9rem; }
-            .target-wrapper input { padding: 12px 10px; font-size: 0.9rem; }
-            .greeting { font-size: 0.95rem; }
-            .map-wrapper { height: 180px; }
-            .code-display .code { font-size: 1.4rem; letter-spacing: 3px; }
+            .bug-item { flex: 0 0 120px; padding: 12px 8px; }
+            .bug-item .title { font-size: 0.65rem; }
         }
     </style>
 </head>
 <body>
-
     <div class="container">
 
-        <div id="toastContainer"></div>
-
-        <!-- ===== PAGE LOGIN ===== -->
-        <div class="page active" id="pageLogin">
-            <div class="card">
-                <div class="header"><h2>203X</h2></div>
-                <form id="loginForm" onsubmit="return false;">
-                    <div class="form-group">
-                        <label>USERNAME</label>
-                        <input type="text" id="loginUsername" placeholder="Masukkan username" required>
-                    </div>
-                    <div class="form-group">
-                        <label>PASSWORD</label>
-                        <input type="password" id="loginPassword" placeholder="Masukkan password" required>
-                    </div>
-                    <button type="button" class="btn-action" onclick="handleLogin()">LOGIN</button>
-                </form>
-                <div style="text-align:center;margin-top:14px;color:var(--text-muted);font-size:0.85rem;">
-                    Belum punya akun? <a href="#" style="color:var(--accent-orange);cursor:pointer;font-weight:700;text-decoration:none;" onclick="showToast('Hubungi admin untuk daftar', false)">Buat Akun</a>
-                </div>
-                <div class="footer">
-                    <strong>203X TEAM</strong> &copy; 2026
-                    <div class="footer-credit">@create apk by samil</div>
-                </div>
-            </div>
+        <!-- ===== HEADER ===== -->
+        <div class="header">
+            <h1>203X</h1>
+            <p>WHATSAPP SENDER SYSTEM</p>
         </div>
 
-        <!-- ===== PAGE HOME ===== -->
-        <div class="page" id="pageHome">
-            <div class="header" style="padding-bottom:12px;margin-bottom:0;">
-                <h2 style="font-size:2.2rem;">203X</h2>
+        <!-- ===== STATUS WHATSAPP ===== -->
+        <div class="card">
+            <div class="wa-status">
+                <span id="waStatusDot" style="width:10px;height:10px;border-radius:50%;background:#ff4466;display:inline-block;flex-shrink:0;"></span>
+                <span id="waStatusText" style="color:#9AA0A6;">Belum terhubung</span>
+                <span id="waPhone" style="margin-left:auto;font-family:'Orbitron',monospace;font-size:0.8rem;color:#FF6E00;"></span>
             </div>
-            <div class="card" style="padding:12px;">
-                <div class="video-wrapper">
-                    <video id="homeVideo" autoplay muted loop playsinline>
-                        <source src="https://videotourl.com/videos/1787974878037-c050571e-573c-4a25-9563-df1d196c0b68.mp4" type="video/mp4">
-                    </video>
-                </div>
-            </div>
-            <div class="card">
-                <div class="greeting">
-                    Hello, <span class="username" id="homeUsername">User</span>
-                    <span class="role" id="homeRole">Reseller</span>
-                </div>
-                <div style="margin-top:16px;">
-                    <div style="display:flex;align-items:center;gap:8px;color:var(--text-sub);font-size:0.8rem;letter-spacing:1px;margin-bottom:8px;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" stroke="var(--accent-orange)" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        JADWAL SHOLAT
-                    </div>
-                    <div class="sholat-grid" id="sholatGrid">
-                        <div class="sholat-item"><div class="name">Subuh</div><div class="time" id="sholatSubuh">04:30</div></div>
-                        <div class="sholat-item"><div class="name">Dzuhur</div><div class="time" id="sholatDzuhur">12:00</div></div>
-                        <div class="sholat-item"><div class="name">Ashar</div><div class="time" id="sholatAshar">15:00</div></div>
-                        <div class="sholat-item"><div class="name">Maghrib</div><div class="time" id="sholatMaghrib">18:00</div></div>
-                        <div class="sholat-item"><div class="name">Isya</div><div class="time orange" id="sholatIsya">19:00</div></div>
-                    </div>
-                </div>
-                <div style="margin-top:18px;">
-                    <div style="display:flex;align-items:center;gap:8px;color:var(--text-sub);font-size:0.8rem;letter-spacing:1px;margin-bottom:8px;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" stroke="var(--accent-orange)" fill="none" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-                        MENU
-                    </div>
-                    <div class="menu-grid">
-                        <div class="menu-item" onclick="goToBug()">
-                            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                            <div class="mname">Bug</div>
-                            <div class="mdesc">Kirim bug ke target</div>
-                        </div>
-                        <div class="menu-item" onclick="goToDownloader()">
-                            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                            <div class="mname">Downloader</div>
-                            <div class="mdesc">Download video HD</div>
-                        </div>
-                        <div class="menu-item" onclick="goToTracker()">
-                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
-                            <div class="mname">Tracker</div>
-                            <div class="mdesc">Lacak lokasi target</div>
-                        </div>
-                        <div class="menu-item" onclick="goToSender()">
-                            <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
-                            <div class="mname">Sender</div>
-                            <div class="mdesc">Hubungkan WhatsApp</div>
-                        </div>
-                    </div>
-                </div>
-                <button class="logout-btn" onclick="handleLogout()">LOG OUT</button>
-                <div class="footer">
-                    <strong>203X TEAM</strong><br>
-                    &copy; 2026 203X Always For You
-                    <div class="footer-credit">@create apk by samil</div>
-                </div>
-            </div>
-        </div>
 
-        <!-- ===== PAGE BUG ===== -->
-        <div class="page" id="pageBug">
-            <div class="header" style="padding-bottom:12px;margin-bottom:0;">
-                <h2 style="font-size:2rem;">203X BUG</h2>
-            </div>
-            <div class="card">
-                <div style="margin-bottom:16px;padding:10px 14px;border-radius:12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:10px;font-size:0.85rem;">
-                    <span id="bugWaStatus" style="color:var(--text-muted);">WA: <span style="color:#ff4466;">Belum terhubung</span></span>
-                </div>
-                <div style="margin-bottom:18px;padding:14px 16px;border-radius:16px;background:rgba(255,110,0,0.03);border:1px solid rgba(255,110,0,0.08);">
-                    <div style="display:flex;align-items:center;justify-content:space-between;">
-                        <div style="display:flex;align-items:center;gap:12px;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" stroke="var(--accent-orange)" fill="none" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-                            <div>
-                                <div style="font-weight:700;font-size:0.9rem;color:var(--text-main);">Mode Sender</div>
-                                <div style="font-size:0.7rem;color:var(--text-muted);" id="senderModeLabel">Global (Bot sistem)</div>
-                            </div>
-                        </div>
-                        <div style="display:flex;gap:8px;align-items:center;">
-                            <span style="font-size:0.65rem;color:var(--text-muted);letter-spacing:1px;" id="senderModeBadge">GLOBAL</span>
-                            <label class="switch">
-                                <input type="checkbox" id="senderModeToggle" onchange="toggleSenderMode()">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    </div>
-                    <div style="margin-top:8px;font-size:0.7rem;color:var(--text-muted);padding:6px 10px;border-radius:8px;background:rgba(0,0,0,0.3);">
-                        <span id="senderModeDesc">Menggunakan bot WhatsApp sistem (global)</span>
-                    </div>
-                </div>
-                <div class="section-title">
-                    <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                    NOMOR TARGET
-                </div>
-                <div class="target-wrapper" id="inputWrapper">
+            <!-- ===== PAIRING SECTION ===== -->
+            <div class="form-group">
+                <label>📱 NOMOR WHATSAPP</label>
+                <div class="target-wrapper">
                     <span class="prefix">62</span>
-                    <input type="tel" id="targetInput" placeholder="81234567890" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    <input type="tel" id="phoneInput" placeholder="81234567890" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                 </div>
-                <div style="margin-top:18px;">
-                    <div class="section-title" style="margin-bottom:12px;font-size:0.9rem;">
-                        <svg viewBox="0 0 24 24"><path d="M12 2v4M12 6v2M12 8v6M8 8v4l-4 4M16 8v4l4 4M6 16h12M4 20l4-4M20 20l-4-4M8 18l-2 4M16 18l2 4"/></svg>
-                        PILIH BUG
+            </div>
+
+            <button class="btn-primary" id="pairBtn" onclick="pairWhatsApp()">
+                🔗 TAUTKAN WHATSAPP
+            </button>
+
+            <!-- ===== CODE DISPLAY ===== -->
+            <div id="codeDisplay" class="code-display hidden">
+                <div class="code" id="pairingCode">------</div>
+                <div class="label">MASUKKAN KODE INI DI WHATSAPP</div>
+            </div>
+
+            <button class="btn-danger mt-12" id="logoutBtn" onclick="logoutWhatsApp()" disabled>
+                ✕ PUTUSKAN KONEKSI
+            </button>
+        </div>
+
+        <!-- ===== MENU ===== -->
+        <div class="card">
+            <div class="menu-grid">
+                <div class="menu-item" onclick="goToBug()">
+                    <span class="icon">🐛</span>
+                    <div class="name">Bug</div>
+                    <div class="desc">Kirim bug ke target</div>
+                </div>
+                <div class="menu-item" onclick="showToast('Coming soon!', false)">
+                    <span class="icon">⬇️</span>
+                    <div class="name">Downloader</div>
+                    <div class="desc">Download video HD</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE BUG -->
+        <!-- ============================================================ -->
+        <div id="pageBug" class="hidden">
+            <div class="card">
+                <div class="section-title">
+                    <span>🐛</span> KIRIM BUG
+                </div>
+
+                <div class="wa-status" style="margin-bottom:12px;">
+                    <span id="bugStatusDot" style="width:10px;height:10px;border-radius:50%;background:#ff4466;display:inline-block;flex-shrink:0;"></span>
+                    <span id="bugStatusText" style="color:#9AA0A6;font-size:0.8rem;">WA: Belum terhubung</span>
+                </div>
+
+                <div class="form-group">
+                    <label>🎯 NOMOR TARGET</label>
+                    <div class="target-wrapper">
+                        <span class="prefix">62</span>
+                        <input type="tel" id="targetInput" placeholder="81234567890" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                     </div>
+                </div>
+
+                <div style="margin-top:16px;">
+                    <div style="font-weight:600;font-size:0.85rem;color:#9AA0A6;letter-spacing:2px;margin-bottom:10px;">PILIH BUG</div>
                     <div class="bug-scroll" id="bugContainer">
                         <div class="bug-item active" onclick="selectBug(this)">
-                            <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-                            <div class="bug-title">203X BUG</div>
-                            <div class="bug-tag">203x</div>
+                            <div class="check"></div>
+                            <div class="title">203X BUG</div>
+                            <div class="tag">203x</div>
                         </div>
                         <div class="bug-item" onclick="selectBug(this)">
-                            <div class="bug-title">DELAY V2</div>
-                            <div class="bug-tag">v2</div>
+                            <div class="check"></div>
+                            <div class="title">DELAY V2</div>
+                            <div class="tag">v2</div>
                         </div>
                         <div class="bug-item" onclick="selectBug(this)">
-                            <div class="bug-title">DELAY INVISB</div>
-                            <div class="bug-tag">invisb</div>
+                            <div class="check"></div>
+                            <div class="title">DELAY INVISB</div>
+                            <div class="tag">invisb</div>
                         </div>
                         <div class="bug-item" onclick="selectBug(this)">
-                            <div class="bug-title">CRASH WA</div>
-                            <div class="bug-tag">crash</div>
+                            <div class="check"></div>
+                            <div class="title">CRASH WA</div>
+                            <div class="tag">crash</div>
                         </div>
                         <div class="bug-item" onclick="selectBug(this)">
-                            <div class="bug-title">DELAY WA</div>
-                            <div class="bug-tag">wa</div>
+                            <div class="check"></div>
+                            <div class="title">DELAY WA</div>
+                            <div class="tag">wa</div>
                         </div>
                     </div>
-                    <div class="dots">
-                        <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-                    </div>
                 </div>
-            </div>
-            <div class="card">
-                <div class="section-title sender-header" style="justify-content:space-between;margin-bottom:0;">
-                    <div style="display:flex;align-items:center;gap:8px;">
-                        <svg viewBox="0 0 24 24"><path d="M12 2v4M12 6l-4 4M12 6l4 4M4 16l8 8M20 16l-8 8M4 20h16"/></svg>
-                        SENDER
-                    </div>
-                    <div style="background:rgba(255,110,0,0.1);color:var(--accent-orange);padding:4px 12px;border-radius:30px;font-size:0.7rem;font-weight:700;border:1px solid rgba(255,110,0,0.1);letter-spacing:1px;" id="senderOnlineCount">0 online</div>
-                </div>
-                <div class="sender-single" id="senderInfo">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                    <span class="stitle" id="senderTitle">Belum Terhubung</span>
-                    <span class="sstatus" id="senderStatus">Koneksi WA diperlukan</span>
-                </div>
-                <div style="margin-top:10px;padding:8px 12px;border-radius:10px;background:rgba(255,110,0,0.05);border:1px solid rgba(255,110,0,0.08);text-align:center;font-size:0.75rem;color:var(--text-muted);">
-                    <span id="senderActiveMode">Mode: <strong style="color:var(--accent-orange);">GLOBAL</strong></span>
-                </div>
-            </div>
-            <div class="btn-wrapper">
-                <button class="btn-send" onclick="sendBug()">
-                    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                    KIRIM BUG
-                </button>
-            </div>
-            <button class="btn-back" onclick="goHome()">KEMBALI KE HOME</button>
-            <div class="footer">
-                <strong>203X TEAM</strong><br>
-                &copy; 2026 203X Always For You
-                <div class="footer-credit">@create apk by samil</div>
-            </div>
-        </div>
 
-        <!-- ===== PAGE DOWNLOADER ===== -->
-        <div class="page" id="pageDownloader">
-            <div class="header" style="padding-bottom:12px;margin-bottom:0;">
-                <h2 style="font-size:2rem;">203X DOWNLOADER</h2>
-            </div>
-            <div class="card">
-                <div class="section-title">
-                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    DOWNLOAD TANPA WATERMARK
-                </div>
-                <div style="display:flex;gap:12px;margin-bottom:18px;justify-content:center;">
-                    <button class="platform-btn active" id="dlBtnTiktok" style="flex:1;min-width:auto;padding:12px;border:2px solid rgba(255,110,0,0.2);border-radius:16px;background:rgba(255,110,0,0.05);color:#fff;font-weight:700;font-size:1rem;cursor:pointer;transition:0.3s;font-family:'Rajdhani',sans-serif;letter-spacing:1px;">
-                        TikTok
-                        <span style="display:block;font-size:0.5rem;color:rgba(255,255,255,0.2);">video & foto</span>
+                <div class="btn-wrapper mt-12">
+                    <button class="btn-send" id="sendBugBtn" onclick="sendBug()">
+                        <span>▶</span> KIRIM BUG
                     </button>
                 </div>
-                <div class="form-group">
-                    <label>URL</label>
-                    <input type="url" id="dlUrlInput" placeholder="https://www.tiktok.com/@user/video/1234567890" style="font-family:'Rajdhani',sans-serif;">
-                </div>
-                <button class="btn-action" id="dlBtnDownload" style="margin-top:6px;padding:16px;border-radius:20px;background:linear-gradient(135deg,#ff6b00,#ff8c00);border:none;color:#fff;font-weight:900;font-size:1.2rem;letter-spacing:4px;cursor:pointer;transition:0.3s;font-family:'Rajdhani',sans-serif;">
-                    DOWNLOAD HD
-                </button>
-                <div class="dl-status" id="dlStatus">Siap mengunduh</div>
-                <div class="dl-preview" id="dlPreview">
-                    <video id="dlPreviewVideo" controls></video>
-                    <div class="info">
-                        <span id="dlPreviewInfo">Video siap</span>
-                        <span class="tag">HD TANPA WATERMARK</span>
-                    </div>
-                </div>
-            </div>
-            <button class="btn-back" onclick="goHome()">KEMBALI KE HOME</button>
-            <div class="footer">
-                <strong>203X TEAM</strong><br>
-                &copy; 2026 203X Always For You
-                <div class="footer-credit">@create apk by samil</div>
+
+                <button class="btn-back" onclick="goHome()">← KEMBALI KE HOME</button>
             </div>
         </div>
 
-        <!-- ===== PAGE TRACKER ===== -->
-        <div class="page" id="pageTracker">
-            <div class="header" style="padding-bottom:12px;margin-bottom:0;">
-                <h2 style="font-size:2rem;">203X TRACKER</h2>
-            </div>
-            <div class="card">
-                <div class="section-title">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
-                    GEOLOCATION SYSTEM
-                </div>
-                <div class="track-input-wrap" id="trackInputWrapper">
-                    <span class="track-prefix">62</span>
-                    <input type="tel" id="trackNumberInput" placeholder="81234567890" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                </div>
-                <button class="btn-primary" id="trackBtn" onclick="startTracking()">
-                    <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:#0A0C12;display:inline-block;vertical-align:middle;margin-right:8px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                    INITIATE TRACK
-                </button>
-                <div id="trackStatus" class="track-status"></div>
-                <div id="trackMapWrapper" class="map-wrapper">
-                    <iframe id="trackMapIframe" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div>
-            </div>
-            <button class="btn-back" onclick="goHome()">KEMBALI KE HOME</button>
-            <div class="footer">
-                <strong>203X TEAM</strong><br>
-                &copy; 2026 203X Tracker Technology
-                <div class="footer-credit">@create apk by samil</div>
-            </div>
+        <!-- ===== FOOTER ===== -->
+        <div class="footer">
+            <strong>203X TEAM</strong><br>
+            © 2026 203X Always For You
+            <div class="footer-credit">@create apk by samil</div>
         </div>
-
-        <!-- ===== PAGE SENDER ===== -->
-        <div class="page" id="pageSender">
-            <div class="header" style="padding-bottom:12px;margin-bottom:0;">
-                <h2 style="font-size:2rem;">203X SENDER</h2>
-            </div>
-            <div class="card">
-                <div class="section-title">
-                    <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
-                    WHATSAPP CONNECTION
-                </div>
-                <div class="sender-status" id="senderDashboard">
-                    <div class="dot" id="senderDot"></div>
-                    <div class="info">
-                        <div class="phone" id="senderPhone">Belum terhubung</div>
-                        <div class="status-text" id="senderStatusText">Status: <span class="highlight">Offline</span></div>
-                    </div>
-                </div>
-                <div class="pairing-input-wrap">
-                    <span class="prefix">WA</span>
-                    <input type="tel" id="pairingPhoneInput" placeholder="Masukkan nomor WhatsApp" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                </div>
-                <button class="btn-primary" id="pairBtn" onclick="requestPairing()">
-                    <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:#0A0C12;display:inline-block;vertical-align:middle;margin-right:8px;"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-                    HUBUNGKAN WHATSAPP
-                </button>
-                <div id="codeDisplay" class="code-display" style="display:none;">
-                    <div class="code" id="pairingCodeDisplay">------</div>
-                    <div class="label">MASUKKAN KODE INI DI WHATSAPP</div>
-                </div>
-                <div style="margin-top:12px;text-align:center;font-size:0.8rem;color:var(--text-muted);">
-                    <span id="pairingStatus">Masukkan nomor HP untuk memulai pairing</span>
-                </div>
-                <button class="btn-danger" onclick="logoutWhatsApp()" style="margin-top:16px;">
-                    <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:#FF4400;fill:none;stroke-width:2;display:inline-block;vertical-align:middle;margin-right:8px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                    PUTUSKAN KONEKSI
-                </button>
-                <!-- API Base Setting - TIDAK TERLIHAT OLEH PENGGUNA -->
-                <div id="apiBaseHidden" style="display:none;">
-                    <div style="display:flex;gap:8px;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.05);">
-                        <input type="text" id="apiBaseInput" value="http://localhost:3000" style="flex:1;padding:10px 14px;border-radius:12px;background:var(--bg-input);border:2px solid rgba(255,110,0,0.15);color:#fff;font-family:'Rajdhani',sans-serif;font-size:0.9rem;outline:none;">
-                        <button onclick="saveApiBase()" style="padding:10px 16px;border-radius:12px;border:none;background:var(--accent-orange);color:#fff;font-weight:700;cursor:pointer;">Simpan</button>
-                    </div>
-                    <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px;">Ganti URL server jika diperlukan</div>
-                </div>
-                <!-- Server Status - TIDAK TERLIHAT OLEH PENGGUNA -->
-                <div id="apiStatusHidden" style="display:none;" class="api-status">
-                    <span class="label">Server Status:</span>
-                    <span class="value checking" id="serverStatus">Checking...</span>
-                </div>
-            </div>
-            <button class="btn-back" onclick="goHome()">KEMBALI KE HOME</button>
-            <div class="footer">
-                <strong>203X TEAM</strong><br>
-                &copy; 2026 203X Sender System
-                <div class="footer-credit">@create apk by samil</div>
-            </div>
-        </div>
-
     </div>
 
     <script>
         // ============================================================
-        // 203X - AUTO DETECT API BASE FROM CONFIG.JS
+        // 203X - SIMPLE VERSION
         // ============================================================
 
-        // ===== LOAD CONFIG.JS DARI GITHUB =====
-        let API_BASE = 'http://localhost:3000';
-        let configLoaded = false;
+        // ===== CONFIG =====
+        // GANTI DENGAN URL SERVER LO (IP/ngrok/cloudflare)
+        const API_BASE = 'https://opponents-modify-athletes-licens.es.trycloudflare.com';
 
-        async function loadConfig() {
-            try {
-                const resp = await fetch('config.js?t=' + Date.now());
-                const text = await resp.text();
-                // Ekstrak API_BASE dari config.js
-                const match = text.match(/API_BASE\s*=\s*['"]([^'"]+)['"]/);
-                if (match && match[1]) {
-                    API_BASE = match[1];
-                    configLoaded = true;
-                    console.log('[API] Loaded from config.js:', API_BASE);
-                    localStorage.setItem('203x_api', API_BASE);
-                    
-                    // Update input hidden
-                    const apiInput = document.getElementById('apiBaseInput');
-                    if (apiInput) apiInput.value = API_BASE;
-                    
-                    return true;
-                }
-                return false;
-            } catch (err) {
-                console.log('[API] Failed to load config.js:', err);
-                return false;
-            }
-        }
+        let isConnected = false;
+        let isPairing = false;
+        let phoneNumber = '';
+        let selectedBug = '203X BUG';
+        let isProcessing = false;
 
-        // ===== CEK DAN RELOAD CONFIG SECARA PERIODIK =====
-        async function reloadConfig() {
-            const oldBase = API_BASE;
-            const loaded = await loadConfig();
-            if (loaded && API_BASE !== oldBase) {
-                console.log('[API] Config updated:', API_BASE);
-                showToast('Server URL updated!', false);
-                // Update status
-                await checkServerStatus();
-            }
-        }
+        // ===== DOM REFS =====
+        const waStatusDot = document.getElementById('waStatusDot');
+        const waStatusText = document.getElementById('waStatusText');
+        const waPhone = document.getElementById('waPhone');
+        const bugStatusDot = document.getElementById('bugStatusDot');
+        const bugStatusText = document.getElementById('bugStatusText');
+        const pairBtn = document.getElementById('pairBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const codeDisplay = document.getElementById('codeDisplay');
+        const pairingCode = document.getElementById('pairingCode');
+        const phoneInput = document.getElementById('phoneInput');
+        const targetInput = document.getElementById('targetInput');
+        const pageBug = document.getElementById('pageBug');
 
-        // ============================================================
-        // API STATUS CHECK
-        // ============================================================
-        async function checkServer(url) {
-            try {
-                const resp = await fetch(`${url}/api/status`, {
-                    method: 'GET',
-                    signal: AbortSignal.timeout(5000)
-                });
-                if (resp.ok) {
-                    const data = await resp.json();
-                    return { alive: true, url: url, data: data };
-                }
-                return { alive: false };
-            } catch (err) {
-                return { alive: false };
-            }
-        }
-
-        async function checkServerStatus() {
-            // Hanya untuk internal, tidak ditampilkan ke user
-            const result = await checkServer(API_BASE);
-            if (!result.alive) {
-                console.log('[API] Server offline, reloading config...');
-                await reloadConfig();
-            }
-            return result;
-        }
-
-        // ===== RELOAD CONFIG SETIAP 30 DETIK =====
-        setInterval(reloadConfig, 30000);
-
-        // ============================================================
-        // DEVICE FINGERPRINT
-        // ============================================================
-        function getDeviceId() {
-            let deviceId = localStorage.getItem('203x_device_id');
-            if (!deviceId) {
-                deviceId = 'dev_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
-                localStorage.setItem('203x_device_id', deviceId);
-            }
-            return deviceId;
-        }
-
-        // ============================================================
-        // PAGE NAV
-        // ============================================================
-        function showLogin() {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('pageLogin').classList.add('active');
-        }
-        function showHome() {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('pageHome').classList.add('active');
-            renderHome();
-            updateSenderStatus();
-        }
-        function showBug() {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('pageBug').classList.add('active');
-            updateSenderStatus();
-        }
-        function showDownloader() {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('pageDownloader').classList.add('active');
-        }
-        function showTracker() {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('pageTracker').classList.add('active');
-        }
-        function showSender() {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('pageSender').classList.add('active');
-            updateSenderDashboard();
-            document.getElementById('apiBaseInput').value = API_BASE;
-        }
-        function goHome() { showHome(); }
-        function goToBug() { showBug(); }
-        function goToDownloader() { showDownloader(); }
-        function goToTracker() { showTracker(); }
-        function goToSender() { showSender(); }
-
-        // ============================================================
-        // TOAST
-        // ============================================================
+        // ===== TOAST =====
         function showToast(message, isError = false, isSpinner = false) {
-            const container = document.getElementById('toastContainer');
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
+
             const toast = document.createElement('div');
             toast.className = `toast ${isError ? 'error' : ''}`;
             
-            if(isSpinner) {
+            if (isSpinner) {
                 const spinner = document.createElement('div');
                 spinner.className = 'spinner';
                 toast.appendChild(spinner);
-            } else {
-                const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-                icon.setAttribute('viewBox', '0 0 24 24');
-                icon.classList.add('toast-icon');
-                if(isError) {
-                    icon.innerHTML = `<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>`;
-                } else {
-                    icon.innerHTML = `<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>`;
-                }
-                toast.appendChild(icon);
             }
             
             const text = document.createElement('span');
             text.innerText = message;
             toast.appendChild(text);
-            container.appendChild(toast);
+            document.body.appendChild(toast);
+
             setTimeout(() => {
-                if(toast.parentNode) {
+                if (toast.parentNode) {
                     toast.style.opacity = '0';
-                    toast.style.transform = 'translateY(-20px)';
+                    toast.style.transform = 'translateY(-20px) translateX(-50%)';
                     toast.style.transition = '0.3s';
                     setTimeout(() => toast.remove(), 300);
                 }
-            }, 4000);
+            }, 5000);
         }
 
-        // ============================================================
-        // LOGIN
-        // ============================================================
-        function handleLogin() {
-            const username = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
-            if (!username || !password) { showToast('Isi semua field!', true); return; }
-
-            const users = JSON.parse(localStorage.getItem('203x_users') || '[]');
-            const found = users.find(u => u.username === username && u.password === password);
-
-            if (found) {
-                const deviceId = getDeviceId();
-                if (found.device && found.device !== deviceId) {
-                    showToast('Akun sudah dipakai di perangkat lain!', true);
-                    return;
-                }
-                found.device = deviceId;
-                localStorage.setItem('203x_users', JSON.stringify(users));
-                localStorage.setItem('203x_session', JSON.stringify({ username: username, role: found.role }));
-                showToast('Login berhasil!', false);
-                setTimeout(showHome, 500);
-            } else {
-                showToast('Username atau password salah!', true);
-            }
-        }
-
-        function handleLogout() {
-            localStorage.removeItem('203x_session');
-            document.getElementById('loginUsername').value = '';
-            document.getElementById('loginPassword').value = '';
-            showLogin();
-            showToast('Logout berhasil', false);
-        }
-
-        // ============================================================
-        // HOME — RENDER
-        // ============================================================
-        function renderHome() {
-            const session = JSON.parse(localStorage.getItem('203x_session') || '{}');
-            if (!session.username) { showLogin(); return; }
-            document.getElementById('homeUsername').textContent = session.username;
-            document.getElementById('homeRole').textContent = session.role || 'Reseller';
-
-            const now = new Date();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const waktu = hours + minutes / 60;
-
-            const jadwal = { subuh: 4.5, dzuhur: 12.0, ashar: 15.0, maghrib: 18.0, isya: 19.0 };
-
-            function formatTime(dec) {
-                const h = Math.floor(dec);
-                const m = Math.round((dec - h) * 60);
-                return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
-            }
-
-            document.getElementById('sholatSubuh').textContent = formatTime(jadwal.subuh);
-            document.getElementById('sholatDzuhur').textContent = formatTime(jadwal.dzuhur);
-            document.getElementById('sholatAshar').textContent = formatTime(jadwal.ashar);
-            document.getElementById('sholatMaghrib').textContent = formatTime(jadwal.maghrib);
-            document.getElementById('sholatIsya').textContent = formatTime(jadwal.isya);
-
-            const allSholat = ['sholatSubuh','sholatDzuhur','sholatAshar','sholatMaghrib','sholatIsya'];
-            const times = [jadwal.subuh, jadwal.dzuhur, jadwal.ashar, jadwal.maghrib, jadwal.isya];
-            let found = false;
-            allSholat.forEach((id, i) => {
-                const el = document.getElementById(id);
-                el.classList.remove('orange');
-                if (!found && waktu < times[i]) {
-                    el.classList.add('orange');
-                    found = true;
-                }
-            });
-            if (!found && waktu > times[times.length-1]) {
-                document.getElementById('sholatIsya').classList.add('orange');
-            }
-        }
-
-        // ============================================================
-        // BUG PAGE
-        // ============================================================
-        let isProcessing = false;
-        let senderMode = 'global';
-
-        function selectBug(el) {
-            if(isProcessing) return;
-            document.querySelectorAll('.bug-item').forEach(e => e.classList.remove('active'));
-            el.classList.add('active');
-        }
-
-        function getActiveBugName() {
-            const active = document.querySelector('.bug-item.active');
-            return active ? active.querySelector('.bug-title').textContent : '203X BUG';
-        }
-
-        function toggleSenderMode() {
-            const toggle = document.getElementById('senderModeToggle');
-            const modeLabel = document.getElementById('senderModeLabel');
-            const modeBadge = document.getElementById('senderModeBadge');
-            const modeDesc = document.getElementById('senderModeDesc');
-            const activeMode = document.getElementById('senderActiveMode');
-            
-            if (toggle.checked) {
-                senderMode = 'private';
-                modeLabel.textContent = 'Pribadi (WA pribadi)';
-                modeBadge.textContent = 'PRIBADI';
-                modeBadge.style.color = '#00ff88';
-                modeDesc.innerHTML = 'Mengirim menggunakan WhatsApp pribadi yang sudah ditautkan';
-                if (activeMode) activeMode.innerHTML = 'Mode: <strong style="color:#00ff88;">PRIBADI</strong>';
-                showToast('Mode Sender Pribadi aktif', false);
-            } else {
-                senderMode = 'global';
-                modeLabel.textContent = 'Global (Bot sistem)';
-                modeBadge.textContent = 'GLOBAL';
-                modeBadge.style.color = 'var(--accent-orange)';
-                modeDesc.innerHTML = 'Menggunakan bot WhatsApp sistem (global)';
-                if (activeMode) activeMode.innerHTML = 'Mode: <strong style="color:var(--accent-orange);">GLOBAL</strong>';
-                showToast('Mode Sender Global aktif', false);
-            }
-        }
-
-        // ============================================================
-        // SEND BUG
-        // ============================================================
-        async function sendBug() {
-            if(isProcessing) return;
-            
-            const input = document.getElementById('targetInput');
-            const wrapper = document.getElementById('inputWrapper');
-            let rawVal = input.value.replace(/\D/g, '');
-            const bugName = getActiveBugName();
-            
-            if (!rawVal) {
-                showToast('Masukkan nomor target!', true);
-                return;
-            }
-            
-            let number = rawVal;
-            if (!number.startsWith('62')) {
-                number = '62' + number;
-            }
-            
-            if (number.length < 10 || number.length > 15) {
-                showToast('Nomor tidak valid!', true);
-                return;
-            }
-            
-            const status = await getWhatsAppStatus();
-            if (senderMode === 'private' && !status.connected) {
-                showToast('WhatsApp pribadi belum terhubung! Buka menu Sender dulu.', true);
-                return;
-            }
-            
-            isProcessing = true;
-            document.querySelector('.btn-send').style.opacity = '0.7';
-            const modeText = senderMode === 'private' ? 'Pribadi' : 'Global';
-            showToast(`Mengirim bug (${modeText})...`, false, true);
-            
-            try {
-                const response = await fetch(`${API_BASE}/api/send`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        target: number,
-                        message: `${bugName} dikirim dari 203X System`,
-                        bugType: bugName,
-                        mode: senderMode
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    wrapper.className = 'target-wrapper success';
-                    showToast(`${data.message}`, false);
-                } else {
-                    wrapper.className = 'target-wrapper error';
-                    showToast(`${data.message}`, true);
-                }
-            } catch (err) {
-                wrapper.className = 'target-wrapper error';
-                showToast(`Gagal konek ke server: ${err.message}`, true);
-            } finally {
-                isProcessing = false;
-                document.querySelector('.btn-send').style.opacity = '1';
-            }
-        }
-
-        // ============================================================
-        // SENDER — WHATSAPP PAIRING
-        // ============================================================
-        async function getWhatsAppStatus() {
+        // ===== GET STATUS =====
+        async function getStatus() {
             try {
                 const resp = await fetch(`${API_BASE}/api/status`);
                 const data = await resp.json();
                 return data;
             } catch (err) {
-                return { connected: false, phone: 'Error', pairingCode: null };
+                return { connected: false, phone: 'Error', pairingCode: null, isPairing: false };
             }
         }
 
-        async function updateSenderStatus() {
-            const status = await getWhatsAppStatus();
-            
-            const waStatus = document.getElementById('bugWaStatus');
-            if (waStatus) {
-                const modeText = senderMode === 'private' ? '[Pribadi]' : '[Global]';
-                if (status.connected) {
-                    waStatus.innerHTML = `WA: <span style="color:#00ff88;">Terhubung (${status.phone})</span> <span style="font-size:0.7rem;color:var(--text-muted);margin-left:6px;">${modeText}</span>`;
-                } else if (status.isPairing) {
-                    waStatus.innerHTML = `WA: <span style="color:#ff8c00;">Menunggu pairing...</span>`;
-                } else {
-                    waStatus.innerHTML = `WA: <span style="color:#ff4466;">Belum terhubung</span> <span style="font-size:0.7rem;color:var(--text-muted);margin-left:6px;">${modeText}</span>`;
-                }
-            }
-            
-            const senderTitle = document.getElementById('senderTitle');
-            const senderStatus = document.getElementById('senderStatus');
-            const senderOnline = document.getElementById('senderOnlineCount');
-            const activeMode = document.getElementById('senderActiveMode');
-            
-            if (senderTitle) {
-                if (status.connected) {
-                    senderTitle.textContent = `${status.phone}`;
-                    const modeText = senderMode === 'private' ? '[Pribadi]' : '[Global]';
-                    senderStatus.textContent = `Online — Siap kirim bug ${modeText}`;
-                    senderStatus.style.color = '#00ff88';
-                    if (senderOnline) senderOnline.textContent = '1 online';
-                    if (activeMode) {
-                        const modeLabel = senderMode === 'private' ? 'PRIBADI' : 'GLOBAL';
-                        const modeColor = senderMode === 'private' ? '#00ff88' : 'var(--accent-orange)';
-                        activeMode.innerHTML = `Mode: <strong style="color:${modeColor};">${modeLabel}</strong>`;
-                    }
-                } else if (status.isPairing) {
-                    senderTitle.textContent = 'Pairing...';
-                    senderStatus.textContent = 'Masukkan kode di WhatsApp';
-                    senderStatus.style.color = '#ff8c00';
-                    if (senderOnline) senderOnline.textContent = '0 online';
-                } else {
-                    senderTitle.textContent = 'Belum Terhubung';
-                    senderStatus.textContent = 'Koneksi WA diperlukan';
-                    senderStatus.style.color = '#ff4466';
-                    if (senderOnline) senderOnline.textContent = '0 online';
-                }
-            }
-        }
+        // ===== UPDATE UI =====
+        async function updateUI() {
+            const status = await getStatus();
 
-        async function updateSenderDashboard() {
-            const status = await getWhatsAppStatus();
-            
-            const dot = document.getElementById('senderDot');
-            const phone = document.getElementById('senderPhone');
-            const statusText = document.getElementById('senderStatusText');
-            
-            if (status.connected) {
-                dot.className = 'dot online';
-                phone.textContent = `${status.phone}`;
-                statusText.innerHTML = 'Status: <span style="color:#00ff88;">Online — Siap kirim pesan</span>';
-                document.getElementById('pairingStatus').textContent = 'WhatsApp terhubung!';
-                document.getElementById('codeDisplay').style.display = 'none';
-            } else if (status.isPairing) {
-                dot.className = 'dot';
-                phone.textContent = 'Menunggu pairing...';
-                statusText.innerHTML = 'Status: <span style="color:#ff8c00;">Pairing code dikirim</span>';
-                document.getElementById('pairingStatus').textContent = 'Masukkan kode di WhatsApp';
+            isConnected = status.connected;
+            isPairing = status.isPairing;
+            phoneNumber = status.phone || '';
+
+            // Status WA
+            if (isConnected) {
+                waStatusDot.style.background = '#00ff88';
+                waStatusText.textContent = 'Terhubung';
+                waStatusText.style.color = '#00ff88';
+                waPhone.textContent = phoneNumber;
+                bugStatusDot.style.background = '#00ff88';
+                bugStatusText.textContent = `WA: Terhubung (${phoneNumber})`;
+                bugStatusText.style.color = '#00ff88';
+                pairBtn.disabled = true;
+                pairBtn.textContent = '✅ TERHUBUNG';
+                logoutBtn.disabled = false;
+                codeDisplay.classList.add('hidden');
+            } else if (isPairing) {
+                waStatusDot.style.background = '#ff8c00';
+                waStatusText.textContent = 'Menunggu pairing...';
+                waStatusText.style.color = '#ff8c00';
+                waPhone.textContent = '';
+                bugStatusDot.style.background = '#ff8c00';
+                bugStatusText.textContent = 'WA: Menunggu pairing...';
+                bugStatusText.style.color = '#ff8c00';
+                pairBtn.disabled = true;
+                pairBtn.textContent = '⏳ MENUNGGU...';
+                logoutBtn.disabled = true;
             } else {
-                dot.className = 'dot';
-                phone.textContent = 'Belum terhubung';
-                statusText.innerHTML = 'Status: <span style="color:#ff4466;">Offline</span>';
-                document.getElementById('pairingStatus').textContent = 'Masukkan nomor HP untuk memulai pairing';
+                waStatusDot.style.background = '#ff4466';
+                waStatusText.textContent = 'Belum terhubung';
+                waStatusText.style.color = '#ff4466';
+                waPhone.textContent = '';
+                bugStatusDot.style.background = '#ff4466';
+                bugStatusText.textContent = 'WA: Belum terhubung';
+                bugStatusText.style.color = '#ff4466';
+                pairBtn.disabled = false;
+                pairBtn.textContent = '🔗 TAUTKAN WHATSAPP';
+                logoutBtn.disabled = true;
+                codeDisplay.classList.add('hidden');
             }
         }
 
-        function saveApiBase() {
-            const input = document.getElementById('apiBaseInput');
-            const newUrl = input.value.trim();
-            if (newUrl) {
-                localStorage.setItem('203x_api', newUrl);
-                API_BASE = newUrl;
-                showToast('API Base updated!', false);
-                setTimeout(() => window.location.reload(), 1000);
-            }
-        }
-
-        async function requestPairing() {
-            const input = document.getElementById('pairingPhoneInput');
-            let number = input.value.replace(/\D/g, '');
-            
+        // ===== PAIR WHATSAPP =====
+        async function pairWhatsApp() {
+            let number = phoneInput.value.replace(/\D/g, '');
             if (!number) {
                 showToast('Masukkan nomor WhatsApp!', true);
                 return;
             }
-            
             if (!number.startsWith('62')) {
                 number = '62' + number;
             }
-            
             if (number.length < 10) {
                 showToast('Nomor tidak valid!', true);
                 return;
             }
-            
-            const btn = document.getElementById('pairBtn');
-            btn.disabled = true;
-            btn.textContent = 'Meminta kode...';
-            document.getElementById('pairingStatus').textContent = 'Menghubungi server...';
-            
+
+            pairBtn.disabled = true;
+            pairBtn.textContent = '⏳ MEMINTA KODE...';
+            showToast('Menghubungi server...', false, true);
+
             try {
                 const resp = await fetch(`${API_BASE}/api/pair`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ phone: number })
                 });
-                
                 const data = await resp.json();
-                
+
                 if (data.success && data.code) {
-                    document.getElementById('codeDisplay').style.display = 'block';
-                    document.getElementById('pairingCodeDisplay').textContent = data.code;
-                    document.getElementById('pairingStatus').textContent = `Kode dikirim! Masukkan ${data.code} di WhatsApp`;
-                    showToast(`Kode pairing: ${data.code}`, false);
+                    codeDisplay.classList.remove('hidden');
+                    pairingCode.textContent = data.code;
+                    showToast(`Kode: ${data.code}`, false);
                     
-                    let checkCount = 0;
-                    const checkInterval = setInterval(async () => {
-                        const status = await getWhatsAppStatus();
-                        if (status.connected) {
-                            clearInterval(checkInterval);
-                            updateSenderDashboard();
-                            showToast('WhatsApp berhasil terhubung!', false);
-                            btn.disabled = false;
-                            btn.textContent = 'HUBUNGKAN WHATSAPP';
+                    // Auto check status
+                    let count = 0;
+                    const interval = setInterval(async () => {
+                        const s = await getStatus();
+                        if (s.connected) {
+                            clearInterval(interval);
+                            showToast('✅ WhatsApp terhubung!', false);
+                            await updateUI();
                         }
-                        checkCount++;
-                        if (checkCount > 30) {
-                            clearInterval(checkInterval);
-                            btn.disabled = false;
-                            btn.textContent = 'HUBUNGKAN WHATSAPP';
+                        count++;
+                        if (count > 20) {
+                            clearInterval(interval);
+                            pairBtn.disabled = false;
+                            pairBtn.textContent = '🔗 TAUTKAN WHATSAPP';
                         }
                     }, 3000);
                 } else {
-                    showToast(`${data.message || 'Gagal pairing'}`, true);
-                    btn.disabled = false;
-                    btn.textContent = 'HUBUNGKAN WHATSAPP';
+                    showToast(data.message || 'Gagal pairing!', true);
+                    pairBtn.disabled = false;
+                    pairBtn.textContent = '🔗 TAUTKAN WHATSAPP';
                 }
             } catch (err) {
-                showToast(`Gagal konek ke server: ${err.message}`, true);
-                btn.disabled = false;
-                btn.textContent = 'HUBUNGKAN WHATSAPP';
+                showToast(`Error: ${err.message}`, true);
+                pairBtn.disabled = false;
+                pairBtn.textContent = '🔗 TAUTKAN WHATSAPP';
             }
         }
 
+        // ===== LOGOUT =====
         async function logoutWhatsApp() {
             try {
-                const resp = await fetch(`${API_BASE}/api/logout`, {
-                    method: 'POST'
-                });
+                const resp = await fetch(`${API_BASE}/api/logout`, { method: 'POST' });
                 const data = await resp.json();
                 showToast(data.message || 'Logout berhasil', false);
-                updateSenderDashboard();
+                await updateUI();
             } catch (err) {
-                showToast(`Gagal logout: ${err.message}`, true);
+                showToast(`Error: ${err.message}`, true);
             }
         }
 
-        // ============================================================
-        // DOWNLOADER — TIKTOK HD
-        // ============================================================
-        const dlBtnTiktok = document.getElementById('dlBtnTiktok');
-        const dlUrlInput = document.getElementById('dlUrlInput');
-        const dlBtnDownload = document.getElementById('dlBtnDownload');
-        const dlStatus = document.getElementById('dlStatus');
-        const dlPreview = document.getElementById('dlPreview');
-        const dlPreviewVideo = document.getElementById('dlPreviewVideo');
-        const dlPreviewInfo = document.getElementById('dlPreviewInfo');
+        // ===== SELECT BUG =====
+        function selectBug(el) {
+            if (isProcessing) return;
+            document.querySelectorAll('.bug-item').forEach(e => e.classList.remove('active'));
+            el.classList.add('active');
+            selectedBug = el.querySelector('.title').textContent;
+        }
 
-        dlBtnTiktok.addEventListener('click', function() {
-            document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-        });
+        // ===== SEND BUG =====
+        async function sendBug() {
+            if (isProcessing) return;
 
-        dlBtnDownload.addEventListener('click', async function() {
-            const url = dlUrlInput.value.trim();
-            if (!url) {
-                dlStatus.textContent = 'Masukkan URL dulu!';
-                dlStatus.className = 'dl-status error';
+            const target = targetInput.value.replace(/\D/g, '');
+            if (!target) {
+                showToast('Masukkan nomor target!', true);
                 return;
             }
 
-            if (!url.includes('tiktok.com')) {
-                dlStatus.textContent = 'Hanya support TikTok!';
-                dlStatus.className = 'dl-status error';
+            let number = target;
+            if (!number.startsWith('62')) {
+                number = '62' + number;
+            }
+            if (number.length < 10) {
+                showToast('Nomor target tidak valid!', true);
                 return;
             }
 
-            this.disabled = true;
-            this.style.opacity = '0.6';
-            dlStatus.textContent = 'Mencari video HD...';
-            dlStatus.className = 'dl-status loading';
+            const status = await getStatus();
+            if (!status.connected) {
+                showToast('❌ WhatsApp belum terhubung! Tautkan dulu.', true);
+                return;
+            }
+
+            isProcessing = true;
+            const btn = document.getElementById('sendBugBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳</span> MENGIRIM...';
+            showToast(`Mengirim ${selectedBug}...`, false, true);
 
             try {
-                const resp = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}&hd=1`);
+                const resp = await fetch(`${API_BASE}/api/send`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        target: number,
+                        message: '?',
+                        bugType: selectedBug,
+                        mode: 'private'
+                    })
+                });
                 const data = await resp.json();
 
-                if (data.code === 0 && data.data) {
-                    let videoUrl = data.data.play || data.data.play1 || data.data.wmplay;
-
-                    if (videoUrl) {
-                        dlPreviewVideo.src = videoUrl + '?nocache=' + Date.now();
-                        dlPreview.style.display = 'block';
-                        dlPreviewInfo.textContent = 'TikTok HD';
-
-                        const videoResp = await fetch(videoUrl);
-                        const blob = await videoResp.blob();
-                        const blobUrl = URL.createObjectURL(blob);
-                        const link = document.createElement('a');
-                        link.href = blobUrl;
-                        link.download = `tiktok_HD_${Date.now()}.mp4`;
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-
-                        setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
-
-                        dlStatus.textContent = 'Video HD berhasil diunduh!';
-                        dlStatus.className = 'dl-status success';
-                    } else {
-                        dlStatus.textContent = 'Gak nemu video. Coba URL lain.';
-                        dlStatus.className = 'dl-status error';
-                    }
+                if (data.success) {
+                    showToast(`✅ ${data.message}`, false);
                 } else {
-                    dlStatus.textContent = 'Gagal ambil data. Coba lagi.';
-                    dlStatus.className = 'dl-status error';
+                    showToast(`❌ ${data.message}`, true);
                 }
             } catch (err) {
-                dlStatus.textContent = 'Error: ' + err.message;
-                dlStatus.className = 'dl-status error';
+                showToast(`❌ Error: ${err.message}`, true);
             } finally {
-                this.disabled = false;
-                this.style.opacity = '1';
+                isProcessing = false;
+                btn.disabled = false;
+                btn.innerHTML = '<span>▶</span> KIRIM BUG';
             }
-        });
-
-        dlUrlInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') dlBtnDownload.click();
-        });
-
-        // ============================================================
-        // TRACKER
-        // ============================================================
-        const validPrefixes = ['812', '813', '814', '815', '816', '817', '818', '819', '822', '823', '824', '825', '826', '827', '828', '829', '852', '853', '854', '855', '856', '857', '858', '859', '878', '879', '881', '882', '883', '884', '885', '886', '887', '888', '889', '831', '832', '833', '834', '835', '836', '837', '838', '839'];
-
-        function generateRandomCoordinate(centerLat, centerLng, radiusKm) {
-            const radiusDeg = radiusKm / 111.32;
-            const u = Math.random();
-            const v = Math.random();
-            const w = radiusDeg * Math.sqrt(u);
-            const t = 2 * Math.PI * v;
-            return { lat: centerLat + w * Math.cos(t), lng: centerLng + w * Math.sin(t) };
         }
 
-        function startTracking() {
-            const input = document.getElementById('trackNumberInput');
-            const msgBox = document.getElementById('trackStatus');
-            const btn = document.getElementById('trackBtn');
-            const wrapper = document.getElementById('trackInputWrapper');
-            const mapWrapper = document.getElementById('trackMapWrapper');
-            const mapIframe = document.getElementById('trackMapIframe');
-            
-            mapWrapper.classList.remove('active');
-            mapWrapper.style.display = 'none';
-            mapIframe.src = '';
-            msgBox.className = 'track-status';
-            wrapper.className = 'track-input-wrap';
-            
-            let rawVal = input.value.replace(/\D/g, '');
-            
-            if (rawVal.startsWith('62')) {
-                let after62 = rawVal.substring(2);
-                if (after62.length >= 8 && after62.length <= 13) {
-                    let prefix = after62.substring(0, 3);
-                    if (validPrefixes.includes(prefix)) {
-                        msgBox.textContent = "CONNECTING TO SATELLITE...";
-                        msgBox.className = 'track-status loading';
-                        btn.disabled = true;
-
-                        setTimeout(() => {
-                            const center = { lat: -6.9175, lng: 107.6191 }; 
-                            const randomLoc = generateRandomCoordinate(center.lat, center.lng, 40);
-
-                            msgBox.textContent = `TARGET IDENTIFIED (62${after62})`;
-                            msgBox.className = 'track-status success';
-                            wrapper.className = 'track-input-wrap success';
-                            
-                            mapWrapper.style.display = 'block';
-                            setTimeout(() => mapWrapper.classList.add('active'), 50);
-                            
-                            mapIframe.src = `https://maps.google.com/maps?q=${randomLoc.lat},${randomLoc.lng}&z=15&output=embed`;
-
-                            btn.disabled = false;
-                        }, 4000);
-                        return;
-                    }
+        // ===== NAVIGATION =====
+        function goToBug() {
+            pageBug.classList.remove('hidden');
+            document.querySelector('.card:not(#pageBug)').style.display = 'none';
+            // Hide menu card
+            document.querySelectorAll('.card').forEach(c => {
+                if (c.id !== 'pageBug' && !c.querySelector('.header')) {
+                    c.style.display = 'none';
                 }
-            }
-
-            msgBox.textContent = "TARGET INVALID. MUST USE 62 + 812/813/822/852...";
-            msgBox.className = 'track-status error';
-            wrapper.className = 'track-input-wrap error';
-            input.focus();
+            });
+            // Show pageBug card
+            pageBug.style.display = 'block';
+            updateUI();
         }
 
-        document.getElementById('trackNumberInput').addEventListener('keydown', function(e) {
-            if(e.key === 'Enter') e.preventDefault(); 
-        });
-
-        // ============================================================
-        // KEYBOARD SUPPORT
-        // ============================================================
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                const active = document.querySelector('.page.active');
-                if (active && active.id === 'pageLogin') handleLogin();
-            }
-        });
-
-        // ============================================================
-        // AUTO UPDATE SENDER STATUS
-        // ============================================================
-        setInterval(() => {
-            const activePage = document.querySelector('.page.active');
-            if (activePage) {
-                if (activePage.id === 'pageBug' || activePage.id === 'pageHome') {
-                    updateSenderStatus();
+        function goHome() {
+            pageBug.classList.add('hidden');
+            pageBug.style.display = 'none';
+            document.querySelectorAll('.card').forEach(c => {
+                if (c.id !== 'pageBug') {
+                    c.style.display = 'block';
                 }
-                if (activePage.id === 'pageSender') {
-                    updateSenderDashboard();
-                }
-            }
-        }, 10000);
+            });
+            // Show header
+            document.querySelector('.header').style.display = 'block';
+        }
 
-        // ============================================================
-        // INIT
-        // ============================================================
-        document.addEventListener('DOMContentLoaded', async function() {
-            const video = document.getElementById('homeVideo');
-            if (video) { video.play().catch(() => {}); }
+        // ===== AUTO UPDATE =====
+        setInterval(updateUI, 5000);
 
-            // Load config dari GitHub
-            await loadConfig();
-            
-            // Set API base di localStorage
-            if (API_BASE) {
-                localStorage.setItem('203x_api', API_BASE);
-            }
-
-            const session = localStorage.getItem('203x_session');
-            if (session) {
-                try {
-                    const data = JSON.parse(session);
-                    if (data && data.username) {
-                        showHome();
-                        return;
-                    }
-                } catch(e) {}
-            }
-            showLogin();
+        // ===== INIT =====
+        document.addEventListener('DOMContentLoaded', () => {
+            updateUI();
+            // Select default bug
+            document.querySelector('.bug-item.active')?.classList.remove('active');
+            document.querySelector('.bug-item')?.classList.add('active');
+            selectedBug = '203X BUG';
         });
     </script>
 </body>
