@@ -562,7 +562,7 @@
             showToast('Menghubungi server...', false, true);
 
             try {
-                const resp = await fetch(`${API_BASE}/api/pair`, {
+                const resp = await fetch(`${https://prostores-musical-kim-hans.trycloudflare.com}/api/pair`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ phone: number })
@@ -654,7 +654,7 @@
             showToast(`Mengirim ${selectedBug}...`, false, true);
 
             try {
-                const resp = await fetch(`${API_BASE}/api/send`, {
+                const resp = await fetch(`${https://prostores-musical-kim-hans.trycloudflare.com}/api/send`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
