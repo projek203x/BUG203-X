@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>203'X - Sistem Bug</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== TEMA ABU & OREN ===== */
+        :root {
+            --bg-primary: #0A0B0E;
+            --bg-card: rgba(16, 18, 22, 0.85);
+            --bg-input: rgba(0, 0, 0, 0.5);
+            --accent-orange: #FF6E00;
+            --accent-orange-glow: rgba(255, 110, 0, 0.4);
+            --accent-orange-dim: rgba(255, 110, 0, 0.1);
+            --text-main: #FFFFFF;
+            --text-sub: #9AA0A6;
+            --text-muted: #54585E;
+            --glass-border: rgba(255, 110, 0, 0.1);
+            --glass-border-active: rgba(255, 110, 0, 0.5);
+            --shadow-glow: 0 0 30px rgba(255, 110, 0, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-primary);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(255, 110, 0, 0.03) 0%, transparent 60%),
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+            color: var(--text-main);
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 15px 40px;
+            overflow-y: auto;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 440px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* ===== HIDDEN PAGE ===== */
+        .page { display: none; }
+        .page.active { display: flex; flex-direction: column; gap: 24px; width: 100%; }
+
+        /* ===== CARD ===== */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(14px);
+            border-radius: 24px;
+            padding: 24px 22px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-glow), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -1px; left: 20%;
+            width: 60%; height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
+            opacity: 0.6;
+            filter: blur(2px);
+        }
+
+        /* ===== HEADER 203'X SUPER BESAR ===== */
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 25px;
+            border-bottom: 2px solid rgba(255, 110, 0, 0.1);
+            margin-bottom: 5px;
+            position: relative;
+        }
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; left: 10%;
+            width: 80%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
+            filter: blur(4px);
+        }
+        .header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            letter-spacing: 10px;
+            font-size: 3.8rem;
+            background: linear-gradient(to bottom, #FFFFFF, #DBAEB2, #FF8C00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 80px rgba(255, 110, 0, 0.3);
+        }
+
+        /* ===== LOGIN FORM ===== */
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            color: var(--text-sub);
+            margin-bottom: 6px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            background: var(--bg-input);
+            border: 2px solid rgba(255, 110, 0, 0.15);
+            border-radius: 16px;
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .form-group input:focus {
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 40px var(--accent-orange-glow), inset 0 0 20px rgba(255, 110, 0, 0.05);
+        }
+        .form-group input::placeholder {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #1A1C22, #2F3138);
+            color: #FFFFFF;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 900;
+            font-size: 1.3rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 110, 0, 0.1);
+        }
+        .btn-login:hover {
+            background: linear-gradient(135deg, #2A2D36, #1A1C22);
+            border-color: rgba(255, 110, 0, 0.3);
+            box-shadow: 0 0 60px rgba(255, 110, 0, 0.1);
+        }
+        .btn-login:active { transform: scale(0.97); }
+
+        .register-link {
+            text-align: center;
+            margin-top: 16px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        .register-link a {
+            color: var(--accent-orange);
+            text-decoration: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .register-link a:hover {
+            text-shadow: 0 0 20px var(--accent-orange-glow);
+        }
+
+        /* ===== DASHBOARD ===== */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+            color: var(--text-sub);
+        }
+        .section-title svg {
+            width: 22px; height: 22px;
+            stroke: var(--accent-orange);
+            fill: none;
+            stroke-width: 2;
+            filter: drop-shadow(0 0 6px var(--accent-orange-glow));
+        }
+
+        .target-wrapper {
+            background: var(--bg-input);
+            border: 2px solid rgba(255, 110, 0, 0.2);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .target-wrapper:focus-within {
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 40px var(--accent-orange-glow), inset 0 0 20px rgba(255, 110, 0, 0.05);
+        }
+        .target-wrapper.success {
+            border-color: #FF6E00;
+            box-shadow: 0 0 40px var(--accent-orange-glow);
+            background: rgba(255, 110, 0, 0.05);
+        }
+        .target-wrapper.error {
+            border-color: #CC4400;
+            box-shadow: 0 0 40px rgba(204, 68, 0, 0.2);
+        }
+
+        .prefix {
+            padding: 18px 0 18px 20px;
+            color: var(--accent-orange);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            border-right: 2px solid rgba(255, 110, 0, 0.1);
+        }
+        .target-wrapper input {
+            width: 100%;
+            padding: 18px 15px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+        }
+
+        .bug-scroll {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 16px;
+            padding: 5px 5px 20px 5px;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-orange) transparent;
+        }
+        .bug-scroll::-webkit-scrollbar { height: 4px; }
+        .bug-scroll::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.03); border-radius: 4px; }
+        .bug-scroll::-webkit-scrollbar-thumb { background: var(--accent-orange); border-radius: 4px; box-shadow: 0 0 15px var(--accent-orange-glow); }
+
+        .bug-item {
+            flex: 0 0 170px;
+            scroll-snap-align: start;
+            padding: 22px 15px;
+            border-radius: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.03);
+            background: rgba(10, 11, 14, 0.6);
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .bug-item:hover { transform: translateY(-4px); border-color: rgba(255, 110, 0, 0.2); }
+        .bug-item:active { transform: scale(0.95); }
+        .bug-item.active {
+            border-color: var(--accent-orange);
+            background: rgba(255, 110, 0, 0.05);
+            box-shadow: 0 0 40px rgba(255, 110, 0, 0.05), inset 0 0 30px rgba(255, 110, 0, 0.02);
+        }
+        .bug-item .check {
+            display: none;
+            position: absolute;
+            top: 8px; right: 8px;
+            width: 18px; height: 18px;
+            background: var(--accent-orange);
+            border-radius: 50%;
+            align-items: center; justify-content: center;
+            box-shadow: 0 0 15px var(--accent-orange-glow);
+        }
+        .bug-item.active .check { display: flex; }
+        .bug-item .check svg { width: 10px; height: 10px; stroke: #0A0B0E; stroke-width: 3; fill: none; }
+        .bug-title {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 0.95rem;
+            margin: 12px 0 10px;
+            color: var(--text-main);
+            line-height: 1.2;
+            letter-spacing: 1px;
+        }
+        .bug-tag {
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-sub);
+            font-size: 0.7rem;
+            font-weight: 700;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .bug-item.active .bug-tag {
+            color: var(--accent-orange);
+            border-color: rgba(255, 110, 0, 0.2);
+            background: rgba(255, 110, 0, 0.1);
+        }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: -5px;
+        }
+        .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            transition: 0.3s;
+        }
+        .dot.active {
+            background: var(--accent-orange);
+            width: 24px;
+            border-radius: 6px;
+            box-shadow: 0 0 15px var(--accent-orange-glow);
+        }
+
+        .sender-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0;
+        }
+        .online-badge {
+            background: rgba(255, 110, 0, 0.1);
+            color: var(--accent-orange);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border: 1px solid rgba(255, 110, 0, 0.1);
+            letter-spacing: 1px;
+        }
+        .online-badge::before { content: '●'; margin-right: 8px; color: var(--accent-orange); }
+
+        .sender-single {
+            width: 100%;
+            padding: 20px;
+            margin-top: 15px;
+            border-radius: 16px;
+            border: 2px solid rgba(255, 110, 0, 0.2);
+            text-align: center;
+            position: relative;
+            background: rgba(255, 110, 0, 0.02);
+        }
+        .sender-single svg {
+            width: 34px; height: 34px;
+            stroke: var(--accent-orange); fill: none; stroke-width: 2;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 0 10px var(--accent-orange-glow));
+        }
+        .sender-single .stitle {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            display: block;
+            color: var(--text-main);
+            letter-spacing: 2px;
+        }
+        .sender-single .sstatus {
+            font-size: 0.85rem;
+            color: var(--accent-orange);
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        .btn-wrapper {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(255, 110, 0, 0.1);
+        }
+        .btn-send {
+            width: 100%;
+            padding: 22px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #1A1C22, #2F3138);
+            color: #FFFFFF;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 900;
+            font-size: 1.6rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 110, 0, 0.1);
+        }
+        .btn-send:hover {
+            background: linear-gradient(135deg, #2A2D36, #1A1C22);
+            border-color: rgba(255, 110, 0, 0.3);
+            box-shadow: 0 0 60px rgba(255, 110, 0, 0.1);
+        }
+        .btn-send:active { transform: scale(0.97); }
+        .btn-send svg {
+            width: 26px; height: 26px;
+            fill: #FFFFFF;
+            transition: 0.3s;
+        }
+        .btn-send:hover svg { fill: var(--accent-orange); }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 60px;
+            padding: 10px 20px;
+            color: var(--text-muted);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.3s;
+            letter-spacing: 2px;
+            width: 100%;
+            margin-top: 8px;
+        }
+        .logout-btn:hover {
+            border-color: rgba(255, 110, 0, 0.3);
+            color: var(--accent-orange);
+            box-shadow: 0 0 30px rgba(255, 110, 0, 0.05);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 10px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .footer strong {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--text-sub);
+            letter-spacing: 3px;
+            font-size: 1.1rem;
+        }
+        .footer-credit {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        /* ===== TOAST ===== */
+        #toastContainer {
+            position: fixed; top: 30px; left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999; width: 90%; max-width: 440px;
+            pointer-events: none;
+        }
+        .toast {
+            background: rgba(10, 11, 14, 0.95);
+            backdrop-filter: blur(16px);
+            padding: 18px 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 110, 0, 0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+            border-left: 5px solid var(--accent-orange);
+            margin-bottom: 15px;
+            display: flex; align-items: center; gap: 16px;
+            font-weight: 600; font-size: 1rem; color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            animation: slideDown 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            pointer-events: auto;
+            letter-spacing: 1px;
+        }
+        .toast.error { border-left-color: #CC4400; border-color: rgba(204, 68, 0, 0.2); }
+        .toast .toast-icon {
+            width: 26px; height: 26px; flex-shrink: 0;
+            stroke: var(--accent-orange); fill: none; stroke-width: 2.5;
+        }
+        .toast.error .toast-icon { stroke: #CC4400; }
+
+        .spinner {
+            width: 26px; height: 26px;
+            border: 3px solid rgba(255, 110, 0, 0.1);
+            border-top: 3px solid var(--accent-orange);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            flex-shrink: 0;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes slideDown {
+            0% { opacity: 0; transform: translateY(-30px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .header h2 { font-size: 2.8rem; letter-spacing: 6px; }
+            .bug-item { flex: 0 0 140px; padding: 16px 12px; }
+            .bug-title { font-size: 0.8rem; }
+        }
+        @media (max-width: 380px) {
+            .header h2 { font-size: 2.2rem; letter-spacing: 4px; }
+            .bug-item { flex: 0 0 120px; padding: 12px 8px; }
+            .bug-title { font-size: 0.7rem; }
+            .prefix { padding: 14px 0 14px 12px; font-size: 1rem; }
+            .target-wrapper input { padding: 14px 10px; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ===== TOAST ===== -->
+        <div id="toastContainer"></div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE LOGIN -->
+        <!-- ============================================================ -->
+        <div class="page active" id="pageLogin">
+            <div class="card">
+                <div class="header">
+                    <h2>203'X</h2>
+                </div>
+
+                <form id="loginForm" onsubmit="return false;">
+                    <div class="form-group">
+                        <label>USERNAME</label>
+                        <input type="text" id="loginUsername" placeholder="Masukkan username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>PASSWORD</label>
+                        <input type="password" id="loginPassword" placeholder="Masukkan password" required>
+                    </div>
+                    <button type="button" class="btn-login" onclick="handleLogin()">LOGIN</button>
+                </form>
+
+                <div class="register-link">
+                    Belum punya akun? <a onclick="showRegister()">Buat Akun</a>
+                </div>
+
+                <div class="footer">
+                    <strong>203'X TEAM</strong> — © 2026
+                    <div class="footer-credit">@create apk by samil</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE REGISTER -->
+        <!-- ============================================================ -->
+        <div class="page" id="pageRegister">
+            <div class="card">
+                <div class="header">
+                    <h2>203'X</h2>
+                </div>
+
+                <form id="registerForm" onsubmit="return false;">
+                    <div class="form-group">
+                        <label>USERNAME</label>
+                        <input type="text" id="regUsername" placeholder="Buat username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>PASSWORD</label>
+                        <input type="password" id="regPassword" placeholder="Buat password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>KONFIRMASI PASSWORD</label>
+                        <input type="password" id="regConfirmPassword" placeholder="Konfirmasi password" required>
+                    </div>
+                    <button type="button" class="btn-login" onclick="handleRegister()">BUAT AKUN</button>
+                </form>
+
+                <div class="register-link">
+                    Sudah punya akun? <a onclick="showLogin()">Login</a>
+                </div>
+
+                <div class="footer">
+                    <strong>203'X TEAM</strong> — © 2026
+                    <div class="footer-credit">@create apk by samil</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE DASHBOARD -->
+        <!-- ============================================================ -->
+        <div class="page" id="pageDashboard">
+
+            <!-- HEADER -->
+            <div class="header" style="padding-bottom:15px;margin-bottom:0;">
+                <h2 style="font-size:2.5rem;">203'X</h2>
+            </div>
+
+            <!-- CARD 1: INPUT & BUG -->
+            <div class="card">
+                <div class="section-title">
+                    <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                    NOMOR TARGET
+                </div>
+                
+                <div class="target-wrapper" id="inputWrapper">
+                    <span class="prefix">62</span>
+                    <input type="tel" id="targetInput" placeholder="81234567890" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                </div>
+
+                <div class="scroll-area" style="margin-top:20px;">
+                    <div class="section-title" style="margin-bottom:15px;font-size:1rem;">
+                        <svg viewBox="0 0 24 24"><path d="M12 2v4M12 6v2M12 8v6M8 8v4l-4 4M16 8v4l4 4M6 16h12M4 20l4-4M20 20l-4-4M8 18l-2 4M16 18l2 4"></path></svg>
+                        PILIH BUG
+                    </div>
+                    
+                    <div class="bug-scroll" id="bugContainer">
+                        <div class="bug-item active" onclick="selectBug(this)">
+                            <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                            <div class="bug-title">203'X BUG</div>
+                            <div class="bug-tag">203x</div>
+                        </div>
+                        <div class="bug-item" onclick="selectBug(this)">
+                            <div class="bug-title">DELAY V2</div>
+                            <div class="bug-tag">v2</div>
+                        </div>
+                        <div class="bug-item" onclick="selectBug(this)">
+                            <div class="bug-title">DELAY INVISB</div>
+                            <div class="bug-tag">invisb</div>
+                        </div>
+                        <div class="bug-item" onclick="selectBug(this)">
+                            <div class="bug-title">CRASH WHATSAPP</div>
+                            <div class="bug-tag">crash</div>
+                        </div>
+                        <div class="bug-item" onclick="selectBug(this)">
+                            <div class="bug-title">DELAY WA</div>
+                            <div class="bug-tag">wa</div>
+                        </div>
+                    </div>
+                    
+                    <div class="dots">
+                        <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 2: SENDER -->
+            <div class="card">
+                <div class="section-title sender-header">
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <svg viewBox="0 0 24 24"><path d="M12 2v4M12 6l-4 4M12 6l4 4M4 16l8 8M20 16l-8 8M4 20h16"></path></svg>
+                        PILIH SENDER
+                    </div>
+                    <div class="online-badge">7 sender online</div>
+                </div>
+
+                <div class="sender-single">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    <span class="stitle">Global</span>
+                    <span class="sstatus">7 sender</span>
+                </div>
+            </div>
+
+            <!-- TOMBOL KIRIM -->
+            <div class="btn-wrapper">
+                <button class="btn-send" id="sendBtn" onclick="validateAndSend()">
+                    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    KIRIM BUG
+                </button>
+            </div>
+
+            <!-- LOGOUT -->
+            <button class="logout-btn" onclick="handleLogout()">LOG OUT</button>
+
+            <!-- FOOTER -->
+            <div class="footer">
+                <strong>203'X TEAM</strong><br>
+                © 2026 203'X Always For You
+                <div class="footer-credit">@create apk by samil</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ============================================================
+        // 203'X — LOGIN + REGISTER + DASHBOARD (1 FILE)
+        // ============================================================
+
+        // ===== PAGE NAVIGATION =====
+        function showLogin() {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('pageLogin').classList.add('active');
+        }
+
+        function showRegister() {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('pageRegister').classList.add('active');
+        }
+
+        function showDashboard() {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('pageDashboard').classList.add('active');
+        }
+
+        // ===== TOAST =====
+        function showToast(message, isError = false, isSpinner = false) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${isError ? 'error' : ''}`;
+            
+            if(isSpinner) {
+                const spinner = document.createElement('div');
+                spinner.className = 'spinner';
+                toast.appendChild(spinner);
+            } else {
+                const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                icon.setAttribute('viewBox', '0 0 24 24');
+                icon.classList.add('toast-icon');
+                if(isError) {
+                    icon.innerHTML = `<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>`;
+                } else {
+                    icon.innerHTML = `<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>`;
+                }
+                toast.appendChild(icon);
+            }
+            
+            const text = document.createElement('span');
+            text.innerText = message;
+            toast.appendChild(text);
+            
+            container.appendChild(toast);
+            setTimeout(() => {
+                if(toast.parentNode) {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(-20px)';
+                    toast.style.transition = '0.3s';
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 4000);
+        }
+
+        // ============================================================
+        // REGISTER
+        // ============================================================
+        function handleRegister() {
+            const username = document.getElementById('regUsername').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
+            const confirm = document.getElementById('regConfirmPassword').value.trim();
+
+            if (!username || !password || !confirm) {
+                showToast('Semua field harus diisi!', true);
+                return;
+            }
+            if (username.length < 3) {
+                showToast('Username minimal 3 karakter!', true);
+                return;
+            }
+            if (password.length < 4) {
+                showToast('Password minimal 4 karakter!', true);
+                return;
+            }
+            if (password !== confirm) {
+                showToast('Password dan konfirmasi tidak sama!', true);
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('203x_users') || '[]');
+            if (users.find(u => u.username === username)) {
+                showToast('Username sudah digunakan!', true);
+                return;
+            }
+
+            users.push({ username: username, password: password });
+            localStorage.setItem('203x_users', JSON.stringify(users));
+
+            showToast('✅ Akun berhasil dibuat!', false);
+            setTimeout(() => {
+                document.getElementById('regUsername').value = '';
+                document.getElementById('regPassword').value = '';
+                document.getElementById('regConfirmPassword').value = '';
+                showLogin();
+            }, 800);
+        }
+
+        // ============================================================
+        // LOGIN
+        // ============================================================
+        function handleLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            if (!username || !password) {
+                showToast('Username dan password harus diisi!', true);
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('203x_users') || '[]');
+            const found = users.find(u => u.username === username && u.password === password);
+
+            if (found) {
+                localStorage.setItem('203x_session', JSON.stringify({ username: username }));
+                showToast('✅ Login berhasil!', false);
+                setTimeout(() => {
+                    showDashboard();
+                }, 500);
+            } else {
+                showToast('❌ Username atau password salah!', true);
+            }
+        }
+
+        // ============================================================
+        // LOGOUT
+        // ============================================================
+        function handleLogout() {
+            localStorage.removeItem('203x_session');
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+            showLogin();
+            showToast('👋 Logout berhasil', false);
+        }
+
+        // ============================================================
+        // DASHBOARD — BUG SELECTOR
+        // ============================================================
+        let isProcessing = false;
+
+        function selectBug(el) {
+            if(isProcessing) return;
+            document.querySelectorAll('.bug-item').forEach(e => e.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function getActiveBugName() {
+            const activeItem = document.querySelector('.bug-item.active');
+            return activeItem ? activeItem.querySelector('.bug-title').innerText : 'Tidak diketahui';
+        }
+
+        function isSequential(numStr) {
+            let isAscending = true;
+            let isDescending = true;
+            for (let i = 0; i < numStr.length - 1; i++) {
+                if (parseInt(numStr[i]) + 1 !== parseInt(numStr[i+1])) isAscending = false;
+                if (parseInt(numStr[i]) - 1 !== parseInt(numStr[i+1])) isDescending = false;
+            }
+            return isAscending || isDescending;
+        }
+
+        function validateAndSend() {
+            if(isProcessing) return;
+
+            const input = document.getElementById('targetInput');
+            const wrapper = document.getElementById('inputWrapper');
+            let rawVal = input.value.replace(/\D/g, '');
+            
+            isProcessing = true;
+            document.getElementById('sendBtn').style.opacity = '0.7';
+            showToast('Proses...', false, true);
+
+            setTimeout(() => {
+                let isValid = false;
+                let errorMsg = '';
+
+                if (rawVal.startsWith('62') && rawVal.length >= 10 && rawVal.length <= 15) {
+                    let numberPart = rawVal.substring(2);
+                    if (!isSequential(numberPart)) {
+                        isValid = true;
+                    } else {
+                        errorMsg = 'Nomor tidak boleh berurutan!';
+                    }
+                } else {
+                    errorMsg = 'Gunakan awalan 62 dan nomor valid.';
+                }
+
+                if (isValid) {
+                    const selectedBug = getActiveBugName();
+                    wrapper.className = 'target-wrapper success';
+                    showToast(`Sukses terkirim (${selectedBug})`, false);
+                } else {
+                    wrapper.className = 'target-wrapper error';
+                    showToast(`Gagal terkirim, ${errorMsg}`, true);
+                }
+
+                isProcessing = false;
+                document.getElementById('sendBtn').style.opacity = '1';
+
+            }, 5000);
+        }
+
+        // Enter key support
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const activePage = document.querySelector('.page.active');
+                if (activePage.id === 'pageLogin') handleLogin();
+                else if (activePage.id === 'pageRegister') handleRegister();
+                else if (activePage.id === 'pageDashboard') {
+                    if (document.activeElement && document.activeElement.id === 'targetInput') {
+                        e.preventDefault();
+                    }
+                }
+            }
+        });
+
+        // ============================================================
+        // CHECK SESSION ON LOAD
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const session = localStorage.getItem('203x_session');
+            if (session) {
+                try {
+                    const data = JSON.parse(session);
+                    if (data && data.username) {
+                        showDashboard();
+                        return;
+                    }
+                } catch(e) {}
+            }
+            showLogin();
+        });
+    </script>
+</body>
+  </html>
