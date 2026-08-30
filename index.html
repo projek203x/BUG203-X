@@ -956,7 +956,7 @@
                             <svg width="20" height="20" viewBox="0 0 24 24" stroke="var(--accent-orange)" fill="none" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
                             <div>
                                 <div style="font-weight:700;font-size:0.9rem;color:var(--text-main);">Mode Sender</div>
-                                <div style="font-size:0.7rem;color:var(--text-muted);" id="senderModeLabel">Global (Bot sistem)</div>
+                                <div style="font-size:0.7rem;color:var(--text-muted);" id="senderModeLabel">Global (Simulasi)</div>
                             </div>
                         </div>
                         <div style="display:flex;gap:8px;align-items:center;">
@@ -968,7 +968,7 @@
                         </div>
                     </div>
                     <div style="margin-top:8px;font-size:0.7rem;color:var(--text-muted);padding:6px 10px;border-radius:8px;background:rgba(0,0,0,0.3);">
-                        <span id="senderModeDesc">Menggunakan bot WhatsApp sistem (global)</span>
+                        <span id="senderModeDesc">🔹 Mode Global: Simulasi (tidak kirim real)</span>
                     </div>
                 </div>
                 <div class="section-title">
@@ -1026,7 +1026,7 @@
                     <span class="sstatus" id="senderStatus">Koneksi WA diperlukan</span>
                 </div>
                 <div style="margin-top:10px;padding:8px 12px;border-radius:10px;background:rgba(255,110,0,0.05);border:1px solid rgba(255,110,0,0.08);text-align:center;font-size:0.75rem;color:var(--text-muted);">
-                    <span id="senderActiveMode">Mode: <strong style="color:var(--accent-orange);">GLOBAL</strong></span>
+                    <span id="senderActiveMode">Mode: <strong style="color:var(--accent-orange);">GLOBAL (Simulasi)</strong></span>
                 </div>
             </div>
             <div class="btn-wrapper">
@@ -1166,8 +1166,8 @@
         // 203X - FULL SYSTEM
         // ============================================================
 
-        // ===== CONFIG - GANTI DENGAN URL CLOUDFLARE LO =====
-        const API_BASE = 'https://opponents-modify-athletes-licens.es.trycloudflare.com';
+        // ===== CONFIG - GANTI DENGAN URL SERVER LO =====
+        const API_BASE = 'http://localhost:3000';
 
         // ===== DAFTAR PREFIX HP VALID INDONESIA =====
         const VALID_PREFIXES = [
@@ -1404,25 +1404,25 @@
             
             if (toggle.checked) {
                 senderMode = 'private';
-                modeLabel.textContent = 'Pribadi (WA pribadi)';
+                modeLabel.textContent = 'Pribadi (WA Real)';
                 modeBadge.textContent = 'PRIBADI';
                 modeBadge.style.color = '#00ff88';
-                modeDesc.innerHTML = 'Mengirim menggunakan WhatsApp pribadi yang sudah ditautkan';
-                if (activeMode) activeMode.innerHTML = 'Mode: <strong style="color:#00ff88;">PRIBADI</strong>';
-                showToast('Mode Sender Pribadi aktif', false);
+                modeDesc.innerHTML = '🔒 Mode Pribadi: Kirim real via WhatsApp pribadi';
+                if (activeMode) activeMode.innerHTML = 'Mode: <strong style="color:#00ff88;">PRIBADI (Real)</strong>';
+                showToast('🔒 Mode Sender Pribadi aktif (kirim real)', false);
             } else {
                 senderMode = 'global';
-                modeLabel.textContent = 'Global (Bot sistem)';
+                modeLabel.textContent = 'Global (Simulasi)';
                 modeBadge.textContent = 'GLOBAL';
                 modeBadge.style.color = 'var(--accent-orange)';
-                modeDesc.innerHTML = 'Menggunakan bot WhatsApp sistem (global)';
-                if (activeMode) activeMode.innerHTML = 'Mode: <strong style="color:var(--accent-orange);">GLOBAL</strong>';
-                showToast('Mode Sender Global aktif', false);
+                modeDesc.innerHTML = '🔹 Mode Global: Simulasi (tidak kirim real)';
+                if (activeMode) activeMode.innerHTML = 'Mode: <strong style="color:var(--accent-orange);">GLOBAL (Simulasi)</strong>';
+                showToast('🌐 Mode Sender Global aktif (simulasi)', false);
             }
         }
 
         // ============================================================
-        // SEND BUG - DENGAN VALIDASI & SIMULASI 5 DETIK
+        // SEND BUG - GLOBAL (SIMULASI) vs PRIBADI (REAL)
         // ============================================================
         async function sendBug() {
             if (isProcessing) return;
@@ -1438,83 +1438,95 @@
                 return;
             }
 
-            // Pastikan dimulai dengan 62
             let number = rawVal;
             if (!number.startsWith('62')) {
                 number = '62' + number;
             }
 
-            // Cek panjang minimal
             if (number.length < 10 || number.length > 15) {
                 showToast('❌ Nomor tidak valid! Minimal 10 digit.', true);
                 return;
             }
 
-            // Ambil prefix 3 digit setelah 62
             let prefix = number.substring(2, 5);
-
             if (!VALID_PREFIXES.includes(prefix)) {
                 showToast('❌ Nomor tidak valid! Gunakan prefix yang benar (811, 812, 813, dst).', true);
                 return;
             }
 
-            // ===== CEK KONEKSI WA =====
-            const status = await getWhatsAppStatus();
-            if (senderMode === 'private' && !status.connected) {
-                showToast('❌ WhatsApp pribadi belum terhubung! Buka menu Sender dulu.', true);
-                return;
-            }
-
-            if (senderMode === 'global') {
-                if (!status.connected) {
-                    showToast('❌ Bot WhatsApp belum terhubung! Buka menu Sender dulu.', true);
-                    return;
-                }
-            }
-
-            // ===== PROSES KIRIM =====
-            isProcessing = true;
-            const btn = document.querySelector('.btn-send');
-            btn.disabled = true;
-            btn.style.opacity = '0.7';
-            
-            const modeText = senderMode === 'private' ? 'Pribadi' : 'Global';
             const displayNumber = '62' + rawVal;
-            showToast(`📤 Mengirim ${bugName} ke ${displayNumber} (${modeText})...`, false, true);
 
-            // ===== SIMULASI 5 DETIK =====
-            await new Promise(resolve => setTimeout(resolve, 5000));
+            // ===== MODE GLOBAL = SIMULASI =====
+            if (senderMode === 'global') {
+                isProcessing = true;
+                const btn = document.querySelector('.btn-send');
+                btn.disabled = true;
+                btn.style.opacity = '0.7';
+                
+                showToast(`📤 [SIMULASI] Mengirim ${bugName} ke ${displayNumber} (Global)...`, false, true);
 
-            try {
-                // Kirim ke server
-                const response = await fetch(`${API_BASE}/api/send`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        target: number,
-                        message: '?',
-                        bugType: bugName,
-                        mode: senderMode
-                    })
-                });
+                // Simulasi 3 detik
+                await new Promise(resolve => setTimeout(resolve, 3000));
 
-                const data = await response.json();
+                wrapper.className = 'target-wrapper success';
+                showToast(`✅ [SIMULASI] ${bugName} sukses terkirim ke ${displayNumber}!`, false);
 
-                if (data.success) {
-                    wrapper.className = 'target-wrapper success';
-                    showToast(`✅ ${bugName} sukses terkirim ke ${displayNumber}!`, false);
-                } else {
-                    wrapper.className = 'target-wrapper error';
-                    showToast(`❌ Gagal kirim: ${data.message}`, true);
-                }
-            } catch (err) {
-                wrapper.className = 'target-wrapper error';
-                showToast(`❌ Gagal konek ke server: ${err.message}`, true);
-            } finally {
                 isProcessing = false;
                 btn.disabled = false;
                 btn.style.opacity = '1';
+                return;
             }
+
+            // ===== MODE PRIBADI = KIRIM REAL =====
+            if (senderMode === 'private') {
+                // CEK KONEKSI WA
+                const status = await getWhatsAppStatus();
+                if (!status.connected) {
+                    showToast('❌ WhatsApp pribadi belum terhubung! Buka menu Sender dulu.', true);
+                    return;
+                }
+
+                isProcessing = true;
+                const btn = document.querySelector('.btn-send');
+                btn.disabled = true;
+                btn.style.opacity = '0.7';
+                
+                showToast(`📤 Mengirim ${bugName} ke ${displayNumber} (Pribadi)...`, false, true);
+
+                // Kirim ke server
+                try {
+                    const response = await fetch(`${API_BASE}/api/send`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            target: number,
+                            message: '?',
+                            bugType: bugName,
+                            mode: 'private'
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        wrapper.className = 'target-wrapper success';
+                        showToast(`✅ ${bugName} sukses terkirim ke ${displayNumber}!`, false);
+                    } else {
+                        wrapper.className = 'target-wrapper error';
+                        showToast(`❌ Gagal kirim: ${data.message}`, true);
+                    }
+                } catch (err) {
+                    wrapper.className = 'target-wrapper error';
+                    showToast(`❌ Gagal konek ke server: ${err.message}`, true);
+                } finally {
+                    isProcessing = false;
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                }
+                return;
+            }
+
+            showToast('❌ Mode tidak dikenali!', true);
         }
 
         // ============================================================
