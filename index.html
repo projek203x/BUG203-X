@@ -1163,7 +1163,7 @@
 
     <script>
         // ============================================================
-        // 203X - FULL SYSTEM
+        // 203X - FULL SYSTEM (TANPA CEK DEVICE)
         // ============================================================
 
         // ===== CONFIG - GANTI DENGAN URL SERVER LO =====
@@ -1178,16 +1178,6 @@
             '877', '878', '879',
             '881', '882', '883', '884', '885', '886', '887', '888', '889'
         ];
-
-        // ===== DEVICE FINGERPRINT =====
-        function getDeviceId() {
-            let deviceId = localStorage.getItem('203x_device_id');
-            if (!deviceId) {
-                deviceId = 'dev_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
-                localStorage.setItem('203x_device_id', deviceId);
-            }
-            return deviceId;
-        }
 
         // ===== PAGE NAV =====
         function showLogin() {
@@ -1282,7 +1272,7 @@
         }
 
         // ============================================================
-        // LOGIN - DENGAN CEK EXPIRED
+        // LOGIN - TANPA CEK DEVICE
         // ============================================================
         function handleLogin() {
             const username = document.getElementById('loginUsername').value.trim();
@@ -1303,12 +1293,7 @@
                     }
                 }
 
-                const deviceId = getDeviceId();
-                if (found.device && found.device !== deviceId) {
-                    showToast('Akun sudah dipakai di perangkat lain!', true);
-                    return;
-                }
-                found.device = deviceId;
+                // TIDAK ADA CEK DEVICE - BISA LOGIN DARI HP MANA AJA
                 localStorage.setItem('203x_users', JSON.stringify(users));
                 localStorage.setItem('203x_session', JSON.stringify({ 
                     username: username, 
@@ -1465,7 +1450,6 @@
                 
                 showToast(`Mengirim ${bugName} ke ${displayNumber} (Global)...`, false, true);
 
-                // Simulasi 3 detik
                 await new Promise(resolve => setTimeout(resolve, 3000));
 
                 wrapper.className = 'target-wrapper success';
