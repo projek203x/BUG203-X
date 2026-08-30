@@ -1163,13 +1163,17 @@
 
     <script>
         // ============================================================
-        // 203X - FULL SYSTEM (TANPA CEK DEVICE)
+        // 203X - DENGAN JSONBIN.IO (SHARED ACCOUNT)
         // ============================================================
 
-        // ===== CONFIG - GANTI DENGAN URL SERVER LO =====
+        // ===== KONFIGURASI JSONBIN =====
+        const JSONBIN_BIN_ID = '6a9385c4da38895dfe21ae48';
+        const JSONBIN_API_KEY = '$2a$10$Xez4smtNQioc.yJIHSQAxeexF9rlDQdge/8gWdPj5V5vl.bnMu3nm';
+
+        // ===== API BASE (WHATSAPP SERVER) =====
         const API_BASE = 'http://localhost:3000';
 
-        // ===== DAFTAR PREFIX HP VALID INDONESIA =====
+        // ===== DAFTAR PREFIX HP VALID =====
         const VALID_PREFIXES = [
             '811', '812', '813', '814', '815', '816', '817', '818', '819',
             '821', '822', '823', '824', '825', '826', '827', '828', '829',
@@ -1179,7 +1183,44 @@
             '881', '882', '883', '884', '885', '886', '887', '888', '889'
         ];
 
-        // ===== PAGE NAV =====
+        // ============================================================
+        // FUNGSI JSONBIN
+        // ============================================================
+        async function getUsersFromJSONBin() {
+            try {
+                const resp = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+                    headers: {
+                        'X-Master-Key': JSONBIN_API_KEY
+                    }
+                });
+                const data = await resp.json();
+                return data.record.users || [];
+            } catch (err) {
+                console.log('Error get users:', err);
+                return [];
+            }
+        }
+
+        async function saveUsersToJSONBin(users) {
+            try {
+                const resp = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': JSONBIN_API_KEY
+                    },
+                    body: JSON.stringify({ users: users })
+                });
+                return resp.ok;
+            } catch (err) {
+                console.log('Error save users:', err);
+                return false;
+            }
+        }
+
+        // ============================================================
+        // PAGE NAV
+        // ============================================================
         function showLogin() {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('pageLogin').classList.add('active');
@@ -1189,7 +1230,6 @@
             const session = JSON.parse(localStorage.getItem('203x_session') || '{}');
             if (!session.username) { showLogin(); return; }
             
-            // CEK EXPIRED
             if (session.expired) {
                 const expiredDate = new Date(session.expired);
                 const now = new Date();
@@ -1235,7 +1275,9 @@
         function goToTracker() { showTracker(); }
         function goToSender() { showSender(); }
 
-        // ===== TOAST =====
+        // ============================================================
+        // TOAST
+        // ============================================================
         function showToast(message, isError = false, isSpinner = false) {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -1272,18 +1314,19 @@
         }
 
         // ============================================================
-        // LOGIN - TANPA CEK DEVICE
+        // LOGIN - PAKE JSONBIN
         // ============================================================
-        function handleLogin() {
+        async function handleLogin() {
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
             if (!username || !password) { showToast('Isi semua field!', true); return; }
 
-            const users = JSON.parse(localStorage.getItem('203x_users') || '[]');
+            showToast('Mengecek akun...', false, true);
+
+            const users = await getUsersFromJSONBin();
             const found = users.find(u => u.username === username && u.password === password);
 
             if (found) {
-                // CEK EXPIRED
                 if (found.expired) {
                     const expiredDate = new Date(found.expired);
                     const now = new Date();
@@ -1293,8 +1336,6 @@
                     }
                 }
 
-                // TIDAK ADA CEK DEVICE - BISA LOGIN DARI HP MANA AJA
-                localStorage.setItem('203x_users', JSON.stringify(users));
                 localStorage.setItem('203x_session', JSON.stringify({ 
                     username: username, 
                     role: found.role,
@@ -1407,7 +1448,7 @@
         }
 
         // ============================================================
-        // SEND BUG - GLOBAL vs PRIBADI
+        // SEND BUG
         // ============================================================
         async function sendBug() {
             if (isProcessing) return;
@@ -1417,7 +1458,6 @@
             let rawVal = input.value.replace(/\D/g, '');
             const bugName = getActiveBugName();
 
-            // ===== VALIDASI NOMOR =====
             if (!rawVal) {
                 showToast('Masukkan nomor target!', true);
                 return;
@@ -1441,7 +1481,7 @@
 
             const displayNumber = '62' + rawVal;
 
-            // ===== MODE GLOBAL =====
+            // MODE GLOBAL
             if (senderMode === 'global') {
                 isProcessing = true;
                 const btn = document.querySelector('.btn-send');
@@ -1449,9 +1489,7 @@
                 btn.style.opacity = '0.7';
                 
                 showToast(`Mengirim ${bugName} ke ${displayNumber} (Global)...`, false, true);
-
                 await new Promise(resolve => setTimeout(resolve, 3000));
-
                 wrapper.className = 'target-wrapper success';
                 showToast(`${bugName} sukses terkirim ke ${displayNumber}!`, false);
 
@@ -1461,7 +1499,7 @@
                 return;
             }
 
-            // ===== MODE PRIBADI =====
+            // MODE PRIBADI
             if (senderMode === 'private') {
                 const status = await getWhatsAppStatus();
                 if (!status.connected) {
